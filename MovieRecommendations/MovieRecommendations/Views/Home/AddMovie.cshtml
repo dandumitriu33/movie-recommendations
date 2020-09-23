@@ -1,0 +1,33 @@
+﻿@model MoviesDataAccessLibrary.Models.Movie
+
+@{ 
+    ViewBag.Title = "Add movie";
+}
+
+<div class="text-center">
+    <h2>Add a movie to the database</h2>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <form method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Title"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LengthInMinutes"></label>
+                <input asp-for="LengthInMinutes" class="form-control" />
+                <span asp-validation-for="LengthInMinutes" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ReleaseYear"></label>
+                <input asp-for="ReleaseYear" class="form-control" />
+                <span asp-validation-for="ReleaseYear" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">Add</button>
+        </form>
+    </div>
+</div>
