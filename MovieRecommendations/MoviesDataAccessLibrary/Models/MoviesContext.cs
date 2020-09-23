@@ -1,11 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace MoviesDataAccessLibrary.Models
 {
-    public class MoviesContext : DbContext
+    public class MoviesContext : IdentityDbContext<IdentityUser>
     {
         public MoviesContext(DbContextOptions options) : base(options) { }
 

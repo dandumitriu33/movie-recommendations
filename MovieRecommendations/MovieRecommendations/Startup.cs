@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,9 +28,21 @@ namespace MovieRecommendations
         {
             services.AddControllersWithViews();
             services.AddDbContext<MoviesContext>(options =>
-           {
-               options.UseSqlServer(Configuration.GetConnectionString("Default"));
-           });
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("Default"));
+            });
+            services.AddIdentity<IdentityUser, IdentityRole>(options =>
+                {
+                    // section just for edu purposes, defaults are the same
+                    options.User.RequireUniqueEmail = true;
+                    options.Password.RequiredLength = 4; //default 6
+                    options.Password.RequiredUniqueChars = 0; // default 1
+                    options.Password.RequireDigit = false; // default true
+                    options.Password.RequireNonAlphanumeric = false; // default true
+                    options.Password.RequireLowercase = false; // default true
+                    options.Password.RequireUppercase = false; //default true
+                })
+                .AddEntityFrameworkStores<MoviesContext>();
             services.AddScoped<IRepository, SQLRepository>();
         }
 
@@ -50,7 +63,7 @@ namespace MovieRecommendations
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
