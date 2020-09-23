@@ -1,8 +1,23 @@
-﻿@{
+﻿@model AllMoviesViewModel
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h2>Welcome to Movie Recommendations</h2>
+</div>
+
+<div class="card-deck">
+    @foreach (var movie in Model.Movies)
+    {
+        <div class="card" style="width: 18rem;">
+            <img class="card-img-top" src="..." alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">@movie.Title</h5>
+                <p class="card-text">Year: @movie.ReleaseYear</p>
+                <a href="#" class="btn btn-primary">Details</a>
+            </div>
+        </div>
+    }
 </div>

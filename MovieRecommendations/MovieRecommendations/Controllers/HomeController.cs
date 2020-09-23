@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MovieRecommendations.Models;
+using MovieRecommendations.ViewModels;
 using MoviesDataAccessLibrary.Models;
 
 namespace MovieRecommendations.Controllers
@@ -24,7 +25,12 @@ namespace MovieRecommendations.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            IEnumerable<Movie> allMoviesFromDb = _repository.GetAllMovies();
+            AllMoviesViewModel allMovies = new AllMoviesViewModel
+            {
+                Movies = allMoviesFromDb.ToList()
+            };
+            return View(allMovies);
         }
 
         public IActionResult Privacy()
