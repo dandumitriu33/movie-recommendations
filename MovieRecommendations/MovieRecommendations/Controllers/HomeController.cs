@@ -25,12 +25,7 @@ namespace MovieRecommendations.Controllers
 
         public IActionResult Index()
         {
-            IEnumerable<Movie> allMoviesFromDb = _repository.GetAllMovies();
-            AllMoviesViewModel allMovies = new AllMoviesViewModel
-            {
-                Movies = allMoviesFromDb.ToList()
-            };
-            return View(allMovies);
+            return View();
         }
 
         public IActionResult Privacy()

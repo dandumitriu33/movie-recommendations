@@ -1,0 +1,22 @@
+﻿@model AllMoviesViewModel
+
+<hr />
+<h3>Latest Popular</h3>
+<hr />
+
+<div class="container">
+    <div class="card-deck">
+        @foreach (var movie in Model.Movies)
+        {
+            <div class="card mb-4" style="min-width: 12rem; max-width: 12rem">
+                <img class="card-img-top" src="..." alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">@movie.Title</h5>
+                    <p class="card-text">Year: @movie.ReleaseYear</p>
+                    <p class="card-text">Rating: @movie.Rating</p>
+                    <a href="#" class="btn btn-primary">Details</a>
+                </div>
+            </div>
+        }
+    </div>
+</div>

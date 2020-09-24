@@ -17,5 +17,6 @@ namespace MoviesDataAccessLibrary.Models
         [Required]
         [Display(Name = "Release year")]
         public int ReleaseYear { get; set; }
+        public double Rating { get; set; }
     }
 }
