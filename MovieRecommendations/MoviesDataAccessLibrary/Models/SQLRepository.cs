@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace MoviesDataAccessLibrary.Models
 {
@@ -14,16 +15,17 @@ namespace MoviesDataAccessLibrary.Models
             _context = context;
         }
 
-        public Movie Add(Movie movie)
+        public async Task<Movie> Add(Movie movie)
         {
-            _context.Movies.Add(movie);
-            _context.SaveChanges();
+            await _context.Movies.AddAsync(movie);
+            await _context.SaveChangesAsync();
+
             return movie;
         }
 
         public IEnumerable<Movie> GetAllMovies()
         {
-            return _context.Movies;
+            return _context.Movies.Where(m => m.Rating > 6.5).OrderByDescending(m => m.ReleaseYear).ThenBy(m => m.Rating).Take(20);
         }
 
         public Movie GetMovieByMovieId(int movieId)

@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace MoviesDataAccessLibrary.Models
 {
     public interface IRepository
     {
-        Movie Add(Movie movie);
+        Task<Movie> Add(Movie movie);
         IEnumerable<Movie> GetAllMovies();
         public Movie GetMovieByMovieId(int movieId);
         public List<History> GetFullHistory(string email);

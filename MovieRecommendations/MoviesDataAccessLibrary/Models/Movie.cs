@@ -11,7 +11,7 @@ namespace MoviesDataAccessLibrary.Models
         public int Id { get; set; }
         [Required]
         [Display(Name = "Title")]
-        [Column(TypeName =("varchar(50)"))]
+        [Column(TypeName =("varchar(150)"))]
         public string Title { get; set; }
         [Required]
         [Display(Name = "Length in minutes")]

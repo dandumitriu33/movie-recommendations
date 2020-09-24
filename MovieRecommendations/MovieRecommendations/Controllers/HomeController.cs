@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -72,6 +74,51 @@ namespace MovieRecommendations.Controllers
             return RedirectToAction("details", "home", new { movieId = movieId });
         }
 
+        public async Task<IActionResult> PopulateDb()
+        {
+            List<Movie> inMemoryTempDb = new List<Movie>();
+            using (var reader = new StreamReader(@"C:\Users\Dan\Projects\movie-recommendations\MovieRecommendations\MovieRecommendations\wwwroot\csv\MOCK_DATA.csv"))
+            {
+                while (!reader.EndOfStream)
+                {
+                    var line = reader.ReadLine();
+                    var values = line.Split(',');
+
+                    Movie newMovieToAdd = new Movie
+                    {
+                        Title = values[0],
+                        LengthInMinutes = Convert.ToInt32(values[1]),
+                        ReleaseYear = Convert.ToInt32(values[2]),
+                        Rating = Convert.ToDouble(values[3]),
+                        MainGenre = processGenre(values[4]),
+                        SubGenre1 = processGenre(values[5]),
+                        SubGenre2 = processGenre(values[6]),
+                    };
+                    //Thread.Sleep(500);
+                    inMemoryTempDb.Add(newMovieToAdd);
+                                        
+                }
+            }
+            //await _repository.Add(newMovieToAdd);
+            foreach (var movie in inMemoryTempDb)
+            {
+                await _repository.Add(movie);
+            }
+            return View();
+        }
+
+        private string processGenre(string rawGenre)
+        {
+            string processedGenre = rawGenre;
+            string[] currentGenres = { "Action", "Adventure", "Comedy", "Crime", "Drama", "Fantasy", "Horror", "Mystery", "Romance", "Sci-Fi", "Western" };
+            if (currentGenres.Contains(rawGenre) == false)
+            {
+                Random rand = new Random();
+                int index = rand.Next(currentGenres.Length);
+                processedGenre = currentGenres[index];
+            }
+            return processedGenre;
+        }
         
     }
 }
