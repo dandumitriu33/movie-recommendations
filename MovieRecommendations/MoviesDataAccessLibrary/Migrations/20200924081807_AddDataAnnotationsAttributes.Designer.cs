@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MoviesDataAccessLibrary.Models;
 
 namespace MoviesDataAccessLibrary.Migrations
 {
     [DbContext(typeof(MoviesContext))]
-    partial class MoviesContextModelSnapshot : ModelSnapshot
+    [Migration("20200924081807_AddDataAnnotationsAttributes")]
+    partial class AddDataAnnotationsAttributes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -220,31 +222,20 @@ namespace MoviesDataAccessLibrary.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
+                        .HasMaxLength(12)
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("LengthInMinutes")
-                        .HasColumnType("int");
-
-                    b.Property<string>("MainGenre")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(20)")
-                        .HasMaxLength(20);
+                        .HasColumnType("int")
+                        .HasMaxLength(6);
 
                     b.Property<double>("Rating")
-                        .HasColumnType("float");
+                        .HasColumnType("float")
+                        .HasMaxLength(4);
 
                     b.Property<int>("ReleaseYear")
-                        .HasColumnType("int");
-
-                    b.Property<string>("SubGenre1")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(20)")
-                        .HasMaxLength(20);
-
-                    b.Property<string>("SubGenre2")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(20)")
-                        .HasMaxLength(20);
+                        .HasColumnType("int")
+                        .HasMaxLength(4);
 
                     b.Property<string>("Title")
                         .IsRequired()

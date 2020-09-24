@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MoviesDataAccessLibrary.Models;
 
 namespace MoviesDataAccessLibrary.Migrations
 {
     [DbContext(typeof(MoviesContext))]
-    partial class MoviesContextModelSnapshot : ModelSnapshot
+    [Migration("20200924082022_AttributeMaxLengthRemoveFromInts")]
+    partial class AttributeMaxLengthRemoveFromInts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -225,26 +227,11 @@ namespace MoviesDataAccessLibrary.Migrations
                     b.Property<int>("LengthInMinutes")
                         .HasColumnType("int");
 
-                    b.Property<string>("MainGenre")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(20)")
-                        .HasMaxLength(20);
-
                     b.Property<double>("Rating")
                         .HasColumnType("float");
 
                     b.Property<int>("ReleaseYear")
                         .HasColumnType("int");
-
-                    b.Property<string>("SubGenre1")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(20)")
-                        .HasMaxLength(20);
-
-                    b.Property<string>("SubGenre2")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(20)")
-                        .HasMaxLength(20);
 
                     b.Property<string>("Title")
                         .IsRequired()
