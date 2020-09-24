@@ -55,5 +55,13 @@ namespace MovieRecommendations.Controllers
             }
             return View(movie);
         }
+
+        [HttpGet]
+        [Route("home/details/{movieId}")]
+        public IActionResult Details(int movieId)
+        {
+            Movie movie = _repository.GetMovieByMovieId(movieId);
+            return View(movie);
+        }
     }
 }

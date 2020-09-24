@@ -1,0 +1,18 @@
+﻿@model MoviesDataAccessLibrary.Models.Movie
+
+@{ 
+    ViewData["Title"] = Model.Title;
+}
+
+
+<div class="text-center">
+    <h2>@Model.Title (@Model.ReleaseYear)</h2>
+</div>
+<hr />
+<div>
+    <img src="" />
+    <img class="card-img-top" src="~/img/playScreen.jpg" alt="Card image cap">
+    <hr />
+    <button class="btn btn-primary float-right">Watched 80%</button>
+    <p>Genres: @Model.MainGenre, @Model.SubGenre1, @Model.SubGenre2</p>
+</div>
