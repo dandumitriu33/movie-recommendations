@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -51,6 +52,13 @@ namespace MoviesDataAccessLibrary.Models
             };
             _context.Histories.Add(newHistoryItem);
             _context.SaveChanges();
+        }
+
+        public IEnumerable<Movie> GetDistanceRecommendation(string mainGenre, double rating)
+        {
+            var recommendedMovies = _context.Movies.Where(m => m.MainGenre == mainGenre && m.Rating > rating - 2).OrderByDescending(m => m.ReleaseYear).ThenBy(m => m.Rating).Take(20);
+
+            return recommendedMovies;
         }
     }
 }
