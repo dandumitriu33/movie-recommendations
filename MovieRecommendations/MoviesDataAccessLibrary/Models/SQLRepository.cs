@@ -32,5 +32,23 @@ namespace MoviesDataAccessLibrary.Models
 
             return movie;
         }
+
+        public List<History> GetFullHistory(string email)
+        {
+            var fullHistory = _context.Histories.Where(h => h.Email == email).OrderByDescending(h => h.DateAdded).ToList();
+            return fullHistory;
+        }
+
+        public void AddToHistory(string email, int movieId)
+        {
+            History newHistoryItem = new History
+            {
+                Email = email,
+                MovieId = movieId,
+                DateAdded = DateTime.UtcNow
+            };
+            _context.Histories.Add(newHistoryItem);
+            _context.SaveChanges();
+        }
     }
 }

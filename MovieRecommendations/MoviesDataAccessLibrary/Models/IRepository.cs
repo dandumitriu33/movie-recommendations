@@ -7,5 +7,7 @@ namespace MoviesDataAccessLibrary.Models
         Movie Add(Movie movie);
         IEnumerable<Movie> GetAllMovies();
         public Movie GetMovieByMovieId(int movieId);
+        public List<History> GetFullHistory(string email);
+        public void AddToHistory(string email, int movieId);
     }
 }

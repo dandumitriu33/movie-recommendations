@@ -63,5 +63,15 @@ namespace MovieRecommendations.Controllers
             Movie movie = _repository.GetMovieByMovieId(movieId);
             return View(movie);
         }
+
+        [HttpPost]
+        public IActionResult AddToHistory(string userEmail, int movieId)
+        {
+            //string requestEmail = Request.Form["userEmail"];
+            _repository.AddToHistory(userEmail, movieId);
+            return RedirectToAction("details", "home", new { movieId = movieId });
+        }
+
+        
     }
 }

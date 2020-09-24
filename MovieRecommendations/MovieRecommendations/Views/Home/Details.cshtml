@@ -1,6 +1,7 @@
 ﻿@model MoviesDataAccessLibrary.Models.Movie
+@inject SignInManager<IdentityUser> signInManager;
 
-@{ 
+@{
     ViewData["Title"] = Model.Title;
 }
 
@@ -13,6 +14,14 @@
     <img src="" />
     <img class="card-img-top" src="~/img/playScreen.jpg" alt="Card image cap">
     <hr />
+    @if (signInManager.IsSignedIn(User))
+    {
+        <form method="post" asp-action="addToHistory" asp-controller="home">
+            <input type="hidden" name="userEmail" value="@User.Identity.Name">
+            <input type="hidden" name="movieId" value="@Model.Id">
+            <button class="btn btn-primary">Watched 90%</button>
+        </form>
+    }
     <button class="btn btn-primary float-right">Watched 80%</button>
     <p>Genres: @Model.MainGenre, @Model.SubGenre1, @Model.SubGenre2</p>
 </div>

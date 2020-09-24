@@ -12,5 +12,6 @@ namespace MoviesDataAccessLibrary.Models
         public MoviesContext(DbContextOptions options) : base(options) { }
 
         public DbSet<Movie> Movies { get; set; }
+        public DbSet<History> Histories { get; set; }
     }
 }
