@@ -26,6 +26,11 @@ namespace MoviesDataAccessLibrary.Models
 
         public IEnumerable<Movie> GetAllMovies()
         {
+            return _context.Movies.Where(m => m.Rating > 0).OrderByDescending(m => m.ReleaseYear).ThenBy(m => m.Rating);
+        }
+
+        public IEnumerable<Movie> GetAllMoviesTop20()
+        {
             return _context.Movies.Where(m => m.Rating > 6.5).OrderByDescending(m => m.ReleaseYear).ThenBy(m => m.Rating).Take(20);
         }
 

@@ -8,18 +8,18 @@ using System.Threading.Tasks;
 
 namespace MovieRecommendations.Components
 {
-    public class LatestPopular : ViewComponent
+    public class AllLatestHighestRated : ViewComponent
     {
         private readonly IRepository _repository;
 
-        public LatestPopular(IRepository repository)
+        public AllLatestHighestRated(IRepository repository)
         {
             _repository = repository;
         }
 
         public IViewComponentResult Invoke()
         {
-            IEnumerable<Movie> allMoviesFromDb = _repository.GetAllMoviesTop20();
+            IEnumerable<Movie> allMoviesFromDb = _repository.GetAllMovies();
             AllMoviesViewModel allMovies = new AllMoviesViewModel
             {
                 Movies = allMoviesFromDb.OrderByDescending(m => m.ReleaseYear).ThenByDescending(m => m.Rating).ToList()

@@ -1,0 +1,13 @@
+﻿@model Movie
+
+@{
+    ViewData["Title"] = "All movies";
+
+}
+
+<div class="text-center">
+    <h2>All movies</h2>
+</div>
+
+
+@await Component.InvokeAsync("AllLatestHighestRated")

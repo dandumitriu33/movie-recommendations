@@ -35,6 +35,11 @@ namespace MovieRecommendations.Controllers
             return View();
         }
 
+        public IActionResult AllMovies()
+        {
+            return View();
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
