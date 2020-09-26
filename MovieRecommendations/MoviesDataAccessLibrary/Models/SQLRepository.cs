@@ -93,5 +93,11 @@ namespace MoviesDataAccessLibrary.Models
             _context.CommunityLikes.Add(newUserLikedMovie);
             _context.SaveChanges();
         }
+
+        public IEnumerable<UserLikedMovie> GetCommunityTop()
+        {
+            var communityTop = _context.CommunityLikes.OrderByDescending(m => m.Score).Take(20);
+            return communityTop;
+        }
     }
 }

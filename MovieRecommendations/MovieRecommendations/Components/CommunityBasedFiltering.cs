@@ -15,47 +15,39 @@ namespace MovieRecommendations.Components
     {
         private readonly IRepository _repository;
 
-        public CommunityBasedFiltering(IRepository repository,
-                                       IHttpContextAccessor httpContextAccessor)
+        public CommunityBasedFiltering(IRepository repository)
         {
             _repository = repository;
         }
 
         public IViewComponentResult Invoke()
         {
-            //List<Movie> userRecommendation = new List<Movie>();
+            List<Movie> communityBasedRecommendation = new List<Movie>();
 
-            //List<History> userHistory = _repository.GetFullHistory(userEmail);
-            //if (userHistory.Count == 0)
-            //{
-            //    return View(userRecommendation);
-            //}
-            //Movie lastMovieWatched = _repository.GetMovieByMovieId(Convert.ToInt32(userHistory[0].MovieId));
+            var communityTop = _repository.GetCommunityTop();
+            if (communityTop.Count() == 0)
+            {
+                return View(communityBasedRecommendation);
+            }
 
-            //string mainGenre = lastMovieWatched.MainGenre;
-            //string subGenre1 = lastMovieWatched.SubGenre1;
-            //string subGenre2 = lastMovieWatched.SubGenre2;
-            //double rating = lastMovieWatched.Rating;
-
-            //var initialRecommendation = _repository.GetDistanceRecommendation(mainGenre, rating);
-            //foreach (var movie in initialRecommendation)
-            //{
-            //    Movie newMovie = new Movie
-            //    {
-            //        Id = movie.Id,
-            //        Title = movie.Title,
-            //        Rating = movie.Rating,
-            //        ReleaseYear = movie.ReleaseYear,
-            //        LengthInMinutes = movie.LengthInMinutes,
-            //        MainGenre = movie.MainGenre,
-            //        SubGenre1 = movie.SubGenre1,
-            //        SubGenre2 = movie.SubGenre2
-            //    };
-            //    userRecommendation.Add(movie);
-            //}
-
-            //return View(userRecommendation);
-            return View();
+            // transferring to memory because iterating over a lazy loaded query doesn't close the connection
+            List<UserLikedMovie> communityTopMemory = new List<UserLikedMovie>();
+            foreach (var entry in communityTop)
+            {
+                UserLikedMovie newEntry = new UserLikedMovie
+                {
+                    Id = entry.Id,
+                    MovieId = entry.MovieId,
+                    Score = entry.Score
+                };
+                communityTopMemory.Add(newEntry);
+            }
+            foreach (var likedMovie in communityTopMemory)
+            {
+                Movie newMovie = _repository.GetMovieByMovieId(likedMovie.MovieId);
+                communityBasedRecommendation.Add(newMovie);
+            }
+            return View(communityBasedRecommendation);
         }
     }
 }
