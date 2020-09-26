@@ -99,5 +99,11 @@ namespace MoviesDataAccessLibrary.Models
             var communityTop = _context.CommunityLikes.OrderByDescending(m => m.Score).Take(20);
             return communityTop;
         }
+
+        public IEnumerable<UserLikedMovie> GetAllCommunityLikes()
+        {
+            var allCommunityLikes = _context.CommunityLikes.OrderByDescending(m => m.Score);
+            return allCommunityLikes;
+        }
     }
 }

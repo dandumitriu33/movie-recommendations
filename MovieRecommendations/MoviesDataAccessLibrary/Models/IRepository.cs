@@ -15,7 +15,7 @@ namespace MoviesDataAccessLibrary.Models
         UserLikedMovie GetCommunityLikedMovieById(int movieId);
         void IncrementCommunityLikedMovieScore(int movieId);
         void AddToCommunityLikes(int movieId);
-
         IEnumerable<UserLikedMovie> GetCommunityTop();
+        IEnumerable<UserLikedMovie> GetAllCommunityLikes();
     }
 }
