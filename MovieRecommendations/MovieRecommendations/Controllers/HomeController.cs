@@ -76,39 +76,53 @@ namespace MovieRecommendations.Controllers
         {
             //string requestEmail = Request.Form["userEmail"];
             _repository.AddToHistory(userEmail, movieId);
+
+            // also adding to CommunityLikes
+            UserLikedMovie databaseUserLikedMovie = _repository.GetCommunityLikedMovieById(movieId);
+            if (databaseUserLikedMovie != null)
+            {
+                _repository.IncrementCommunityLikedMovieScore(movieId);
+            }
+            else
+            {
+                _repository.AddToCommunityLikes(movieId);
+            }
+
             return RedirectToAction("details", "home", new { movieId = movieId });
         }
 
         public async Task<IActionResult> PopulateDb()
         {
-            List<Movie> inMemoryTempDb = new List<Movie>();
-            using (var reader = new StreamReader(@"C:\Users\Dan\Projects\movie-recommendations\MovieRecommendations\MovieRecommendations\wwwroot\csv\MOCK_DATA.csv"))
-            {
-                while (!reader.EndOfStream)
-                {
-                    var line = reader.ReadLine();
-                    var values = line.Split(',');
+            // commented out to not duplicate db data by mistake
 
-                    Movie newMovieToAdd = new Movie
-                    {
-                        Title = values[0],
-                        LengthInMinutes = Convert.ToInt32(values[1]),
-                        ReleaseYear = Convert.ToInt32(values[2]),
-                        Rating = Convert.ToDouble(values[3]),
-                        MainGenre = processGenre(values[4]),
-                        SubGenre1 = processGenre(values[5]),
-                        SubGenre2 = processGenre(values[6]),
-                    };
-                    //Thread.Sleep(500);
-                    inMemoryTempDb.Add(newMovieToAdd);
+            //List<Movie> inMemoryTempDb = new List<Movie>();
+            //using (var reader = new StreamReader(@"C:\Users\Dan\Projects\movie-recommendations\MovieRecommendations\MovieRecommendations\wwwroot\csv\MOCK_DATA.csv"))
+            //{
+            //    while (!reader.EndOfStream)
+            //    {
+            //        var line = reader.ReadLine();
+            //        var values = line.Split(',');
+
+            //        Movie newMovieToAdd = new Movie
+            //        {
+            //            Title = values[0],
+            //            LengthInMinutes = Convert.ToInt32(values[1]),
+            //            ReleaseYear = Convert.ToInt32(values[2]),
+            //            Rating = Convert.ToDouble(values[3]),
+            //            MainGenre = processGenre(values[4]),
+            //            SubGenre1 = processGenre(values[5]),
+            //            SubGenre2 = processGenre(values[6]),
+            //        };
+            //        //Thread.Sleep(500);
+            //        inMemoryTempDb.Add(newMovieToAdd);
                                         
-                }
-            }
-            //await _repository.Add(newMovieToAdd);
-            foreach (var movie in inMemoryTempDb)
-            {
-                await _repository.Add(movie);
-            }
+            //    }
+            //}
+            ////await _repository.Add(newMovieToAdd);
+            //foreach (var movie in inMemoryTempDb)
+            //{
+            //    await _repository.Add(movie);
+            //}
             return View();
         }
 

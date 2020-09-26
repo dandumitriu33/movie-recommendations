@@ -9,11 +9,7 @@ namespace MoviesDataAccessLibrary.Models
     {
         public int Id { get; set; }
         [Required]
-        [MaxLength(120)]
-        public string Email { get; set; }
-        [Required]
         public int MovieId { get; set; }
         public int Score { get; set; }
-        public DateTime DateAdded { get; set; }
     }
 }

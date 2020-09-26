@@ -12,5 +12,8 @@ namespace MoviesDataAccessLibrary.Models
         public List<History> GetFullHistory(string email);
         public void AddToHistory(string email, int movieId);
         IEnumerable<Movie> GetDistanceRecommendation(string mainGenre, double rating);
+        UserLikedMovie GetCommunityLikedMovieById(int movieId);
+        void IncrementCommunityLikedMovieScore(int movieId);
+        void AddToCommunityLikes(int movieId);
     }
 }

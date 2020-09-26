@@ -65,5 +65,33 @@ namespace MoviesDataAccessLibrary.Models
 
             return recommendedMovies;
         }
+
+        public UserLikedMovie GetCommunityLikedMovieById(int movieId)
+        {
+            UserLikedMovie movieFromDb = _context.CommunityLikes.Where(m => m.MovieId == movieId).FirstOrDefault();
+            return movieFromDb;
+        }
+
+        public void IncrementCommunityLikedMovieScore(int movieId)
+        {
+            var result = _context.CommunityLikes.Where(m => m.MovieId == movieId).FirstOrDefault();
+
+            if (result != null)
+            {
+                result.Score = result.Score + 1;
+                _context.SaveChanges();
+            }
+        }
+
+        public void AddToCommunityLikes(int movieId)
+        {
+            UserLikedMovie newUserLikedMovie = new UserLikedMovie
+            {
+                MovieId = movieId,
+                Score = 1
+            };
+            _context.CommunityLikes.Add(newUserLikedMovie);
+            _context.SaveChanges();
+        }
     }
 }
