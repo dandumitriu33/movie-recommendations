@@ -48,6 +48,7 @@ namespace MovieRecommendations.Controllers
         [HttpGet]
         public IActionResult Personalized(string userEmail)
         {
+            ViewBag.Text = userEmail;
             return View();
         }
     }
