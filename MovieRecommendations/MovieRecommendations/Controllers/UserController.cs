@@ -44,5 +44,11 @@ namespace MovieRecommendations.Controllers
             List<MovieViewModel> orderedMovieHistory = moviesHistory.OrderByDescending(m => m.DateAddedToHistory).ToList();
             return View(orderedMovieHistory);
         }
+
+        [HttpGet]
+        public IActionResult Personalized(string userEmail)
+        {
+            return View();
+        }
     }
 }
