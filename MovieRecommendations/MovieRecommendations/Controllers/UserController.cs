@@ -63,8 +63,14 @@ namespace MovieRecommendations.Controllers
 
             // get 9 newest, similar rating movies
             List<Movie> historyBasedSuggestions = new List<Movie>();
-            int limit = 9;
-            var initialRecommendation = _repository.GetDistanceRecommendation(latestWatchedMovie.MainGenre, latestWatchedMovie.Rating, limit, contentOffset*limit);
+            int contentLimit = 9;
+            var initialRecommendation = _repository.GetDistanceRecommendation(latestWatchedMovie.MainGenre, latestWatchedMovie.Rating, contentLimit, contentOffset*contentLimit);
+            if (initialRecommendation.Count() < contentLimit)
+            {
+                contentOffset = 0;
+                newContentOffset = "0";
+                initialRecommendation = _repository.GetDistanceRecommendation(latestWatchedMovie.MainGenre, latestWatchedMovie.Rating, contentLimit, contentOffset * contentLimit);
+            }
             foreach (var movie in initialRecommendation)
             {
                 Movie newMovie = new Movie
@@ -84,7 +90,13 @@ namespace MovieRecommendations.Controllers
             // get the community top pick
             List<Movie> communityBasedSuggestions = new List<Movie>();
             int communityLimit = 1;
-            IEnumerable<UserLikedMovie> communityTopPicks = _repository.GetCommunityTop(communityLimit);
+            IEnumerable<UserLikedMovie> communityTopPicks = _repository.GetCommunityTop(communityLimit, communityOffset*communityLimit);
+            if (communityTopPicks.Count() == 0)
+            {
+                communityOffset = 0;
+                newCommunityOffset = "0";
+                communityTopPicks = _repository.GetCommunityTop(communityLimit, communityOffset * communityLimit);
+            }
             // lazy loading doesn't close DB connection ? so transfer to memory
             List<UserLikedMovie> communityTopPicksMemory = new List<UserLikedMovie>();
             foreach (var pick in communityTopPicks)

@@ -24,9 +24,10 @@ namespace MovieRecommendations.Components
         {
             List<Movie> communityBasedRecommendation = new List<Movie>();
 
-            // limit set to 20
+            // limit set to 20, offset is 0 as we always want to top
             int limit = 20;
-            var communityTop = _repository.GetCommunityTop(limit);
+            int offset = 0;
+            var communityTop = _repository.GetCommunityTop(limit, offset);
             if (communityTop.Count() == 0)
             {
                 return View(communityBasedRecommendation);
