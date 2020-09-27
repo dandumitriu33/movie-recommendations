@@ -43,7 +43,9 @@ namespace MovieRecommendations.Components
             string subGenre2 = lastMovieWatched.SubGenre2;
             double rating = lastMovieWatched.Rating;
 
-            var initialRecommendation = _repository.GetDistanceRecommendation(mainGenre, rating);
+            // limit set to 20
+            int limit = 20;
+            var initialRecommendation = _repository.GetDistanceRecommendation(mainGenre, rating, limit);
             foreach (var movie in initialRecommendation)
             {
                 Movie newMovie = new Movie

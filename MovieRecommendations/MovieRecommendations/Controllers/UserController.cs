@@ -48,8 +48,63 @@ namespace MovieRecommendations.Controllers
         [HttpGet]
         public IActionResult Personalized(string userEmail)
         {
+            List<Movie> result = new List<Movie>();
+            // the personalized suggestions has 10 recommendations
             ViewBag.Text = userEmail;
-            return View();
+
+            // get the last movie from history
+            History latestWatchedHistory = _repository.GetLatestFromHistory(userEmail);
+            Movie latestWatchedMovie = _repository.GetMovieByMovieId(latestWatchedHistory.MovieId);
+
+            // get 9 newest, similar rating movies
+            List<Movie> historyBasedSuggestions = new List<Movie>();
+            int limit = 9;
+            var initialRecommendation = _repository.GetDistanceRecommendation(latestWatchedMovie.MainGenre, latestWatchedMovie.Rating, limit);
+            foreach (var movie in initialRecommendation)
+            {
+                Movie newMovie = new Movie
+                {
+                    Id = movie.Id,
+                    Title = movie.Title,
+                    Rating = movie.Rating,
+                    ReleaseYear = movie.ReleaseYear,
+                    LengthInMinutes = movie.LengthInMinutes,
+                    MainGenre = movie.MainGenre,
+                    SubGenre1 = movie.SubGenre1,
+                    SubGenre2 = movie.SubGenre2
+                };
+                historyBasedSuggestions.Add(movie);
+            }
+
+            // get the community top pick
+            List<Movie> communityBasedSuggestions = new List<Movie>();
+            int communityLimit = 1;
+            IEnumerable<UserLikedMovie> communityTopPicks = _repository.GetCommunityTop(communityLimit);
+            // lazy loading doesn't close DB connection ? so transfer to memory
+            List<UserLikedMovie> communityTopPicksMemory = new List<UserLikedMovie>();
+            foreach (var pick in communityTopPicks)
+            {
+                communityTopPicksMemory.Add(pick);
+            }
+            // convert to movie
+            foreach (var pick in communityTopPicksMemory)
+            {
+                Movie tempMovie = _repository.GetMovieByMovieId(pick.MovieId);
+                communityBasedSuggestions.Add(tempMovie);
+            }
+
+            // arranging the history and community suggestions in result 4-1-5
+            for (int i = 0; i < 4; i++)
+            {
+                result.Add(historyBasedSuggestions[i]);
+            }
+            result.Add(communityBasedSuggestions[0]);
+            for (int i = 4; i < 9; i++)
+            {
+                result.Add(historyBasedSuggestions[i]);
+            }
+
+            return View(result);
         }
     }
 }

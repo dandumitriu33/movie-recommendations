@@ -59,9 +59,9 @@ namespace MoviesDataAccessLibrary.Models
             _context.SaveChanges();
         }
 
-        public IEnumerable<Movie> GetDistanceRecommendation(string mainGenre, double rating)
+        public IEnumerable<Movie> GetDistanceRecommendation(string mainGenre, double rating, int limit)
         {
-            var recommendedMovies = _context.Movies.Where(m => m.MainGenre == mainGenre && m.Rating > rating - 2).OrderByDescending(m => m.ReleaseYear).ThenBy(m => m.Rating).Take(20);
+            var recommendedMovies = _context.Movies.Where(m => m.MainGenre == mainGenre && m.Rating > rating - 2).OrderByDescending(m => m.ReleaseYear).ThenBy(m => m.Rating).Take(limit);
 
             return recommendedMovies;
         }
@@ -94,9 +94,9 @@ namespace MoviesDataAccessLibrary.Models
             _context.SaveChanges();
         }
 
-        public IEnumerable<UserLikedMovie> GetCommunityTop()
+        public IEnumerable<UserLikedMovie> GetCommunityTop(int limit)
         {
-            var communityTop = _context.CommunityLikes.OrderByDescending(m => m.Score).Take(20);
+            var communityTop = _context.CommunityLikes.OrderByDescending(m => m.Score).Take(limit);
             return communityTop;
         }
 
@@ -104,6 +104,11 @@ namespace MoviesDataAccessLibrary.Models
         {
             var allCommunityLikes = _context.CommunityLikes.OrderByDescending(m => m.Score);
             return allCommunityLikes;
+        }
+
+        public History GetLatestFromHistory(string userEmail)
+        {
+            return _context.Histories.Where(h => h.Email == userEmail).OrderByDescending(h => h.DateAdded).FirstOrDefault();
         }
     }
 }
