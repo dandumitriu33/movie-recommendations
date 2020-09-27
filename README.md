@@ -1,7 +1,13 @@
 # movie-recommendations
 Educational project - recommending movies from a database based on usage.  
 
-A simple recommendation system for now only Content Based Filtering based on the last movie watched.
+A simple movie recommendation system with Content Based Filtering, Community Based Filtering and a mix of the 2 for Personalized User recommendations.  
+
+ASP.NET Core 3.1
+ASP.NET Core Identity 3.1
+Entity Framework Core 3.1
+Data generated with Mockaroo - https://mockaroo.com/
+Bootstrap 4
 
 ## Screenshots
 
@@ -25,3 +31,12 @@ The recommendation is also sorting by year, newest first.
 Watching a movie will change the recommendations.  
 
 ![alt text](Screenshots/ContentBasedFiltering.jpg?raw=true)
+
+### Personalized User Recommendations - mix between Content and Community  
+The movies in the personalized section are based on the last movie watched from history and one of the community top picks.  
+The Recommendations change with every page refresh, there is an offset in the query.  
+The refresh has a cycle when it reaches the end of available suggestions, implemented via a cookie.  
+
+![alt text](Screenshots/MixedConentCommunity.jpg?raw=true)
+![alt text](Screenshots/MixedConentCommunityRefresh1.jpg?raw=true)
+![alt text](Screenshots/MixedConentCommunityRefresh2.jpg?raw=true)
