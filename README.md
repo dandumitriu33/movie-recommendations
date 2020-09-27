@@ -1,5 +1,6 @@
 # movie-recommendations
-Educational project - recommending movies from a database based on usage.  
+Educational project - Recommender System (Recommender Engine) - recommending movies from a database based on usage.  
+https://en.wikipedia.org/wiki/Recommender_system
 
 A simple movie recommendation system with Content Based Filtering, Community Based Filtering and a mix of the 2 for Personalized User recommendations.  
 
