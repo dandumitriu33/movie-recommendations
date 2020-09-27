@@ -48,8 +48,13 @@ namespace MovieRecommendations.Controllers
         [HttpGet]
         public IActionResult Personalized(string userEmail)
         {
+            // cookie management - reading offsets for db query
+            int contentOffset = Convert.ToInt32(HttpContext.Request.Cookies["contentOffset"]);
+            string newContentOffset = (contentOffset + 1).ToString();
+            int communityOffset = Convert.ToInt32(HttpContext.Request.Cookies["communityOffset"]);
+            string newCommunityOffset = (communityOffset + 1).ToString();
+            
             List<Movie> result = new List<Movie>();
-            // the personalized suggestions has 10 recommendations
             ViewBag.Text = userEmail;
 
             // get the last movie from history
@@ -59,7 +64,7 @@ namespace MovieRecommendations.Controllers
             // get 9 newest, similar rating movies
             List<Movie> historyBasedSuggestions = new List<Movie>();
             int limit = 9;
-            var initialRecommendation = _repository.GetDistanceRecommendation(latestWatchedMovie.MainGenre, latestWatchedMovie.Rating, limit);
+            var initialRecommendation = _repository.GetDistanceRecommendation(latestWatchedMovie.MainGenre, latestWatchedMovie.Rating, limit, contentOffset*limit);
             foreach (var movie in initialRecommendation)
             {
                 Movie newMovie = new Movie
@@ -103,6 +108,11 @@ namespace MovieRecommendations.Controllers
             {
                 result.Add(historyBasedSuggestions[i]);
             }
+
+
+            // cookie management - increasing offsets for next refresh
+            HttpContext.Response.Cookies.Append("contentOffset", newContentOffset);
+            HttpContext.Response.Cookies.Append("communityOffset", newCommunityOffset);
 
             return View(result);
         }

@@ -27,6 +27,8 @@ namespace MovieRecommendations.Controllers
 
         public IActionResult Index()
         {
+            HttpContext.Response.Cookies.Append("contentOffset", "0");
+            HttpContext.Response.Cookies.Append("communityOffset", "0");
             return View();
         }
 
