@@ -144,5 +144,10 @@ namespace MovieRecommendations.Controllers
             return processedGenre;
         }
         
+        [HttpGet]
+        public IActionResult Personalized(string userEmail)
+        {
+            return View();
+        }
     }
 }
