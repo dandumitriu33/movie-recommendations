@@ -11,11 +11,11 @@ namespace MovieRecommendationsAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AllMoviesController : ControllerBase
+    public class MoviesController : ControllerBase
     {
         private readonly IRepository _repository;
 
-        public AllMoviesController(IRepository repository)
+        public MoviesController(IRepository repository)
         {
             _repository = repository;
         }
