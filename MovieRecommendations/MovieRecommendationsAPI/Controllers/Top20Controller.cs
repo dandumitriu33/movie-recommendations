@@ -23,14 +23,8 @@ namespace MovieRecommendationsAPI.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            IEnumerable<Movie> allMoviesFromDb = _repository.GetAllMoviesTop20();
-            string movieCount = allMoviesFromDb.Count().ToString();
-            var result = new
-            {
-                sendTime = DateTime.UtcNow.ToString(),
-                movies = allMoviesFromDb
-            };
-            return Ok(result);
+            IEnumerable<Movie> top20MoviesFromDb = _repository.GetAllMoviesTop20();
+            return Ok(top20MoviesFromDb);
         }
 
         // GET api/<Top20Controller>/5

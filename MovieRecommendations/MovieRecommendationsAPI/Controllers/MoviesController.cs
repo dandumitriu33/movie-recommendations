@@ -24,13 +24,7 @@ namespace MovieRecommendationsAPI.Controllers
         public IActionResult Get()
         {
             IEnumerable<Movie> allMoviesFromDb = _repository.GetAllMovies();
-            string movieCount = allMoviesFromDb.Count().ToString();
-            var result = new
-            {
-                sendTime = DateTime.UtcNow.ToString(),
-                movies = allMoviesFromDb
-            };
-            return Ok(result);
+            return Ok(allMoviesFromDb);
         }
 
         // GET api/<AllMoviesController>/5
