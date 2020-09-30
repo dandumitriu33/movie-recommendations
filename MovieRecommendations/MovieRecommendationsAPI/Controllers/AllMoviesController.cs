@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using MoviesDataAccessLibrary.Models;
-using Newtonsoft.Json;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -12,19 +11,19 @@ namespace MovieRecommendationsAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class Top20Controller : ControllerBase
+    public class AllMoviesController : ControllerBase
     {
         private readonly IRepository _repository;
 
-        public Top20Controller(IRepository repository)
+        public AllMoviesController(IRepository repository)
         {
             _repository = repository;
         }
-        // GET: api/<Top20Controller>
+        // GET: api/<AllMoviesController>
         [HttpGet]
         public IActionResult Get()
         {
-            IEnumerable<Movie> allMoviesFromDb = _repository.GetAllMoviesTop20();
+            IEnumerable<Movie> allMoviesFromDb = _repository.GetAllMovies();
             string movieCount = allMoviesFromDb.Count().ToString();
             var result = new
             {
@@ -34,26 +33,26 @@ namespace MovieRecommendationsAPI.Controllers
             return Ok(result);
         }
 
-        // GET api/<Top20Controller>/5
+        // GET api/<AllMoviesController>/5
         [HttpGet("{id}")]
         public string Get(int id)
         {
             return "value";
         }
 
-        // POST api/<Top20Controller>
+        // POST api/<AllMoviesController>
         [HttpPost]
         public void Post([FromBody] string value)
         {
         }
 
-        // PUT api/<Top20Controller>/5
+        // PUT api/<AllMoviesController>/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {
         }
 
-        // DELETE api/<Top20Controller>/5
+        // DELETE api/<AllMoviesController>/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
