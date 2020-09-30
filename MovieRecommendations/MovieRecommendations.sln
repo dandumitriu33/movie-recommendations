@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30517.126
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieRecommendations", "MovieRecommendations\MovieRecommendations.csproj", "{290BC6CF-2344-4978-A083-749E0FC038C1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MovieRecommendations", "MovieRecommendations\MovieRecommendations.csproj", "{290BC6CF-2344-4978-A083-749E0FC038C1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoviesDataAccessLibrary", "MoviesDataAccessLibrary\MoviesDataAccessLibrary.csproj", "{164BEA26-25C5-4398-A10E-5CCA8AFB8176}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoviesDataAccessLibrary", "MoviesDataAccessLibrary\MoviesDataAccessLibrary.csproj", "{164BEA26-25C5-4398-A10E-5CCA8AFB8176}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieRecommendationsAPI", "MovieRecommendationsAPI\MovieRecommendationsAPI.csproj", "{D3F25E5B-A2E3-4AE0-AF88-20025476C772}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{164BEA26-25C5-4398-A10E-5CCA8AFB8176}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{164BEA26-25C5-4398-A10E-5CCA8AFB8176}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{164BEA26-25C5-4398-A10E-5CCA8AFB8176}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3F25E5B-A2E3-4AE0-AF88-20025476C772}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3F25E5B-A2E3-4AE0-AF88-20025476C772}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3F25E5B-A2E3-4AE0-AF88-20025476C772}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3F25E5B-A2E3-4AE0-AF88-20025476C772}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
