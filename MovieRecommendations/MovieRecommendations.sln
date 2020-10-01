@@ -9,6 +9,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoviesDataAccessLibrary", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieRecommendationsAPI", "MovieRecommendationsAPI\MovieRecommendationsAPI.csproj", "{D3F25E5B-A2E3-4AE0-AF88-20025476C772}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieRecommendationsGRPC", "MovieRecommendationsGRPC\MovieRecommendationsGRPC.csproj", "{2B12392D-6D9E-47AB-AAA2-0EA864337F48}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieRecommendationsConsole", "MovieRecommendationsConsole\MovieRecommendationsConsole.csproj", "{0A844B94-06A7-4438-A70B-BE3D550C8669}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +31,14 @@ Global
 		{D3F25E5B-A2E3-4AE0-AF88-20025476C772}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D3F25E5B-A2E3-4AE0-AF88-20025476C772}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D3F25E5B-A2E3-4AE0-AF88-20025476C772}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B12392D-6D9E-47AB-AAA2-0EA864337F48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B12392D-6D9E-47AB-AAA2-0EA864337F48}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B12392D-6D9E-47AB-AAA2-0EA864337F48}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B12392D-6D9E-47AB-AAA2-0EA864337F48}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A844B94-06A7-4438-A70B-BE3D550C8669}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A844B94-06A7-4438-A70B-BE3D550C8669}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A844B94-06A7-4438-A70B-BE3D550C8669}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A844B94-06A7-4438-A70B-BE3D550C8669}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
