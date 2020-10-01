@@ -23,11 +23,11 @@ namespace MovieRecommendationsConsole
             var channel = GrpcChannel.ForAddress("https://localhost:5001");
             var top20MoviesClient = new Top20Movies.Top20MoviesClient(channel);
 
-            var top20Variable = new Top20MoviesGRPCLookupModel { UserId = 2 };
+            var top20Variable = new Top20MoviesGRPCLookupModel { };
 
             var reply = await top20MoviesClient.GetTop20MoviesAsync(top20Variable);
 
-            Console.WriteLine($"{reply.FirstName} {reply.LastName}");
+            Console.WriteLine($"{reply.Json}");
 
             Console.ReadLine();
         }
