@@ -61,7 +61,7 @@ namespace MoviesDataAccessLibrary.Models
 
         public IEnumerable<Movie> GetDistanceRecommendation(string mainGenre, double rating, int limit, int offset)
         {
-            var recommendedMovies = _context.Movies.Where(m => m.MainGenre == mainGenre && m.Rating > rating - 2).OrderByDescending(m => m.ReleaseYear).ThenBy(m => m.Rating).Skip(offset).Take(limit);
+            var recommendedMovies = _context.Movies.Where(m => m.MainGenre == mainGenre && m.Rating > rating - 2).OrderByDescending(m => m.ReleaseYear).ThenByDescending(m => m.Rating).Skip(offset).Take(limit);
 
             return recommendedMovies;
         }
