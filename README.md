@@ -38,6 +38,13 @@ The movies in the personalized section are based on the last movie watched from 
 The Recommendations change with every page refresh, there is an offset in the query.  
 The refresh has a cycle when it reaches the end of available suggestions, implemented via a cookie.  
 
-![alt text](Screenshots/MixedConentCommunity.jpg?raw=true)
-![alt text](Screenshots/MixedConentCommunityRefresh1.jpg?raw=true)
-![alt text](Screenshots/MixedConentCommunityRefresh2.jpg?raw=true)
+![alt text](Screenshots/MixedContentCommunity.jpg?raw=true)
+![alt text](Screenshots/MixedContentCommunityRefresh1.jpg?raw=true)
+![alt text](Screenshots/MixedContentCommunityRefresh2.jpg?raw=true)
+
+### Personalized User Recommendations - with Rabbit Hole
+The movies in the Rabbit Hole pick are based on community activity. When a user watches a movie, we look at the user's history, take the last watched movie and make a new entry in the Rabbit Hole (NextMovies table) with the current movie as a next step for the previous one. Each time this occurs, the score of the connection is increased and moved up the list.  
+The Rabbit Hole recommendations change on every refresh, there is an offset in the query.  
+The refresh has a cycle when it reaches the end of available suggestions, implemented via a cookie.  
+
+![alt text](Screenshots/MixedWithRabbitHole.jpg?raw=true)
