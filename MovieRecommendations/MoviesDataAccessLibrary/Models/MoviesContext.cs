@@ -14,5 +14,6 @@ namespace MoviesDataAccessLibrary.Models
         public DbSet<Movie> Movies { get; set; }
         public DbSet<History> Histories { get; set; }
         public DbSet<UserLikedMovie> CommunityLikes { get; set; }
+        public DbSet<NextMovie> NextMovies { get; set; }
     }
 }
