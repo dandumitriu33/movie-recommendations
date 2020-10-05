@@ -81,10 +81,7 @@ namespace MovieRecommendations.Controllers
         [HttpPost]
         public IActionResult AddToHistory(string userEmail, int movieId)
         {
-            //string requestEmail = Request.Form["userEmail"];
-            _repository.AddToHistory(userEmail, movieId);
-
-            // also adding to CommunityLikes
+            // first adding to CommunityLikes
             UserLikedMovie databaseUserLikedMovie = _repository.GetCommunityLikedMovieById(movieId);
             if (databaseUserLikedMovie != null)
             {
@@ -94,6 +91,29 @@ namespace MovieRecommendations.Controllers
             {
                 _repository.AddToCommunityLikes(movieId);
             }
+
+            // also adding the entry as a next movie to the previous movie in the user's history
+            History previousMovieHistoryModel = _repository.GetLatestFromHistory(userEmail);
+            int previousMovieId = previousMovieHistoryModel.MovieId;
+
+            List<NextMovie> nextMoviesFromDb = _repository.GetNextMoviesForMovieById(previousMovieId);
+
+            NextMovie entry = nextMoviesFromDb.Where(m => m.NextMovieId == movieId).FirstOrDefault();
+
+            if (entry == null)
+            {
+                _repository.AddNextMovie(previousMovieId, movieId, 1);
+            }
+            else
+            {
+                _repository.UpdateNextMovieScore(previousMovieId, movieId, entry.Score + 1);
+            }
+
+            // lastly adding to user history
+            //string requestEmail = Request.Form["userEmail"];
+            _repository.AddToHistory(userEmail, movieId);
+
+
 
             return RedirectToAction("details", "home", new { movieId = movieId });
         }

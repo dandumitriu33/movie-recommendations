@@ -18,5 +18,8 @@ namespace MoviesDataAccessLibrary.Models
         IEnumerable<UserLikedMovie> GetCommunityTop(int limit, int offset);
         IEnumerable<UserLikedMovie> GetAllCommunityLikes();
         History GetLatestFromHistory(string userEmail);
+        public List<NextMovie> GetNextMoviesForMovieById(int currentMovie);
+        public void AddNextMovie(int previousMovieId, int nextMovieId, int score);
+        public void UpdateNextMovieScore(int currentMovieId, int nextMovieId, int score);
     }
 }

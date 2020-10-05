@@ -110,5 +110,34 @@ namespace MoviesDataAccessLibrary.Models
         {
             return _context.Histories.Where(h => h.Email == userEmail).OrderByDescending(h => h.DateAdded).FirstOrDefault();
         }
+
+        public List<NextMovie> GetNextMoviesForMovieById(int currentMovie)
+        {
+            return _context.NextMovies.Where(m => m.CurrentMovieId == currentMovie).OrderByDescending(m => m.Score).ToList();
+        }
+
+        public void AddNextMovie(int currentMovieId, int nextMovieId, int score)
+        {
+            NextMovie newEntry = new NextMovie
+            {
+                CurrentMovieId = currentMovieId,
+                NextMovieId = nextMovieId,
+                Score = score
+            };
+            _context.Add(newEntry);
+            _context.SaveChanges();
+        }
+
+        public void UpdateNextMovieScore(int currentMovieId, int nextMovieId, int score)
+        {
+            // can be simplified with query by row Id, probably better if indexing is introduced
+            NextMovie updateEntry = _context.NextMovies.Where(m => m.CurrentMovieId == currentMovieId && m.NextMovieId == nextMovieId).FirstOrDefault();
+
+            if (updateEntry != null)
+            {
+                updateEntry.Score = score;
+                _context.SaveChanges();
+            }
+        }
     }
 }
