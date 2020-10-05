@@ -73,7 +73,7 @@ namespace MovieRecommendations.Controllers
             if (rabbitHoleEntries.Count() == 0)
             {
                 rabbitHoleOffset = 0;
-                newRabbitHoleOffset = "0";
+                newRabbitHoleOffset = "1";
                 rabbitHoleEntries = _repository.GetNextMoviesForMovieByIdForSuggestions(latestWatchedHistory.MovieId, rabbitHoleLimit, rabbitHoleOffset * rabbitHoleLimit);
             }
             if (rabbitHoleEntries.Count() > 0)
@@ -102,7 +102,7 @@ namespace MovieRecommendations.Controllers
             if (initialRecommendation.Count() < contentLimit)
             {
                 contentOffset = 0;
-                newContentOffset = "0";
+                newContentOffset = "1";
                 initialRecommendation = _repository.GetDistanceRecommendation(latestWatchedMovie.MainGenre, latestWatchedMovie.Rating, contentLimit, contentOffset * contentLimit);
             }
             foreach (var movie in initialRecommendation)
@@ -128,7 +128,7 @@ namespace MovieRecommendations.Controllers
             if (communityTopPicks.Count() == 0)
             {
                 communityOffset = 0;
-                newCommunityOffset = "0";
+                newCommunityOffset = "1";
                 communityTopPicks = _repository.GetCommunityTop(communityLimit, communityOffset * communityLimit);
             }
             // lazy loading doesn't close DB connection ? so transfer to memory
