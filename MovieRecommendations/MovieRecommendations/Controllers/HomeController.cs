@@ -29,6 +29,7 @@ namespace MovieRecommendations.Controllers
         {
             HttpContext.Response.Cookies.Append("contentOffset", "0");
             HttpContext.Response.Cookies.Append("communityOffset", "0");
+            HttpContext.Response.Cookies.Append("rabbitHoleOffset", "0");
             return View();
         }
 

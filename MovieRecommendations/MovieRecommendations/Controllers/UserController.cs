@@ -49,10 +49,13 @@ namespace MovieRecommendations.Controllers
         public IActionResult Personalized(string userEmail)
         {
             // cookie management - reading offsets for db query
+            // cookies initially set to 0 on home index
             int contentOffset = Convert.ToInt32(HttpContext.Request.Cookies["contentOffset"]);
             string newContentOffset = (contentOffset + 1).ToString();
             int communityOffset = Convert.ToInt32(HttpContext.Request.Cookies["communityOffset"]);
             string newCommunityOffset = (communityOffset + 1).ToString();
+            int rabbitHoleOffset = Convert.ToInt32(HttpContext.Request.Cookies["rabbitHoleOffset"]);
+            string newRabbitHoleOffset = (rabbitHoleOffset + 1).ToString();
             
             List<Movie> result = new List<Movie>();
             ViewBag.Text = userEmail;
@@ -61,9 +64,40 @@ namespace MovieRecommendations.Controllers
             History latestWatchedHistory = _repository.GetLatestFromHistory(userEmail);
             Movie latestWatchedMovie = _repository.GetMovieByMovieId(latestWatchedHistory.MovieId);
 
-            // get 9 newest, similar rating movies
+            // STEP 1 - get the rabbitHole top pick
+            List<Movie> rabbitHoleSuggestions = new List<Movie>();
+            int rabbitHoleLimit = 1;
+            var rabbitHoleEntries = _repository.GetNextMoviesForMovieByIdForSuggestions(latestWatchedHistory.MovieId, rabbitHoleLimit, rabbitHoleOffset * rabbitHoleLimit);
+            // lazy loading doesn't close DB connection ? so transfer to memory
+            List<NextMovie> rabbitHoleEntriesMemory = new List<NextMovie>();
+            if (rabbitHoleEntries.Count() == 0)
+            {
+                rabbitHoleOffset = 0;
+                newRabbitHoleOffset = "0";
+                rabbitHoleEntries = _repository.GetNextMoviesForMovieByIdForSuggestions(latestWatchedHistory.MovieId, rabbitHoleLimit, rabbitHoleOffset * rabbitHoleLimit);
+            }
+            if (rabbitHoleEntries.Count() > 0)
+            {
+                foreach (var entry in rabbitHoleEntries)
+                {
+                    rabbitHoleEntriesMemory.Add(entry);
+                }
+                // convert to movie
+                foreach (var entry in rabbitHoleEntriesMemory)
+                {
+                    Movie tempMovie = _repository.GetMovieByMovieId(entry.NextMovieId);
+                    rabbitHoleSuggestions.Add(tempMovie);
+                }
+            }
+
+            // STEP 2 - get 8 or 9 newest, similar rating movies, if rabbit hole has entries or not
             List<Movie> historyBasedSuggestions = new List<Movie>();
             int contentLimit = 9;
+            if (rabbitHoleEntries.Count() > 0)
+            {
+                contentLimit = 8;
+            }
+            
             var initialRecommendation = _repository.GetDistanceRecommendation(latestWatchedMovie.MainGenre, latestWatchedMovie.Rating, contentLimit, contentOffset*contentLimit);
             if (initialRecommendation.Count() < contentLimit)
             {
@@ -110,21 +144,37 @@ namespace MovieRecommendations.Controllers
                 communityBasedSuggestions.Add(tempMovie);
             }
 
-            // arranging the history and community suggestions in result 4-1-5
+            
+            
+
+            // arranging the history, community and rabbitHole suggestions in result 4-1-4-1
             for (int i = 0; i < 4; i++)
             {
                 result.Add(historyBasedSuggestions[i]);
             }
             result.Add(communityBasedSuggestions[0]);
-            for (int i = 4; i < 9; i++)
+            if (rabbitHoleEntries.Count() > 0)
             {
-                result.Add(historyBasedSuggestions[i]);
+                for (int i = 4; i < 8; i++)
+                {
+                    result.Add(historyBasedSuggestions[i]);
+                }
+                result.Add(rabbitHoleSuggestions[0]);
             }
+            else
+            {
+                for (int i = 4; i < 9; i++)
+                {
+                    result.Add(historyBasedSuggestions[i]);
+                }
+            }
+            
 
 
             // cookie management - increasing offsets for next refresh
             HttpContext.Response.Cookies.Append("contentOffset", newContentOffset);
             HttpContext.Response.Cookies.Append("communityOffset", newCommunityOffset);
+            HttpContext.Response.Cookies.Append("rabbitHoleOffset", newRabbitHoleOffset);
 
             return View(result);
         }

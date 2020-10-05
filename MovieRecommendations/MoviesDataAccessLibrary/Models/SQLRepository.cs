@@ -116,6 +116,12 @@ namespace MoviesDataAccessLibrary.Models
             return _context.NextMovies.Where(m => m.CurrentMovieId == currentMovie).OrderByDescending(m => m.Score).ToList();
         }
 
+        public IEnumerable<NextMovie> GetNextMoviesForMovieByIdForSuggestions(int currentMovieId, int limit, int offset)
+        {
+            var rabbitHoleResults = _context.NextMovies.Where(m => m.CurrentMovieId == currentMovieId).OrderByDescending(m => m.Score).Skip(offset).Take(limit);
+            return rabbitHoleResults;
+        }
+
         public void AddNextMovie(int currentMovieId, int nextMovieId, int score)
         {
             NextMovie newEntry = new NextMovie
