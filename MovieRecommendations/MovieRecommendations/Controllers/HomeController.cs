@@ -95,19 +95,21 @@ namespace MovieRecommendations.Controllers
 
             // also adding the entry as a next movie to the previous movie in the user's history
             History previousMovieHistoryModel = _repository.GetLatestFromHistory(userEmail);
-            int previousMovieId = previousMovieHistoryModel.MovieId;
-
-            List<NextMovie> nextMoviesFromDb = _repository.GetNextMoviesForMovieById(previousMovieId);
-
-            NextMovie entry = nextMoviesFromDb.Where(m => m.NextMovieId == movieId).FirstOrDefault();
-
-            if (entry == null)
+            if (previousMovieHistoryModel != null)
             {
-                _repository.AddNextMovie(previousMovieId, movieId, 1);
-            }
-            else
-            {
-                _repository.UpdateNextMovieScore(previousMovieId, movieId, entry.Score + 1);
+                int previousMovieId = previousMovieHistoryModel.MovieId;
+                List<NextMovie> nextMoviesFromDb = _repository.GetNextMoviesForMovieById(previousMovieId);
+
+                NextMovie entry = nextMoviesFromDb.Where(m => m.NextMovieId == movieId).FirstOrDefault();
+
+                if (entry == null)
+                {
+                    _repository.AddNextMovie(previousMovieId, movieId, 1);
+                }
+                else
+                {
+                    _repository.UpdateNextMovieScore(previousMovieId, movieId, entry.Score + 1);
+                }
             }
 
             // lastly adding to user history
