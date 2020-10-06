@@ -89,17 +89,25 @@ namespace MovieRecommendations.Controllers
         public IActionResult ProcessWatchedMovie(string userEmail, int movieId)
         {
             // first adding to CommunityLikes
-            UserLikedMovie databaseUserLikedMovie = _repository.GetCommunityLikedMovieById(movieId);
-            if (databaseUserLikedMovie != null)
-            {
-                _repository.IncrementCommunityLikedMovieScore(movieId);
-            }
-            else
-            {
-                _repository.AddToCommunityLikes(movieId);
-            }
+            AddMovieToCommunityLikes(movieId);
 
-            // also adding the entry as a next movie to the previous movie in the user's history
+            // also adding the entry as a next movie (in the NextMovies table) to the previous movie in the user's history
+            AddMovieToNextMovies(userEmail, movieId);
+
+            // lastly adding to user history
+            _repository.AddToHistory(userEmail, movieId);
+
+            return RedirectToAction("details", "home", new { movieId = movieId });
+        }
+
+        /// <summary>
+        /// Adds the movie to the NextMovies table with a const score and if it already exists, it just increments the score.
+        /// </summary>
+        /// <param name="userEmail"></param>
+        /// <param name="movieId"></param>
+        private void AddMovieToNextMovies(string userEmail, int movieId)
+        {
+            const int scoreIncrementation = 1;
             History previousMovieHistoryModel = _repository.GetLatestFromHistory(userEmail);
             if (previousMovieHistoryModel != null)
             {
@@ -110,19 +118,30 @@ namespace MovieRecommendations.Controllers
 
                 if (entry == null)
                 {
-                    _repository.AddNextMovie(previousMovieId, movieId, 1);
+                    _repository.AddNextMovie(previousMovieId, movieId, scoreIncrementation);
                 }
                 else
                 {
-                    _repository.UpdateNextMovieScore(previousMovieId, movieId, entry.Score + 1);
+                    _repository.UpdateNextMovieScore(previousMovieId, movieId, entry.Score + scoreIncrementation);
                 }
             }
+        }
 
-            // lastly adding to user history
-            //string requestEmail = Request.Form["userEmail"];
-            _repository.AddToHistory(userEmail, movieId);
-
-            return RedirectToAction("details", "home", new { movieId = movieId });
+        /// <summary>
+        /// Adds a movie to the Community Likes and if it already exists it increments the score
+        /// </summary>
+        /// <param name="movieId"></param>
+        private void AddMovieToCommunityLikes(int movieId)
+        {
+            UserLikedMovie databaseUserLikedMovie = _repository.GetCommunityLikedMovieById(movieId);
+            if (databaseUserLikedMovie != null)
+            {
+                _repository.IncrementCommunityLikedMovieScore(movieId);
+            }
+            else
+            {
+                _repository.AddToCommunityLikes(movieId);
+            }
         }
 
         /// <summary>
