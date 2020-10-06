@@ -1,6 +1,6 @@
 ﻿@model List<MovieViewModel>
 
-@{ 
+@{
     ViewData["Title"] = "History";
 }
 
@@ -30,3 +30,5 @@
         }
     </div>
 </div>
+
+@await Component.InvokeAsync("CurrentRabbitHole")
