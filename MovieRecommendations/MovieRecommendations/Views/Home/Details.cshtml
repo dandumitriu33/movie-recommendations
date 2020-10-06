@@ -16,7 +16,7 @@
     <hr />
     @if (signInManager.IsSignedIn(User))
     {
-        <form method="post" asp-action="addToHistory" asp-controller="home">
+        <form method="post" asp-action="ProcessWatchedMovie" asp-controller="home">
             <input type="hidden" name="userEmail" value="@User.Identity.Name">
             <input type="hidden" name="movieId" value="@Model.Id">
             <button class="btn btn-primary">Watched 90%</button>

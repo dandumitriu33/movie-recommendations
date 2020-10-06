@@ -79,8 +79,14 @@ namespace MovieRecommendations.Controllers
             return View(movie);
         }
 
+        /// <summary>
+        /// Process a movie after it has been watched > 90%. Add to CommunityLikes, NextMovies and User History.
+        /// </summary>
+        /// <param name="userEmail"></param>
+        /// <param name="movieId"></param>
+        /// <returns></returns>
         [HttpPost]
-        public IActionResult AddToHistory(string userEmail, int movieId)
+        public IActionResult ProcessWatchedMovie(string userEmail, int movieId)
         {
             // first adding to CommunityLikes
             UserLikedMovie databaseUserLikedMovie = _repository.GetCommunityLikedMovieById(movieId);
@@ -116,11 +122,13 @@ namespace MovieRecommendations.Controllers
             //string requestEmail = Request.Form["userEmail"];
             _repository.AddToHistory(userEmail, movieId);
 
-
-
             return RedirectToAction("details", "home", new { movieId = movieId });
         }
 
+        /// <summary>
+        /// Utility route and method to import data from CSV
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> PopulateDb()
         {
             // commented out to not duplicate db data by mistake
@@ -156,6 +164,11 @@ namespace MovieRecommendations.Controllers
             return View();
         }
 
+        /// <summary>
+        /// Utility method to generate genre data during import from CSV
+        /// </summary>
+        /// <param name="rawGenre"></param>
+        /// <returns></returns>
         private string processGenre(string rawGenre)
         {
             string processedGenre = rawGenre;
