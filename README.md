@@ -2,13 +2,13 @@
 Educational project - Recommender System (Recommender Engine) - recommending movies from a database based on usage.  
 https://en.wikipedia.org/wiki/Recommender_system
 
-A simple movie recommendation system with Content Based Filtering, Community Based Filtering and a mix of the 2 for Personalized User recommendations.  
+A simple movie recommendation system with Content Based Filtering, Community Based Filtering and Rabbit Hole suggestions and a mix of the 3, for Personalized User recommendations.  
 
-ASP.NET Core 3.1
-ASP.NET Core Identity 3.1
-Entity Framework Core 3.1
-Data generated with Mockaroo - https://mockaroo.com/
-Bootstrap 4
+ASP.NET Core 3.1  
+ASP.NET Core Identity 3.1  
+Entity Framework Core 3.1  
+Data generated with Mockaroo - https://mockaroo.com/  
+Bootstrap 4  
 
 ## Screenshots
 
@@ -48,3 +48,10 @@ The Rabbit Hole recommendations change on every refresh, there is an offset in t
 The refresh has a cycle when it reaches the end of available suggestions, implemented via a cookie.  
 
 ![alt text](Screenshots/MixedWithRabbitHole.jpg?raw=true)
+
+### Rabbit Hole path on the history page  
+The history has changed a bit from the previous screenshots.  
+The Rabbit Hole from "First Movie" to "Fifth Movie" was created with 3 other test users to increase strength and better represent the concept.  
+The first movie is the Rabbit Hole start, the second is the best NextMovie for the first, the third is the best NextMovie for the second, the fourth is the best NextMovie for the third and the fifth is the best NextMovie for the fourth. They are not the list of best next movies for "First Movie", that is not the Rabbit Hole, just the movies people watched after they just saw "First Movie".  
+
+![alt text](Screenshots/CurrentRabbitHole.jpg?raw=true)
