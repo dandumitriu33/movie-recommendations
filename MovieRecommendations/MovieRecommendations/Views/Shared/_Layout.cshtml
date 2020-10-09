@@ -29,14 +29,27 @@
 
                         @if (signInManager.IsSignedIn(User))
                         {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="AddMovie">Add Movie</a>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Production
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="AddMovie">Add Movie</a>
+                                    <a class="dropdown-item" href="#">Stats</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="#">TBD</a>
+                                </div>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="userHistory" asp-route-email="@User.Identity.Name">History</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Personalized" asp-route-userEmail="@User.Identity.Name">Personalized</a>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Personalized
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" asp-area="" asp-controller="User" asp-action="userHistory" asp-route-email="@User.Identity.Name">History</a>
+                                    <a class="dropdown-item" asp-area="" asp-controller="User" asp-action="Personalized" asp-route-userEmail="@User.Identity.Name">Personalized Rec</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="#">Party</a>
+                                </div>
                             </li>
                         }
                     </ul>
