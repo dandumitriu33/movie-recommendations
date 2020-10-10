@@ -192,5 +192,11 @@ namespace MoviesDataAccessLibrary.Models
             _context.PartyMembers.Remove(partyMember);
             _context.SaveChanges();
         }
+
+        public void ResetChoicesForParty(int partyId)
+        {
+            _context.PartyChoices.RemoveRange(_context.PartyChoices.Where(c => c.PartyId == partyId));
+            _context.SaveChanges();
+        }
     }
 }

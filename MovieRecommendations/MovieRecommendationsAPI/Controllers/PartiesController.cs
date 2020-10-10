@@ -74,5 +74,14 @@ namespace MovieRecommendationsAPI.Controllers
             _repository.RemoveMemberFromParty(partyMemberToRemove);
             return NoContent();
         }
+
+        // DELETE api/<PartiesController>/resetChoices/{partyId}
+        [HttpDelete]
+        [Route("resetChoices/{partyId}")]
+        public IActionResult ResetChoices(int partyId)
+        {
+            _repository.ResetChoicesForParty(partyId);
+            return NoContent();
+        }
     }
 }
