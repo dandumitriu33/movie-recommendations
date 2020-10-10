@@ -13,5 +13,8 @@ namespace MoviesDataAccessLibrary.Models
         [Display(Name = "Name")]
         [Column(TypeName = ("varchar(50)"))]
         public string Name { get; set; }
+        [Required]
+        [MaxLength(120)]
+        public string CreatorEmail { get; set; }
     }
 }
