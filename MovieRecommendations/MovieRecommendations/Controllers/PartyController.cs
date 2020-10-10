@@ -47,7 +47,8 @@ namespace MovieRecommendations.Controllers
         [Route("party/details/{partyId}")]
         public IActionResult Details(int partyId)
         {
-            return View();
+            Party partyFromDb = _repository.GetPartyById(partyId);
+            return View(partyFromDb);
         }
     }
 }

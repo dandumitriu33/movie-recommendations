@@ -160,6 +160,11 @@ namespace MoviesDataAccessLibrary.Models
             return userParties;
         }
 
+        public Party GetPartyById(int partyId)
+        {
+            return _context.Parties.Where(p => p.Id == partyId).FirstOrDefault();
+        }
+
         public void AddParty(Party party)
         {
             _context.Parties.Add(party);
