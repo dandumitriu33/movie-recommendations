@@ -53,6 +53,19 @@ namespace MovieRecommendationsAPI.Controllers
             return NoContent();
         }
 
+        // POST api/<PartiesController>/{partyId}/addMember/{userEmail}
+        [HttpPost]
+        [Route("addToParty/{partyId}")]
+        public IActionResult AddMember([FromBody] PartyMember partyMember)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("The query is not formatted correctly");
+            }
+            _repository.AddMemberToParty(partyMember);
+            return NoContent();
+        }
+
         // PUT api/<PartiesController>/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
