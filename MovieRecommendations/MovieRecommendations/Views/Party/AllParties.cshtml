@@ -23,7 +23,7 @@
                 <div class="card mb-4" style="min-width: 12rem; max-width: 12rem">
                     <img class="card-img-top" src="~/img/default.jpg" alt="Card image cap">
                     <div class="card-body">
-                        <h5 class="card-title">@party.Name</h5>
+                        <h5 class="card-title"><a asp-controller="Party" asp-action="Details" asp-route-partyId="@party.Id">@party.Name</a></h5>
                         <p class="card-text">By: @party.CreatorEmail</p>
                     </div>
                 </div>

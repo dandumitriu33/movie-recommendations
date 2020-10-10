@@ -42,5 +42,12 @@ namespace MovieRecommendations.Controllers
             _repository.AddMemberToParty(newPartyMember);
             return RedirectToAction("AllParties", new { userEmail = userEmail });
         }
+
+        [HttpGet]
+        [Route("party/details/{partyId}")]
+        public IActionResult Details(int partyId)
+        {
+            return View();
+        }
     }
 }
