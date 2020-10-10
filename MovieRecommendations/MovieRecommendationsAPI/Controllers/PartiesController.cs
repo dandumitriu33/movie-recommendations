@@ -53,7 +53,7 @@ namespace MovieRecommendationsAPI.Controllers
             return NoContent();
         }
 
-        // POST api/<PartiesController>/{partyId}/addMember/{userEmail}
+        // POST api/<PartiesController>/addToParty/{partyId}
         [HttpPost]
         [Route("addToParty/{partyId}")]
         public IActionResult AddMember([FromBody] PartyMember partyMember)
@@ -66,16 +66,13 @@ namespace MovieRecommendationsAPI.Controllers
             return NoContent();
         }
 
-        // PUT api/<PartiesController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        // DELETE api/<PartiesController>/RemoveFromParty/{partyId}
+        [HttpDelete("removeFromParty/{partyId}/{userEmail}")]
+        public IActionResult RemoveMember(int partyId, string userEmail)
         {
-        }
-
-        // DELETE api/<PartiesController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            PartyMember partyMemberToRemove = _repository.GetPartyMember(partyId, userEmail);
+            _repository.RemoveMemberFromParty(partyMemberToRemove);
+            return NoContent();
         }
     }
 }

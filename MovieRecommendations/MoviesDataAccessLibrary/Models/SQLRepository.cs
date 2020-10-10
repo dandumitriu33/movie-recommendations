@@ -181,5 +181,16 @@ namespace MoviesDataAccessLibrary.Models
             _context.PartyMembers.Add(newPartyMember);
             _context.SaveChanges();
         }
+
+        public PartyMember GetPartyMember(int partyId, string userEmail)
+        {
+            return _context.PartyMembers.Where(p => p.PartyId == partyId && p.Email == userEmail).FirstOrDefault();
+        }
+
+        public void RemoveMemberFromParty(PartyMember partyMember)
+        {
+            _context.PartyMembers.Remove(partyMember);
+            _context.SaveChanges();
+        }
     }
 }

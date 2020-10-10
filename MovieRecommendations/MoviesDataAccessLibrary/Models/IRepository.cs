@@ -25,5 +25,7 @@ namespace MoviesDataAccessLibrary.Models
         public List<Party> GetUserParties(string userEmail);
         public void AddParty(Party party);
         public void AddMemberToParty(PartyMember newPartyMember);
+        public PartyMember GetPartyMember(int partyId, string userEmail);
+        public void RemoveMemberFromParty(PartyMember partyMember);
     }
 }
