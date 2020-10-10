@@ -49,7 +49,7 @@
                                     <a class="dropdown-item" asp-area="" asp-controller="User" asp-action="userHistory" asp-route-email="@User.Identity.Name">History</a>
                                     <a class="dropdown-item" asp-area="" asp-controller="User" asp-action="Personalized" asp-route-userEmail="@User.Identity.Name">Personalized Rec</a>
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="#">Party</a>
+                                    <a class="dropdown-item" asp-controller="Party" asp-action="AllParties" asp-route-userEmail="@User.Identity.Name">Parties</a>
                                 </div>
                             </li>
                         }
