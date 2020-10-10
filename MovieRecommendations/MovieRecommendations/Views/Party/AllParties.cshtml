@@ -1,4 +1,4 @@
-﻿
+﻿@model List<Party>
 
 @{
     ViewData["Title"] = "All Parties";
@@ -6,4 +6,63 @@
 
 <div class="text-center">
     <h2>Watching Parties</h2>
+</div>
+
+<hr />
+<div class="container">
+    <div class="card-deck">
+        @if (Model == null || Model.Count == 0)
+        {
+            <p>You aren't a member of any parties at this time.</p>
+        }
+        else
+        {
+            @foreach (var party in Model)
+            {
+                <div class="card mb-4" style="min-width: 12rem; max-width: 12rem">
+                    <img class="card-img-top" src="~/img/default.jpg" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title">@party.Name</h5>
+                        <p class="card-text">By: @party.CreatorEmail</p>
+                    </div>
+                </div>
+            }
+            <div class="card mb-4" style="min-width: 12rem; max-width: 12rem">
+                <img class="card-img-top" src="~/img/default.jpg" alt="Card image cap">
+                <div class="card-body">
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newPartyModalCenter">
+                        Create New Party
+                    </button>
+                </div>
+            </div>
+
+        }
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="newPartyModalCenter" tabindex="-1" role="dialog" aria-labelledby="newPartyModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="post">
+                    <div class="form-group">
+                        <label for="partyName">Party Name</label>
+                        <input type="text" class="form-control" id="partyName" placeholder="Movies with friends">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Create</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
 </div>
