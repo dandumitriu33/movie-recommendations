@@ -172,7 +172,13 @@ namespace MoviesDataAccessLibrary.Models
 
         public void AddParty(Party party)
         {
-            _context.Add(party);
+            _context.Parties.Add(party);
+            _context.SaveChanges();
+        }
+
+        public void AddMemberToParty(PartyMember newPartyMember)
+        {
+            _context.PartyMembers.Add(newPartyMember);
             _context.SaveChanges();
         }
     }

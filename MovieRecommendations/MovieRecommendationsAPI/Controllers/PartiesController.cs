@@ -44,6 +44,12 @@ namespace MovieRecommendationsAPI.Controllers
                 return BadRequest("The query is not formatted correctly");
             }
             _repository.AddParty(party);
+            PartyMember newPartyMember = new PartyMember
+            {
+                PartyId = party.Id,
+                Email = party.CreatorEmail
+            };
+            _repository.AddMemberToParty(newPartyMember);
             return NoContent();
         }
 

@@ -24,5 +24,6 @@ namespace MoviesDataAccessLibrary.Models
         public void UpdateNextMovieScore(int currentMovieId, int nextMovieId, int score);
         public List<Party> GetUserParties(string userEmail);
         public void AddParty(Party party);
+        public void AddMemberToParty(PartyMember newPartyMember);
     }
 }
