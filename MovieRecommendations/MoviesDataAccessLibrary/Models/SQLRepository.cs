@@ -145,5 +145,29 @@ namespace MoviesDataAccessLibrary.Models
                 _context.SaveChanges();
             }
         }
+
+        public List<Party> GetUserParties(string userEmail)
+        {
+            var userPartiesJoin = _context.Parties.Join(_context.PartyMembers,
+                                                            party => party.Id,
+                                                            partyMember => partyMember.PartyId,
+                                                            (party, partyMember) => new 
+                                                            {
+                                                                PartyId = party.Id,
+                                                                PartyName = party.Name,
+                                                                PartyMemberEmail = partyMember.Email
+                                                            })
+                                                       .Where(m => m.PartyMemberEmail == userEmail).ToList();
+            List<Party> userParties = new List<Party>();
+            foreach (var party in userPartiesJoin)
+            {
+                userParties.Add(new Party
+                {
+                    Id = party.PartyId,
+                    Name = party.PartyName
+                });
+            }
+            return userParties;
+        }
     }
 }

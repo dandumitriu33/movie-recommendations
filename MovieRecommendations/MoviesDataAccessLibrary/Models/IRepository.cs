@@ -22,5 +22,6 @@ namespace MoviesDataAccessLibrary.Models
         public IEnumerable<NextMovie> GetNextMoviesForMovieByIdForSuggestions(int currentMovieId, int limit, int offset);
         public void AddNextMovie(int previousMovieId, int nextMovieId, int score);
         public void UpdateNextMovieScore(int currentMovieId, int nextMovieId, int score);
+        public List<Party> GetUserParties(string userEmail);
     }
 }
