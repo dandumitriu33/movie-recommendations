@@ -36,8 +36,14 @@ namespace MovieRecommendationsAPI.Controllers
 
         // POST api/<PartiesController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult Post([FromBody] Party party)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("The query is not formatted correctly");
+            }
+            _repository.AddParty(party);
+            return NoContent();
         }
 
         // PUT api/<PartiesController>/5

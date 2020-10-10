@@ -169,5 +169,11 @@ namespace MoviesDataAccessLibrary.Models
             }
             return userParties;
         }
+
+        public void AddParty(Party party)
+        {
+            _context.Add(party);
+            _context.SaveChanges();
+        }
     }
 }
