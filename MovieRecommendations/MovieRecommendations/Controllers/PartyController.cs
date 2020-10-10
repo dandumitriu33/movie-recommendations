@@ -34,6 +34,12 @@ namespace MovieRecommendations.Controllers
                 CreatorEmail = userEmail
             };
             _repository.AddParty(newParty);
+            PartyMember newPartyMember = new PartyMember
+            {
+                PartyId = newParty.Id,
+                Email = newParty.CreatorEmail
+            };
+            _repository.AddMemberToParty(newPartyMember);
             return RedirectToAction("AllParties", new { userEmail = userEmail });
         }
     }

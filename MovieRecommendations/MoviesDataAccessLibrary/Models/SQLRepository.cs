@@ -148,25 +148,15 @@ namespace MoviesDataAccessLibrary.Models
 
         public List<Party> GetUserParties(string userEmail)
         {
-            var userPartiesJoin = _context.Parties.Join(_context.PartyMembers,
-                                                            party => party.Id,
-                                                            partyMember => partyMember.PartyId,
-                                                            (party, partyMember) => new 
-                                                            {
-                                                                PartyId = party.Id,
-                                                                PartyName = party.Name,
-                                                                PartyMemberEmail = partyMember.Email
-                                                            })
-                                                       .Where(m => m.PartyMemberEmail == userEmail).ToList();
+            List<PartyMember> userMemberships = _context.PartyMembers.Where(p => p.Email == userEmail).ToList();
             List<Party> userParties = new List<Party>();
-            foreach (var party in userPartiesJoin)
+            
+            foreach (var entry in userMemberships)
             {
-                userParties.Add(new Party
-                {
-                    Id = party.PartyId,
-                    Name = party.PartyName
-                });
+                Party partyFromDb = _context.Parties.Where(p => p.Id == entry.PartyId).First();
+                userParties.Add(partyFromDb);
             }
+            
             return userParties;
         }
 
