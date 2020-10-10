@@ -23,5 +23,18 @@ namespace MovieRecommendations.Controllers
             List<Party> userParties = _repository.GetUserParties(userEmail);
             return View(userParties);
         }
+
+        [HttpPost]
+        public IActionResult CreateParty(string userEmail)
+        {
+            string partyName = Request.Form["partyName"];
+            Party newParty = new Party
+            {
+                Name = partyName,
+                CreatorEmail = userEmail
+            };
+            _repository.AddParty(newParty);
+            return RedirectToAction("AllParties", new { userEmail = userEmail });
+        }
     }
 }

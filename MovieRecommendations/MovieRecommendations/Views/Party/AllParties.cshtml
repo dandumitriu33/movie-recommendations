@@ -1,4 +1,5 @@
-﻿@model List<Party>
+﻿@inject SignInManager<IdentityUser> signInManager;
+@model List<Party>
 
 @{
     ViewData["Title"] = "All Parties";
@@ -55,9 +56,9 @@
                 <form method="post">
                     <div class="form-group">
                         <label for="partyName">Party Name</label>
-                        <input type="text" class="form-control" id="partyName" placeholder="Movies with friends">
+                        <input type="text" class="form-control" name="partyName" placeholder="Movies with friends">
                     </div>
-                    <button type="submit" class="btn btn-primary">Create</button>
+                    <button type="submit" asp-controller="Party" asp-action="CreateParty" asp-route-userEmail="@User.Identity.Name" class="btn btn-primary">Create</button>
                 </form>
             </div>
             <div class="modal-footer">
