@@ -53,7 +53,7 @@ async function addMovieToPartyChoices(movie) {
     await $.ajax({
         type: "POST",
         url: URL,
-        data: JSON.stringify(tempUser),
+        data: {},
         contentType: "application/json; charset=utf-8",
         crossDomain: true,
         dataType: "json",
