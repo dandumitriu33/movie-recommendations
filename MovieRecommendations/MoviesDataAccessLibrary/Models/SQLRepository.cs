@@ -216,5 +216,15 @@ namespace MoviesDataAccessLibrary.Models
                 _context.SaveChanges();
             }
         }
+
+        public int GetPartyCount(int partyId)
+        {
+            return _context.PartyMembers.Where(p => p.PartyId == partyId).Count();
+        }
+
+        public List<PartyChoice> GetMovieIdsForParty(int partyId, int count)
+        {
+            return _context.PartyChoices.Where(c => c.PartyId == partyId && c.Score == count).ToList();
+        }
     }
 }

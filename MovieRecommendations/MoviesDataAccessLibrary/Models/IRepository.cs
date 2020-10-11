@@ -31,5 +31,7 @@ namespace MoviesDataAccessLibrary.Models
         public void ResetChoicesForParty(int partyId);
         public List<Movie> GetBatch(int newestId, int oldestId, int limit);
         public void AddChoice(PartyChoice choice);
+        public int GetPartyCount(int partyId);
+        public List<PartyChoice> GetMovieIdsForParty(int partyId, int count);
     }
 }

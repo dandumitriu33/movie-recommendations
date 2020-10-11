@@ -113,5 +113,35 @@ namespace MovieRecommendationsAPI.Controllers
             _repository.AddChoice(newChoice);
             return NoContent();
         }
+
+        // GET: api/<PartiesController>/partyCount/{partyId}
+        [HttpGet]
+        [Route("partyCount/{partyId}")]
+        [EnableCors("AllowAnyOrigin")]
+        public IActionResult GetPartyCount(int partyId)
+        {
+            int partyCount = _repository.GetPartyCount(partyId);
+            PartyCount result = new PartyCount 
+            { 
+                partyId = partyId, 
+                partyCount = partyCount 
+            };
+            return Ok(result);
+        }
+
+        // GET: api/<PartiesController>/getMatches/{partyId}/count/{count}
+        [HttpGet]
+        [Route("getMatches/{partyId}/count/{count}")]
+        [EnableCors("AllowAnyOrigin")]
+        public IActionResult GetMatches(int partyId, int count)
+        {
+            List<PartyChoice> validChoices = _repository.GetMovieIdsForParty(partyId, count);
+            List<Movie> result = new List<Movie>();
+            foreach (PartyChoice choice in validChoices)
+            {
+                Movie tempMovie = _repository.GetMovieByMovieId(choice.MovieId);
+            }
+            return Ok(result);
+        }
     }
 }
