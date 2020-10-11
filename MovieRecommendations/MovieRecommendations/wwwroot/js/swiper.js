@@ -47,7 +47,7 @@ console.log(currentBatch);
 function loadSwiper(movie) {
     let element = `
                     <div class="card mb-4" style="min-width: 12rem; max-width: 12rem">
-                        <img class="card-img-top" src="~/img/${movie.mainGenre.toLowerCase()}.jpg" alt="Card image cap">
+                        <img class="card-img-top" src="https://localhost:44318/img/${movie.mainGenre.toLowerCase()}.jpg" alt="Card image cap">
                         <div class="card-body">
                             <h5 class="card-title">${movie.title} (${movie.releaseYear})</h5>
                             <p class="card-text">IMDB: ${movie.rating}</p>
