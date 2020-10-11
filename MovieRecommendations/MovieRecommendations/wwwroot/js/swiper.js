@@ -18,9 +18,17 @@ let currentBatch = [];
 // fetch Batch (array) of movies for swiper
 currentBatch = fetchMovieBatch();
 
+// swiper feeder mechanism
+let batchIndex = 0;
+$("#rejectMovie").click(function () {
+    console.log("Reject Movie Clicked.");
+    loadSwiper(currentBatch[batchIndex]);
+})
 
-
-
+$("#acceptMovie").click(function () {
+    console.log("Reject Movie Clicked.");
+    loadSwiper(currentBatch[batchIndex]);
+})
 
 
 
@@ -39,7 +47,8 @@ async function fetchMovieBatch() {
     console.log(currentBatch.length);
 
     // load swiper
-    loadSwiper(currentBatch[0]);
+    loadSwiper(currentBatch[batchIndex]);
+    
 }
 console.log("-----------");
 console.log(currentBatch);
@@ -57,6 +66,7 @@ function loadSwiper(movie) {
                   `;
     $("#swiperCardContainer").empty();
     $("#swiperCardContainer").append(element);
+    batchIndex++;
 }
 
 
