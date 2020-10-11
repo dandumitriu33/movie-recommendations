@@ -21,23 +21,28 @@ currentBatch = fetchMovieBatch();
 // swiper feeder mechanism
 let batchIndex = 0;
 $("#rejectMovie").click(function () {
-    console.log("Reject Movie Clicked.");
-    if (batchIndex == 10) {
-        batchIndex = 0;
+    console.log("REJECT MOVIE: Reject Movie Clicked.");
+    if (batchIndex >= 10) {
+        //batchIndex = 0;
         fetchMovieBatch()
     } else {
+        // batchIndex is the next movie to be loaded, the current movie is the -1
+        oldestMovieId = currentBatch[batchIndex-1].id;
         loadSwiper(currentBatch[batchIndex]);
+        setCookie(oldestMovieIdCookieName, oldestMovieId);
     }
-    
 })
 
 $("#acceptMovie").click(function () {
     console.log("Accept Movie Clicked.");
-    if (batchIndex == 10) {
+    if (batchIndex >= 10) {
         batchIndex = 0;
         fetchMovieBatch()
     } else {
+        // batchIndex is the next movie to be loaded, the current movie is the -1
+        oldestMovieId = currentBatch[batchIndex - 1].id;
         loadSwiper(currentBatch[batchIndex]);
+        setCookie(oldestMovieIdCookieName, oldestMovieId);
     }
 })
 
@@ -55,23 +60,23 @@ async function fetchMovieBatch() {
     console.log(currentBatch.length);
 
     // set local variables and cookies
-    console.log("Setting newestMovieId and oldestMovieId");
+    console.log("Setting newestMovieId");
     if (currentBatch[0].id > newestMovieId) {
         newestMovieId = currentBatch[0].id;
         setCookie(newestMovieIdCookieName, newestMovieId);
     }
-    oldestMovieId = currentBatch[9].id;
-    console.log("newestMovieId: " + newestMovieId + " oldestMovieId: " + oldestMovieId);
-    setCookie(oldestMovieIdCookieName, oldestMovieId);
+    // reset the batchIndex to start the new list from 0
+    batchIndex = 0;
 
     // load swiper
+    console.log("FETCH BATCH: Batch fetched.");
+    console.log(currentBatch);
     loadSwiper(currentBatch[batchIndex]);
-    
 }
-console.log("-----------");
-console.log(currentBatch);
+
 
 function loadSwiper(movie) {
+    console.log("LOAD SWIPER: batch index before load " + batchIndex);
     let element = `
                     <div class="card mb-4" style="min-width: 12rem; max-width: 12rem">
                         <img class="card-img-top" src="https://localhost:44318/img/${movie.mainGenre.toLowerCase()}.jpg" alt="Card image cap">
@@ -85,6 +90,7 @@ function loadSwiper(movie) {
     $("#swiperCardContainer").empty();
     $("#swiperCardContainer").append(element);
     batchIndex++;
+    console.log("LOAD SWIPER: batch index after load " + batchIndex);
 }
 
 
