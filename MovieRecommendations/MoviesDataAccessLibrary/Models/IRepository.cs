@@ -30,5 +30,6 @@ namespace MoviesDataAccessLibrary.Models
         public void RemoveMemberFromParty(PartyMember partyMember);
         public void ResetChoicesForParty(int partyId);
         public List<Movie> GetBatch(int newestId, int oldestId, int limit);
+        public void AddChoice(PartyChoice choice);
     }
 }

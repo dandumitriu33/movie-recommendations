@@ -97,5 +97,20 @@ namespace MovieRecommendationsAPI.Controllers
             List<Movie> batch = _repository.GetBatch(newestId, oldestId, limit);
             return Ok(batch);
         }
+
+        // POST: api/<PartiesController>/partyChoices/{partyId}/choice/{movieId}
+        [HttpPost]
+        [Route("partyChoices/{partyId}/choice/{movieId}")]
+        public IActionResult AddChoice(int partyId, int movieId)
+        {
+            PartyChoice newChoice = new PartyChoice
+            {
+                PartyId = partyId,
+                MovieId = movieId,
+                Score = 1
+            };
+            _repository.AddChoice(newChoice);
+            return NoContent();
+        }
     }
 }

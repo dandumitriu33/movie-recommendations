@@ -201,5 +201,20 @@ namespace MoviesDataAccessLibrary.Models
             List<Movie> batch = _context.Movies.Where(m => m.Id > newestId || m.Id < oldestId).OrderByDescending(m => m.Id).Take(limit).ToList();
             return batch;
         }
+
+        public void AddChoice(PartyChoice choice)
+        {
+            PartyChoice choiceFromDb = _context.PartyChoices.Where(c => c.PartyId == choice.PartyId && c.MovieId == choice.MovieId).FirstOrDefault();
+            if (choiceFromDb != null)
+            {
+                choiceFromDb.Score += choice.Score;
+                _context.SaveChanges();
+            }
+            else
+            {
+                _context.PartyChoices.Add(choice);
+                _context.SaveChanges();
+            }
+        }
     }
 }
