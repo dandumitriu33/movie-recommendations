@@ -62,7 +62,7 @@
     <h2>Party Members</h2>
 
     <div class="container">
-        <div class="card-deck">
+        <div class="card-deck" id="memberContainer">
             <div class="card mb-4" style="min-width: 12rem; max-width: 12rem">
                 <img class="card-img-top" src="~/img/default.jpg" alt="Card image cap">
                 <div class="card-body">
@@ -75,9 +75,9 @@
     </div>
 
     <form class="form-inline">
-        <label class="sr-only" for="inlineFormInputEmail">Name</label>
+        <label class="sr-only" for="inlineFormInputEmail">Email</label>
         <input type="text" class="form-control mb-2 mr-sm-2" id="inlineFormInputEmail" placeholder="friend@email.com">
-        <button type="submit" class="btn btn-primary mb-2">Add Member</button>
+        <button type="submit" class="btn btn-primary mb-2" id="addMemberButton">Add Member</button>
     </form>
 </div>
 
@@ -85,5 +85,5 @@
     <script type="module" src="~/js/swiper.js"></script>
     <script type="module" src="~/js/utils.js"></script>
     <script type="module" src="~/js/matches.js"></script>
-
+    <script type="module" src="~/js/members.js"></script>
 }

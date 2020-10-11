@@ -54,6 +54,7 @@ namespace MovieRecommendationsAPI.Controllers
             return NoContent();
         }
 
+        // unuset at this time, using API via JS
         // POST api/<PartiesController>/addToParty/{partyId}
         [HttpPost]
         [Route("addToParty/{partyId}")]
@@ -142,6 +143,21 @@ namespace MovieRecommendationsAPI.Controllers
                 Movie tempMovie = _repository.GetMovieByMovieId(choice.MovieId);
             }
             return Ok(result);
+        }
+
+        // POST: api/<PartiesController>/partyMembers/{partyId}/addMember/{memberEmail}
+        [HttpPost]
+        [Route("partyMembers/{partyId}/addMember/{memberEmail}")]
+        [EnableCors("AllowAnyOrigin")]
+        public IActionResult AddMemberToParty(int partyId, string memberEmail)
+        {
+            PartyMember newMember = new PartyMember
+            {
+                Email = memberEmail,
+                PartyId = partyId
+            };
+            _repository.AddMemberToParty(newMember);
+            return NoContent();
         }
     }
 }
