@@ -193,5 +193,11 @@ namespace MoviesDataAccessLibrary.Models
             _context.PartyChoices.RemoveRange(_context.PartyChoices.Where(c => c.PartyId == partyId));
             _context.SaveChanges();
         }
+
+        public List<Movie> GetBatch(int firstId, int lastId, int limit)
+        {
+            List<Movie> batch = _context.Movies.Where(m => m.Id < firstId || m.Id > lastId).OrderBy(m => m.Id).Take(limit).ToList();
+            return batch;
+        }
     }
 }

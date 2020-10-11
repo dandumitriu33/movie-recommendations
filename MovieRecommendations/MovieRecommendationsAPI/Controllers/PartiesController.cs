@@ -84,6 +84,16 @@ namespace MovieRecommendationsAPI.Controllers
             return NoContent();
         }
 
+        // GET: api/<PartiesController>/
+        [HttpGet]
+        [Route("getBatchBefore/{firstId}/andAfter/{lastId}")]
+        public IActionResult GetSwiperBatch(int firstId, int lastId)
+        {
+            // how many movies
+            int limit = 10;
 
+            List<Movie> batch = _repository.GetBatch(firstId, lastId, limit);
+            return Ok(batch);
+        }
     }
 }

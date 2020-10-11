@@ -29,5 +29,6 @@ namespace MoviesDataAccessLibrary.Models
         public PartyMember GetPartyMember(int partyId, string userEmail);
         public void RemoveMemberFromParty(PartyMember partyMember);
         public void ResetChoicesForParty(int partyId);
+        public List<Movie> GetBatch(int firstId, int lastId, int limit);
     }
 }

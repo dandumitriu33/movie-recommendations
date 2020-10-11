@@ -12,4 +12,4 @@ let lastMovieIdCookieName = partyName.replace(" ", "") + "LastMovieId";
 let lastMovieId = getCookie(lastMovieIdCookieName);
 console.log("lastMovieId: " + lastMovieId);
 
-// fetch array of movies for swiper
+// fetch Batch (array) of movies for swiper
