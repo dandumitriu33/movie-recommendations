@@ -83,5 +83,7 @@ namespace MovieRecommendationsAPI.Controllers
             _repository.ResetChoicesForParty(partyId);
             return NoContent();
         }
+
+
     }
 }

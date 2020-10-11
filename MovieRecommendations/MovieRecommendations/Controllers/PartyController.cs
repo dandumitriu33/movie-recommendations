@@ -34,6 +34,11 @@ namespace MovieRecommendations.Controllers
                 CreatorEmail = userEmail
             };
             _repository.AddParty(newParty);
+
+            // cookies for seen movies range
+            HttpContext.Response.Cookies.Append($"{partyName.Replace(" ", "")}FirstMovieId", "0");
+            HttpContext.Response.Cookies.Append($"{partyName.Replace(" ", "")}LastMovieId", "0");
+
             PartyMember newPartyMember = new PartyMember
             {
                 PartyId = newParty.Id,
