@@ -36,8 +36,8 @@ namespace MovieRecommendations.Controllers
             _repository.AddParty(newParty);
 
             // cookies for seen movies range
-            HttpContext.Response.Cookies.Append($"{partyName.Replace(" ", "")}FirstMovieId", "0");
-            HttpContext.Response.Cookies.Append($"{partyName.Replace(" ", "")}LastMovieId", "0");
+            HttpContext.Response.Cookies.Append($"{partyName.Replace(" ", "")}NewestMovieId", "0");
+            HttpContext.Response.Cookies.Append($"{partyName.Replace(" ", "")}OldestMovieId", "0");
 
             PartyMember newPartyMember = new PartyMember
             {

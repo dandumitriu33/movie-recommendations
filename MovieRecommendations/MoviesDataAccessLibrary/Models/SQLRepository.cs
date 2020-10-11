@@ -194,9 +194,11 @@ namespace MoviesDataAccessLibrary.Models
             _context.SaveChanges();
         }
 
-        public List<Movie> GetBatch(int firstId, int lastId, int limit)
+        public List<Movie> GetBatch( int newestId, int oldestId, int limit)
         {
-            List<Movie> batch = _context.Movies.Where(m => m.Id < firstId || m.Id > lastId).OrderBy(m => m.Id).Take(limit).ToList();
+            // the newest movie added to the DB will have the highest ID - incrementing
+            // the oldest movie represents the last fetched movie chronologically
+            List<Movie> batch = _context.Movies.Where(m => m.Id > newestId || m.Id < oldestId).OrderByDescending(m => m.Id).Take(limit).ToList();
             return batch;
         }
     }

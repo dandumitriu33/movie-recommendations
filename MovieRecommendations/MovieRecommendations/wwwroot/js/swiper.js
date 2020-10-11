@@ -5,12 +5,12 @@ let partyName = $("#partyName").text();
 console.log(partyName.replace(" ", ""));
 
 // construct cookie names and get values
-let firstMovieIdCookieName = partyName.replace(" ", "") + "FirstMovieId";
-let firstMovieId = getCookie(firstMovieIdCookieName);
-console.log("firstMovieId: " + firstMovieId);
-let lastMovieIdCookieName = partyName.replace(" ", "") + "LastMovieId";
-let lastMovieId = getCookie(lastMovieIdCookieName);
-console.log("lastMovieId: " + lastMovieId);
+let newestMovieIdCookieName = partyName.replace(" ", "") + "NewestMovieId";
+let newestMovieId = getCookie(newestMovieIdCookieName);
+console.log("newestMovieId: " + newestMovieId);
+let oldestMovieIdCookieName = partyName.replace(" ", "") + "OldestMovieId";
+let oldestMovieId = getCookie(oldestMovieIdCookieName);
+console.log("oldestMovieId: " + oldestMovieId);
 
 // in memory list of movies to pass to swiper
 let currentBatch = [];
@@ -43,11 +43,8 @@ $("#acceptMovie").click(function () {
 
 
 
-
-
-
 async function fetchMovieBatch() {
-    let URL = `https://localhost:44311/api/parties/getBatchBefore/${firstMovieId}/andAfter/${lastMovieId}`
+    let URL = `https://localhost:44311/api/parties/getBatchBefore/${newestMovieId}/andAfter/${oldestMovieId}`
     await $.getJSON(URL, function (data) {
         for (var i = 0; i < data.length; i++) {
             currentBatch[i] = data[i];
@@ -58,14 +55,14 @@ async function fetchMovieBatch() {
     console.log(currentBatch.length);
 
     // set local variables and cookies
-    console.log("Setting firstMovieId and lastMovieId");
-    if (currentBatch[0].id < firstMovieId) {
-        firstMovieId = currentBatch[0].id;
-        setCookie(firstMovieIdCookieName, firstMovieId);
+    console.log("Setting newestMovieId and oldestMovieId");
+    if (currentBatch[0].id > newestMovieId) {
+        newestMovieId = currentBatch[0].id;
+        setCookie(newestMovieIdCookieName, newestMovieId);
     }
-    lastMovieId = currentBatch[9].id;
-    console.log("firstMovieId: " + firstMovieId + " lastMovieId: " + lastMovieId);
-    setCookie(lastMovieIdCookieName, lastMovieId);
+    oldestMovieId = currentBatch[9].id;
+    console.log("newestMovieId: " + newestMovieId + " oldestMovieId: " + oldestMovieId);
+    setCookie(oldestMovieIdCookieName, oldestMovieId);
 
     // load swiper
     loadSwiper(currentBatch[batchIndex]);
