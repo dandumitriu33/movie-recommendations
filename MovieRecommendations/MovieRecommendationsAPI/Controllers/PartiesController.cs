@@ -11,9 +11,8 @@ using MoviesDataAccessLibrary.Models;
 
 namespace MovieRecommendationsAPI.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
-    [EnableCors("AllowAnyOrigin")]
+    [Route("api/[controller]")]
     public class PartiesController : ControllerBase
     {
         private readonly IRepository _repository;
@@ -89,6 +88,7 @@ namespace MovieRecommendationsAPI.Controllers
         // GET: api/<PartiesController>/
         [HttpGet]
         [Route("getBatchBefore/{newestId}/andAfter/{oldestId}")]
+        [EnableCors("AllowAnyOrigin")]
         public IActionResult GetSwiperBatch(int newestId, int oldestId)
         {
             // how many movies
@@ -101,6 +101,7 @@ namespace MovieRecommendationsAPI.Controllers
         // POST: api/<PartiesController>/partyChoices/{partyId}/choice/{movieId}
         [HttpPost]
         [Route("partyChoices/{partyId}/choice/{movieId}")]
+        [EnableCors("AllowAnyOrigin")]
         public IActionResult AddChoice(int partyId, int movieId)
         {
             PartyChoice newChoice = new PartyChoice
