@@ -22,12 +22,23 @@ currentBatch = fetchMovieBatch();
 let batchIndex = 0;
 $("#rejectMovie").click(function () {
     console.log("Reject Movie Clicked.");
-    loadSwiper(currentBatch[batchIndex]);
+    if (batchIndex == 10) {
+        batchIndex = 0;
+        fetchMovieBatch()
+    } else {
+        loadSwiper(currentBatch[batchIndex]);
+    }
+    
 })
 
 $("#acceptMovie").click(function () {
-    console.log("Reject Movie Clicked.");
-    loadSwiper(currentBatch[batchIndex]);
+    console.log("Accept Movie Clicked.");
+    if (batchIndex == 10) {
+        batchIndex = 0;
+        fetchMovieBatch()
+    } else {
+        loadSwiper(currentBatch[batchIndex]);
+    }
 })
 
 
@@ -45,6 +56,16 @@ async function fetchMovieBatch() {
 
     console.log(currentBatch);
     console.log(currentBatch.length);
+
+    // set local variables and cookies
+    console.log("Setting firstMovieId and lastMovieId");
+    if (currentBatch[0].id < firstMovieId) {
+        firstMovieId = currentBatch[0].id;
+        setCookie(firstMovieIdCookieName, firstMovieId);
+    }
+    lastMovieId = currentBatch[9].id;
+    console.log("firstMovieId: " + firstMovieId + " lastMovieId: " + lastMovieId);
+    setCookie(lastMovieIdCookieName, lastMovieId);
 
     // load swiper
     loadSwiper(currentBatch[batchIndex]);
