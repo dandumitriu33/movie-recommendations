@@ -2,6 +2,7 @@
 
 // get the party name to construct the cookies
 let partyName = $("#partyName").text();
+let partyId = $("#partyId").text();
 console.log(partyName.replace(" ", ""));
 
 // construct cookie names and get values
@@ -40,11 +41,31 @@ $("#acceptMovie").click(function () {
         fetchMovieBatch()
     } else {
         // batchIndex is the next movie to be loaded, the current movie is the -1
+        addMovieToPartyChoices(currentBatch[batchIndex - 1]);
         oldestMovieId = currentBatch[batchIndex - 1].id;
         loadSwiper(currentBatch[batchIndex]);
         setCookie(oldestMovieIdCookieName, oldestMovieId);
     }
 })
+
+async function addMovieToPartyChoices(movie) {
+    let URL = `https://localhost:44311/api/parties/partyChoices/${partyId}/choice/${movie.id}`;
+    await $.ajax({
+        type: "POST",
+        url: URL,
+        data: JSON.stringify(tempUser),
+        contentType: "application/json; charset=utf-8",
+        crossDomain: true,
+        dataType: "json",
+        success: function () {
+            console.log("Choice added successfully.");
+        },
+        error: function (jqXHR, status) {
+            console.log(jqXHR);
+            console.log('fail' + status.code);
+        }
+    })
+}
 
 
 

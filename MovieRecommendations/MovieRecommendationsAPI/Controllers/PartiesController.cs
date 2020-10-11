@@ -13,6 +13,7 @@ namespace MovieRecommendationsAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors("AllowAnyOrigin")]
     public class PartiesController : ControllerBase
     {
         private readonly IRepository _repository;
@@ -88,7 +89,6 @@ namespace MovieRecommendationsAPI.Controllers
         // GET: api/<PartiesController>/
         [HttpGet]
         [Route("getBatchBefore/{newestId}/andAfter/{oldestId}")]
-        [EnableCors("AllowAnyOrigin")]
         public IActionResult GetSwiperBatch(int newestId, int oldestId)
         {
             // how many movies
