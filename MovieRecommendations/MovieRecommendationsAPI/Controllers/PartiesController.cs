@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MoviesDataAccessLibrary.Models;
@@ -87,6 +88,7 @@ namespace MovieRecommendationsAPI.Controllers
         // GET: api/<PartiesController>/
         [HttpGet]
         [Route("getBatchBefore/{firstId}/andAfter/{lastId}")]
+        [EnableCors("AllowAnyOrigin")]
         public IActionResult GetSwiperBatch(int firstId, int lastId)
         {
             // how many movies

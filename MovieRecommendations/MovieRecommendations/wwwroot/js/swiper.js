@@ -12,4 +12,17 @@ let lastMovieIdCookieName = partyName.replace(" ", "") + "LastMovieId";
 let lastMovieId = getCookie(lastMovieIdCookieName);
 console.log("lastMovieId: " + lastMovieId);
 
+// in memory list of movies to pass to swiper
+let currentBatch = [];
+
 // fetch Batch (array) of movies for swiper
+fetchMovieBatch();
+async function fetchMovieBatch() {
+    let URL = `https://localhost:44311/api/parties/getBatchBefore/${firstMovieId}/andAfter/${lastMovieId}`
+    await $.getJSON(URL, function (data) {
+        for (var i = 0; i < data.length; i++) {
+            currentBatch[i] = data[i];
+        }
+    });
+    console.log(currentBatch);
+}
