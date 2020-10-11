@@ -25,7 +25,7 @@ $("#rejectMovie").click(function () {
     console.log("REJECT MOVIE: Reject Movie Clicked.");
     if (batchIndex >= 10) {
         //batchIndex = 0;
-        fetchMovieBatch()
+        fetchMovieBatch();
     } else {
         // batchIndex is the next movie to be loaded, the current movie is the -1
         oldestMovieId = currentBatch[batchIndex-1].id;
@@ -38,7 +38,7 @@ $("#acceptMovie").click(function () {
     console.log("Accept Movie Clicked.");
     if (batchIndex >= 10) {
         batchIndex = 0;
-        fetchMovieBatch()
+        fetchMovieBatch();
     } else {
         // batchIndex is the next movie to be loaded, the current movie is the -1
         addMovieToPartyChoices(currentBatch[batchIndex - 1]);

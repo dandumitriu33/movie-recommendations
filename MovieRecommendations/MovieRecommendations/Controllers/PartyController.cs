@@ -53,18 +53,18 @@ namespace MovieRecommendations.Controllers
         public IActionResult Details(int partyId)
         {
             Party party = _repository.GetPartyById(partyId);
-            string partyName = party.Name;
+            string partyName = party.Name.Replace(" ", "");
 
             // cookies for seen movies range
-            var newestMovie = Request.Cookies[$"{partyName.Replace(" ", "")}NewestMovieId"];
-            if (newestMovie == null)
+            
+            if (HttpContext.Request.Cookies.ContainsKey($"{partyName}NewestMovieId") == false)
             {
-                HttpContext.Response.Cookies.Append($"{partyName.Replace(" ", "")}NewestMovieId", "0");
+                HttpContext.Response.Cookies.Append($"{partyName}NewestMovieId", "0");
             }
-            var oldestMovie = Request.Cookies[$"{partyName.Replace(" ", "")}OldstMovieId"];
-            if (oldestMovie == null)
+            
+            if (HttpContext.Request.Cookies.ContainsKey($"{partyName}OldestMovieId") == false)
             {
-                HttpContext.Response.Cookies.Append($"{partyName.Replace(" ", "")}OldestMovieId", "0");
+                HttpContext.Response.Cookies.Append($"{partyName}OldestMovieId", "0");
             }
             
             Party partyFromDb = _repository.GetPartyById(partyId);

@@ -141,6 +141,7 @@ namespace MovieRecommendationsAPI.Controllers
             foreach (PartyChoice choice in validChoices)
             {
                 Movie tempMovie = _repository.GetMovieByMovieId(choice.MovieId);
+                result.Add(tempMovie);
             }
             return Ok(result);
         }
