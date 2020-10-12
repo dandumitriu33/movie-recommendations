@@ -17,3 +17,19 @@
     width: 300px;
     background-color: #B1F6B4;
 }
+
+.hold {
+
+}
+
+.hoveredLandingRed {
+    background-color: darkred;
+}
+
+.hoverLandingGreen {
+    background-color: darkgreen;
+}
+
+.invisible {
+    display: none;
+}
