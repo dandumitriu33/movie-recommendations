@@ -226,5 +226,10 @@ namespace MoviesDataAccessLibrary.Models
         {
             return _context.PartyChoices.Where(c => c.PartyId == partyId && c.Score == count).ToList();
         }
+
+        public List<PartyMember> GetPartyMembersForParty(int partyId)
+        {
+            return _context.PartyMembers.Where(p => p.PartyId == partyId).ToList();
+        }
     }
 }

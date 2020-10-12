@@ -26,3 +26,30 @@ async function addMemberToParty(partyId, memberEmail) {
         }
     })
 }
+
+
+
+setInterval(async function () {
+    updatePartyMembers();
+    console.log("Party members updated.");
+}, 10000);
+
+async function updatePartyMembers() {
+    let partyId = $("#partyId").text();
+    let URL = `https://localhost:44311/api/parties/getMembers/${partyId}`;
+    await $.getJSON(URL, function (data) {
+        $("#memberContainer").empty();
+        for (var i = 0; i < data.length; i++) {
+            let member = data[i];
+            let element = `
+                            <div class="card mb-4" style="min-width: 12rem; max-width: 12rem">
+                                <img class="card-img-top" src="https://localhost:44318/img/default-avatar.jpg" alt="Card image cap">
+                                <div class="card-body">
+                                    <h5 class="card-title">User: ${member.email}</h5>
+                                </div>
+                            </div>
+                          `;
+            $("#memberContainer").append(element);
+        }
+    })
+}
