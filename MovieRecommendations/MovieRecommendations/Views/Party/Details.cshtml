@@ -4,6 +4,10 @@
     ViewData["Title"] = "Party details";
 }
 
+@section OtherCSS {
+    <link rel="stylesheet" href="~/css/dragdrop.css" />
+}
+
 <div class="text-center">
     <h2 id="partyName">@Model.Name</h2><span hidden id="partyId">@Model.Id</span>
 </div>
@@ -81,4 +85,5 @@
     <script type="module" src="~/js/utils.js"></script>
     <script type="module" src="~/js/matches.js"></script>
     <script type="module" src="~/js/members.js"></script>
+    <script type="module" src="~/js/dragdrop.js"></script>
 }
