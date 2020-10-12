@@ -1,6 +1,4 @@
-﻿body {
-
-}
+﻿/* Only affects DragDrop elements*/
 
 .swipeDraggable {
     min-width: 12rem;
@@ -20,18 +18,10 @@
     background-color: #B1F6B4;
 }
 
-.hold {
-
-}
-
 .hoveredLandingRed {
     background-color: darkred;
 }
 
 .hoveredLandingGreen {
     background-color: darkgreen;
-}
-
-.invisible {
-    display: none;
 }

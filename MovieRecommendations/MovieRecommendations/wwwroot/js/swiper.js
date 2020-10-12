@@ -3,15 +3,12 @@
 // get the party name to construct the cookies
 let partyName = $("#partyName").text();
 let partyId = $("#partyId").text();
-//console.log(partyName.replace(" ", ""));
 
 // construct cookie names and get values
 let newestMovieIdCookieName = partyName.replace(" ", "") + "NewestMovieId";
 let newestMovieId = getCookie(newestMovieIdCookieName);
-//console.log("newestMovieId: " + newestMovieId);
 let oldestMovieIdCookieName = partyName.replace(" ", "") + "OldestMovieId";
 let oldestMovieId = getCookie(oldestMovieIdCookieName);
-//console.log("oldestMovieId: " + oldestMovieId);
 
 // in memory list of movies to pass to swiper
 let currentBatch = [];
@@ -71,8 +68,6 @@ async function addMovieToPartyChoices(movie) {
     })
 }
 
-
-
 async function fetchMovieBatch() {
     let URL = `https://localhost:44311/api/parties/getBatchBefore/${newestMovieId}/andAfter/${oldestMovieId}`
     await $.getJSON(URL, function (data) {
@@ -81,11 +76,7 @@ async function fetchMovieBatch() {
         }
     });
 
-    //console.log(currentBatch);
-    //console.log(currentBatch.length);
-
     // set local variables and cookies
-    //console.log("Setting newestMovieId");
     if (currentBatch[0].id > newestMovieId) {
         newestMovieId = currentBatch[0].id;
         setCookie(newestMovieIdCookieName, newestMovieId);
@@ -94,14 +85,10 @@ async function fetchMovieBatch() {
     batchIndex = 0;
 
     // load swiper
-    //console.log("FETCH BATCH: Batch fetched.");
-    //console.log(currentBatch);
     loadSwiper(currentBatch[batchIndex]);
 }
 
-
 function loadSwiper(movie) {
-    //console.log("LOAD SWIPER: batch index before load " + batchIndex);
     let element = `
                     <div class="card mb-4 swipeDraggable" id="swipeDraggable" draggable="true">
                         <img class="card-img-top" src="https://localhost:44318/img/${movie.mainGenre.toLowerCase()}.jpg" alt="Card image cap" draggable="false">
@@ -115,7 +102,6 @@ function loadSwiper(movie) {
     $("#swiperCardContainer").empty();
     $("#swiperCardContainer").append(element);
     batchIndex++;
-    //console.log("LOAD SWIPER: batch index after load " + batchIndex);
 };
 
 // export
