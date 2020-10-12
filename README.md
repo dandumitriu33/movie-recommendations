@@ -17,7 +17,7 @@ Bootstrap 4
 **Tinder For Movies** - Create a party(group) of users, add users, start swiping right or left on movies you prefer to watch with those members on movie night. If they swipe Yes on the same movies, they will show up as matches.  
 
 
-## Preview
+## Preview (30 MB .gif file, allow some time to load)
 
 ### Simple recommendations, Rabbit Hole and lastly "Tinder for movies"
 
