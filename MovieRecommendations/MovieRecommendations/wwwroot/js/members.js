@@ -26,3 +26,14 @@ async function addMemberToParty(partyId, memberEmail) {
         }
     })
 }
+
+let partyId = $("#partyId").text();
+
+setInterval(async function () {
+    updatePartyMembers(partyId);
+    console.log("Party members updated.");
+}, 10000);
+
+async function updatePartyMembers(partyId) {
+
+}

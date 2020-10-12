@@ -161,5 +161,15 @@ namespace MovieRecommendationsAPI.Controllers
             _repository.AddMemberToParty(newMember);
             return NoContent();
         }
+
+        // GET api/<PartiesController>/getMembers/{partyId}
+        [HttpGet]
+        [Route("getMembers/{partyId}")]
+        [EnableCors("AllowAnyOrigin")]
+        public IActionResult GetPartyMembers(int partyId)
+        {
+            List<PartyMember> partyMembers = _repository.GetPartyMembersForParty(partyId);
+            return Ok(partyMembers);
+        }
     }
 }
