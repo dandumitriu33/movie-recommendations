@@ -143,6 +143,7 @@ namespace MovieRecommendationsAPI.Controllers
                 Movie tempMovie = _repository.GetMovieByMovieId(choice.MovieId);
                 result.Add(tempMovie);
             }
+            result.Reverse();
             return Ok(result);
         }
 

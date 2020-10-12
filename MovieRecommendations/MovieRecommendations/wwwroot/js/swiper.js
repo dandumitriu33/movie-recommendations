@@ -21,7 +21,6 @@ let batchIndex = 0;
 $("#rejectMovie").click(rejectMovieAction);
 
 function rejectMovieAction() {
-    console.log("REJECT MOVIE: Reject Movie Clicked.");
     if (batchIndex >= 10) {
         //batchIndex = 0;
         fetchMovieBatch();
@@ -36,7 +35,6 @@ function rejectMovieAction() {
 $("#acceptMovie").click(acceptMovieAction);
 
 function acceptMovieAction() {
-    console.log("Accept Movie Clicked.");
     if (batchIndex >= 10) {
         batchIndex = 0;
         fetchMovieBatch();
