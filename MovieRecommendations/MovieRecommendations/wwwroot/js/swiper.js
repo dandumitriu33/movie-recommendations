@@ -5,9 +5,9 @@ let partyName = $("#partyName").text();
 let partyId = $("#partyId").text();
 
 // construct cookie names and get values
-let newestMovieIdCookieName = partyName.replace(" ", "") + "NewestMovieId";
+let newestMovieIdCookieName = partyName.replaceAll(" ", "") + "NewestMovieId";
 let newestMovieId = getCookie(newestMovieIdCookieName);
-let oldestMovieIdCookieName = partyName.replace(" ", "") + "OldestMovieId";
+let oldestMovieIdCookieName = partyName.replaceAll(" ", "") + "OldestMovieId";
 let oldestMovieId = getCookie(oldestMovieIdCookieName);
 
 // in memory list of movies to pass to swiper
@@ -78,6 +78,9 @@ async function fetchMovieBatch() {
     if (currentBatch[0].id > newestMovieId) {
         newestMovieId = currentBatch[0].id;
         setCookie(newestMovieIdCookieName, newestMovieId);
+    }
+    if (oldestMovieId == 0) {
+        setCookie(oldestMovieIdCookieName, newestMovieId);
     }
     // reset the batchIndex to start the new list from 0
     batchIndex = 0;

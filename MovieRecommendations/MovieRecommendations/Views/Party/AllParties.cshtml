@@ -14,7 +14,15 @@
     <div class="card-deck">
         @if (Model == null || Model.Count == 0)
         {
-            <p>You aren't a member of any parties at this time.</p>
+            <div class="card mb-4" style="min-width: 12rem; max-width: 12rem">
+                <img class="card-img-top" src="~/img/default.jpg" alt="Card image cap">
+                <div class="card-body">
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newPartyModalCenter">
+                        Create New Party
+                    </button>
+                </div>
+            </div>
         }
         else
         {
