@@ -9,11 +9,13 @@
 }
 
 .swipeLandingRed {
+    border-radius: 8px;
     width: 300px;
     background-color: #F09292;
 }
 
 .swipeLandingGreen {
+    border-radius: 8px;
     width: 300px;
     background-color: #B1F6B4;
 }

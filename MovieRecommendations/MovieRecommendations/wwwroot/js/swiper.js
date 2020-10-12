@@ -21,20 +21,24 @@ currentBatch = fetchMovieBatch();
 
 // swiper feeder mechanism
 let batchIndex = 0;
-$("#rejectMovie").click(function () {
+$("#rejectMovie").click(rejectMovieAction);
+
+function rejectMovieAction() {
     console.log("REJECT MOVIE: Reject Movie Clicked.");
     if (batchIndex >= 10) {
         //batchIndex = 0;
         fetchMovieBatch();
     } else {
         // batchIndex is the next movie to be loaded, the current movie is the -1
-        oldestMovieId = currentBatch[batchIndex-1].id;
+        oldestMovieId = currentBatch[batchIndex - 1].id;
         loadSwiper(currentBatch[batchIndex]);
         setCookie(oldestMovieIdCookieName, oldestMovieId);
     }
-})
+}
 
-$("#acceptMovie").click(function () {
+$("#acceptMovie").click(acceptMovieAction);
+
+function acceptMovieAction() {
     console.log("Accept Movie Clicked.");
     if (batchIndex >= 10) {
         batchIndex = 0;
@@ -46,7 +50,7 @@ $("#acceptMovie").click(function () {
         loadSwiper(currentBatch[batchIndex]);
         setCookie(oldestMovieIdCookieName, oldestMovieId);
     }
-})
+}
 
 async function addMovieToPartyChoices(movie) {
     let URL = `https://localhost:44311/api/parties/partyChoices/${partyId}/choice/${movie.id}`;
@@ -112,6 +116,8 @@ function loadSwiper(movie) {
     $("#swiperCardContainer").append(element);
     batchIndex++;
     //console.log("LOAD SWIPER: batch index after load " + batchIndex);
-}
+};
 
+// export
+export { rejectMovieAction, acceptMovieAction };
 

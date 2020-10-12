@@ -1,4 +1,5 @@
-﻿console.log('DRAGDROP: hi');
+﻿import { rejectMovieAction, acceptMovieAction } from './swiper.js';
+console.log('DRAGDROP: hi');
 
 let swipeDraggableElement = document.getElementById('swipeDraggable');
 let swipeLandingRedElement = document.querySelector('.swipeLandingRed');
@@ -10,19 +11,19 @@ function reloadCard() {
     console.log('Draggable loaded');
 }
 
-// Draggable Element listeners & functions - doesn't work because the lement is changed and not re-aquired
-swipeDraggableElement.addEventListener('ondragstart', dragStart);
-swipeDraggableElement.addEventListener('dragend', dragEnd);
+//// Draggable Element listeners & functions - doesn't work because the lement is changed and not re-aquired
+//swipeDraggableElement.addEventListener('ondragstart', dragStart);
+//swipeDraggableElement.addEventListener('dragend', dragEnd);
 
-// Drag functions
-function dragStart() {
-    swipeDraggableElement = document.getElementById('swipeDraggable');
-    console.log('start');
-}
+//// Drag functions
+//function dragStart() {
+//    swipeDraggableElement = document.getElementById('swipeDraggable');
+//    console.log('start');
+//}
 
-function dragEnd() {
-    console.log('end');
-}
+//function dragEnd() {
+//    console.log('end');
+//}
 
 // Drag events on Red
 swipeLandingRedElement.addEventListener('dragover', dragOverRed);
@@ -49,6 +50,7 @@ function dragLeaveRed() {
 
 function dragDropRed() {
     this.className = 'swipeLandingRed';
+    rejectMovieAction();
     console.log('drop');
 }
 
@@ -77,5 +79,6 @@ function dragLeaveGreen() {
 
 function dragDropGreen() {
     this.className = 'swipeLandingGreen';
+    acceptMovieAction();
     console.log('dropgreen');
 }
