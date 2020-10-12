@@ -22,5 +22,16 @@ namespace MoviesDataAccessLibrary.Models
         public IEnumerable<NextMovie> GetNextMoviesForMovieByIdForSuggestions(int currentMovieId, int limit, int offset);
         public void AddNextMovie(int previousMovieId, int nextMovieId, int score);
         public void UpdateNextMovieScore(int currentMovieId, int nextMovieId, int score);
+        public List<Party> GetUserParties(string userEmail);
+        public Party GetPartyById(int partyId);
+        public void AddParty(Party party);
+        public void AddMemberToParty(PartyMember newPartyMember);
+        public PartyMember GetPartyMember(int partyId, string userEmail);
+        public void RemoveMemberFromParty(PartyMember partyMember);
+        public void ResetChoicesForParty(int partyId);
+        public List<Movie> GetBatch(int newestId, int oldestId, int limit);
+        public void AddChoice(PartyChoice choice);
+        public int GetPartyCount(int partyId);
+        public List<PartyChoice> GetMovieIdsForParty(int partyId, int count);
     }
 }

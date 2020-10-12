@@ -1,0 +1,27 @@
+﻿/* Only affects DragDrop elements*/
+
+.swipeDraggable {
+    min-width: 12rem;
+    max-width: 12rem;
+    cursor: pointer;
+}
+
+.swipeLandingRed {
+    border-radius: 8px;
+    width: 300px;
+    background-color: #F09292;
+}
+
+.swipeLandingGreen {
+    border-radius: 8px;
+    width: 300px;
+    background-color: #B1F6B4;
+}
+
+.hoveredLandingRed {
+    background-color: darkred;
+}
+
+.hoveredLandingGreen {
+    background-color: darkgreen;
+}

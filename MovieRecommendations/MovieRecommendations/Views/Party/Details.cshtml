@@ -1,0 +1,92 @@
+﻿@model Party
+
+@{
+    ViewData["Title"] = "Party details";
+}
+
+@section OtherCSS {
+    <link rel="stylesheet" href="~/css/dragdrop.css" />
+}
+
+<div class="text-center">
+    <h2 id="partyName">@Model.Name</h2><span hidden id="partyId">@Model.Id</span>
+</div>
+
+<hr />
+
+<h3>Left for No, right for Yes</h3>
+
+<div class="row justify-content-center">
+    <div class="col-auto">
+        <div class="table-responsive">
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <td class="swipeLandingRed" id="rejectMovie">
+                        </td>
+
+                        <td id="swiperCardContainer">
+                            <div class="card mb-4 swipeDraggable" id="swipeDraggable" draggable="true">
+                                <div class="text-center">
+                                    <img class="card-img-top rounded" src="~/img/ajax-loader.gif" style="width: 16px;" alt="Card image cap">
+                                </div>
+                                
+                                <div class="card-body">
+                                    <h5 class="card-title">Loading...</h5>
+                                    <p class="card-text">IMDB: Loading...</p>
+                                    <p class="card-text">Genres: Loading...</p>
+                                </div>
+                            </div>
+                        </td>
+
+                        <td class="swipeLandingGreen" id="acceptMovie">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<hr />
+
+<div class="text-center">
+    <h3>Matches</h3>
+</div>
+<div class="container">
+    <div class="card-deck" id="matchesContainer">
+
+    </div>
+</div>
+
+<hr />
+<div class="text-center">
+    <h2>Party Members</h2>
+
+    <div class="container">
+        <div class="card-deck" id="memberContainer">
+            <div class="card mb-4" style="min-width: 12rem; max-width: 12rem">
+                <img class="card-img-top" src="~/img/default.jpg" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">User email</h5>
+                    <p class="card-text">Stuff</p>
+                    <button class="btn btn-primary mb-2">Kick</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <form class="form-inline">
+        <label class="sr-only" for="inlineFormInputEmail">Email</label>
+        <input type="text" class="form-control mb-2 mr-sm-2" id="inlineFormInputEmail" placeholder="friend@email.com">
+        <button type="submit" class="btn btn-primary mb-2" id="addMemberButton">Add Member</button>
+    </form>
+</div>
+
+@section Scripts {
+    <script type="module" src="~/js/swiper.js"></script>
+    <script type="module" src="~/js/utils.js"></script>
+    <script type="module" src="~/js/matches.js"></script>
+    <script type="module" src="~/js/members.js"></script>
+    <script type="module" src="~/js/dragdrop.js"></script>
+}

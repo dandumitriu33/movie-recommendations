@@ -145,5 +145,86 @@ namespace MoviesDataAccessLibrary.Models
                 _context.SaveChanges();
             }
         }
+
+        public List<Party> GetUserParties(string userEmail)
+        {
+            List<PartyMember> userMemberships = _context.PartyMembers.Where(p => p.Email == userEmail).ToList();
+            List<Party> userParties = new List<Party>();
+            
+            foreach (var entry in userMemberships)
+            {
+                Party partyFromDb = _context.Parties.Where(p => p.Id == entry.PartyId).First();
+                userParties.Add(partyFromDb);
+            }
+            
+            return userParties;
+        }
+
+        public Party GetPartyById(int partyId)
+        {
+            return _context.Parties.Where(p => p.Id == partyId).FirstOrDefault();
+        }
+
+        public void AddParty(Party party)
+        {
+            _context.Parties.Add(party);
+            _context.SaveChanges();
+        }
+
+        public void AddMemberToParty(PartyMember newPartyMember)
+        {
+            _context.PartyMembers.Add(newPartyMember);
+            _context.SaveChanges();
+        }
+
+        public PartyMember GetPartyMember(int partyId, string userEmail)
+        {
+            return _context.PartyMembers.Where(p => p.PartyId == partyId && p.Email == userEmail).FirstOrDefault();
+        }
+
+        public void RemoveMemberFromParty(PartyMember partyMember)
+        {
+            _context.PartyMembers.Remove(partyMember);
+            _context.SaveChanges();
+        }
+
+        public void ResetChoicesForParty(int partyId)
+        {
+            _context.PartyChoices.RemoveRange(_context.PartyChoices.Where(c => c.PartyId == partyId));
+            _context.SaveChanges();
+        }
+
+        public List<Movie> GetBatch( int newestId, int oldestId, int limit)
+        {
+            // the newest movie added to the DB will have the highest ID - incrementing
+            // the oldest movie represents the last fetched movie chronologically
+            List<Movie> batch = _context.Movies.Where(m => m.Id > newestId || m.Id < oldestId).OrderByDescending(m => m.Id).Take(limit).ToList();
+            return batch;
+        }
+
+        public void AddChoice(PartyChoice choice)
+        {
+            PartyChoice choiceFromDb = _context.PartyChoices.Where(c => c.PartyId == choice.PartyId && c.MovieId == choice.MovieId).FirstOrDefault();
+            if (choiceFromDb != null)
+            {
+                choiceFromDb.Score += choice.Score;
+                _context.SaveChanges();
+            }
+            else
+            {
+                _context.PartyChoices.Add(choice);
+                _context.SaveChanges();
+            }
+        }
+
+        public int GetPartyCount(int partyId)
+        {
+            return _context.PartyMembers.Where(p => p.PartyId == partyId).Count();
+        }
+
+        public List<PartyChoice> GetMovieIdsForParty(int partyId, int count)
+        {
+            return _context.PartyChoices.Where(c => c.PartyId == partyId && c.Score == count).ToList();
+        }
     }
 }

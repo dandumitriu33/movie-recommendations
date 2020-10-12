@@ -101,6 +101,16 @@ namespace MovieRecommendations.Controllers
         }
 
         /// <summary>
+        /// Utility page with the posters to have links for JavaScript. Simulating links on a CDN.
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public IActionResult MoviePosters()
+        {
+            return View();
+        }
+
+        /// <summary>
         /// Adds the movie to the NextMovies table with a const score and if it already exists, it just increments the score.
         /// </summary>
         /// <param name="userEmail"></param>
