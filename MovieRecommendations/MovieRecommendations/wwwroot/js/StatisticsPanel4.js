@@ -26,7 +26,7 @@ let botRightChart = new Chart(chart4, {
     options: {
         title: {
             display: true,
-            text: 'Largest cities in Massachusetts',
+            text: 'Temporary Placeholder - working on real data', // Inventory Freshness By Genre: Drama
             fontSize: 18
         },
         legend: {

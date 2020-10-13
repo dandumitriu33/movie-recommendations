@@ -34,5 +34,6 @@ namespace MoviesDataAccessLibrary.Models
         public int GetPartyCount(int partyId);
         public List<PartyChoice> GetMovieIdsForParty(int partyId, int count);
         public List<PartyMember> GetPartyMembersForParty(int partyId);
+        public List<GenreCountDTO> GetGenreCount();
     }
 }

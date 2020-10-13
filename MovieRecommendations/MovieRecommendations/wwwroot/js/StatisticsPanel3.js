@@ -5,25 +5,27 @@ let chart3 = document.getElementById('chart3').getContext('2d');
 let botLeftChart = new Chart(chart3, {
     type: 'line', // bar, horizontalBar, pie, line, doughnut, radar, polarArea
     data: {
-        labels: ['Boston', 'Worcester', 'Springfield', 'Lowell', 'Cambridge', 'New Bedford'],
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
         datasets: [{
-            label: 'Population',
+            label: 'Users',
             data: [
-                617594,
-                181045,
-                153060,
-                106519,
+                23012,
+                34231,
+                45123,
+                47322,
                 105162,
-                95072
+                102992,
+                123012,
+                134231,
+                145123,
+                147322,
+                205162,
+                222321,
+                253021,
+                264104
             ],
-            backgroundColor: [
-                'green',
-                'blue',
-                'red',
-                'brown',
-                'yellow',
-                'cyan'
-            ],
+            fill: false,
+            backgroundColor: 'green',
             borderWidth: 1,
             borderColor: '#777',
             hoverBorderWidth: 2,
@@ -33,7 +35,7 @@ let botLeftChart = new Chart(chart3, {
     options: {
         title: {
             display: true,
-            text: 'Largest cities in Massachusetts',
+            text: 'Monthly Global User Count*',
             fontSize: 18
         },
         legend: {

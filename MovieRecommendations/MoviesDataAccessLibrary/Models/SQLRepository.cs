@@ -231,5 +231,17 @@ namespace MoviesDataAccessLibrary.Models
         {
             return _context.PartyMembers.Where(p => p.PartyId == partyId).ToList();
         }
+
+        public List<GenreCountDTO> GetGenreCount()
+        {
+            return _context.Movies.GroupBy(
+                m => m.MainGenre,
+                m => m.Title,
+                (key, g) => new GenreCountDTO { 
+                                                GenreName = key, 
+                                                Count = g.Count(), 
+                                                Color = "Default" }
+                ).ToList();
+        }
     }
 }

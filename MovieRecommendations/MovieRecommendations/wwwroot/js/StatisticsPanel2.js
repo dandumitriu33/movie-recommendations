@@ -33,7 +33,7 @@ let topRightChart = new Chart(chart2, {
     options: {
         title: {
             display: true,
-            text: 'Largest cities in Massachusetts',
+            text: 'Temporary Placeholder - working on real data', // Community Favourite Genres
             fontSize: 18
         },
         legend: {
