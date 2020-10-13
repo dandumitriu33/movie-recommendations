@@ -243,5 +243,14 @@ namespace MoviesDataAccessLibrary.Models
                                                 Color = "Default" }
                 ).ToList();
         }
+
+        public List<CommunityGenreScoreDTO> GetCommunityGenresScore()
+        {
+            // not the greatest Linq query - improve later
+            var result = from communityLike in _context.CommunityLikes
+                         join movie in _context.Movies on communityLike.MovieId equals movie.Id
+                         select new CommunityGenreScoreDTO { GenreName = movie.MainGenre, Score = communityLike.Score, Color = "Default" };
+            return result.ToList();
+        }
     }
 }

@@ -56,11 +56,49 @@ namespace MovieRecommendationsAPI.Controllers
             return Ok(sortedGenreCount);
         }
 
-        // GET api/<StatisticsController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        // GET api/<StatisticsController>/community
+        [HttpGet("community")]
+        [EnableCors("AllowAnyOrigin")]
+        public IActionResult GetCommunityGenresCount(int id)
         {
-            return "value";
+            Dictionary<string, string> colors = new Dictionary<string, string>()
+            {
+                { "Action", "#8AFAAB" },
+                { "Adventure", "brown" },
+                { "Comedy", "yellow" },
+                { "Crime", "blue" },
+                { "Drama", "red" },
+                { "Default", "white" },
+                { "Fantasy", "#B87CDB" },
+                { "Horror", "gray" },
+                { "Mystery", "green" },
+                { "Romance", "cyan" },
+                { "Sci-Fi", "#580070" },
+                { "Western", "orange" }
+            };
+            var communityGenreScore = _repository.GetCommunityGenresScore();
+            var groupedCommunityGenreScore = communityGenreScore
+                                                            .GroupBy(s => s.GenreName)
+                                                            .Select(s => new CommunityGenreScoreDTO
+                                                            {
+                                                                GenreName = s.First().GenreName,
+                                                                Score = s.Sum(g => g.Score),
+                                                                Color = "Default"
+                                                            })
+                                                            .OrderBy(g => g.Score)
+                                                            .ToList();
+            List<CommunityGenreScoreDTO> result = new List<CommunityGenreScoreDTO>();
+            foreach (var genre in groupedCommunityGenreScore)
+            {
+                CommunityGenreScoreDTO tempCommunityGenreScore = new CommunityGenreScoreDTO
+                {
+                    GenreName = genre.GenreName,
+                    Score = genre.Score,
+                    Color = colors[genre.GenreName]
+                };
+                result.Add(tempCommunityGenreScore);
+            }
+            return Ok(result);
         }
 
     }
