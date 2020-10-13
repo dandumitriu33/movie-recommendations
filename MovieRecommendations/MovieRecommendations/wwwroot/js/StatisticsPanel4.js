@@ -42,7 +42,7 @@ function refreshPanelHorror() {
         options: {
             title: {
                 display: true,
-                text: 'Latest Horror Movies', 
+                text: 'Latest Horror Movies w/ Rating', 
                 fontSize: 16
             },
             legend: {
