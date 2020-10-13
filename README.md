@@ -9,6 +9,7 @@ ASP.NET Core Identity 3.1
 Entity Framework Core 3.1  
 Data generated with Mockaroo - https://mockaroo.com/  
 Bootstrap 4  
+Statistics Panel with Chart.js - https://www.chartjs.org/
 
 **Simple Filtering** - just a query getting the newest movies with the highest rating  
 **Content Based Filtering** - similar movies to what the user watched last (last history entry - by Main Genre and year)  
@@ -22,3 +23,7 @@ Bootstrap 4
 ### Simple recommendations, Rabbit Hole and lastly "Tinder for movies"
 
 ![alt text](Screenshots/Preview.gif?raw=true)
+
+### Statistics Panel
+
+![alt text](Screenshots/StatisticsPanel.jpg?raw=true)
