@@ -85,10 +85,9 @@ namespace MovieRecommendationsAPI.Controllers
                                                                 Score = s.Sum(g => g.Score),
                                                                 Color = "Default"
                                                             })
-                                                            .OrderBy(g => g.Score)
                                                             .ToList();
             List<CommunityGenreScoreDTO> result = new List<CommunityGenreScoreDTO>();
-            foreach (var genre in groupedCommunityGenreScore)
+            foreach (var genre in groupedCommunityGenreScore.Where(g => g.Score > 0).OrderByDescending(g => g.Score).ToList())
             {
                 CommunityGenreScoreDTO tempCommunityGenreScore = new CommunityGenreScoreDTO
                 {

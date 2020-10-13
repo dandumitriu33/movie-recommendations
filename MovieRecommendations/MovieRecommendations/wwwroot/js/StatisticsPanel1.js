@@ -42,7 +42,7 @@ function refreshPanel() {
         data: {
             labels: genreLabels,
             datasets: [{
-                label: 'Population',
+                label: 'Inventory Genres',
                 data: genreCounts,
                 backgroundColor: genreColors,
                 //backgroundColor: [ // can be color name, 'rgba(255, 99, 132, 0.6)', hexadecimal value '#777'
@@ -88,4 +88,3 @@ function refreshPanel() {
     })
 
 };
-
