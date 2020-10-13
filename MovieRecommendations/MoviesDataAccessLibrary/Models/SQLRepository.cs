@@ -252,5 +252,10 @@ namespace MoviesDataAccessLibrary.Models
                          select new CommunityGenreScoreDTO { GenreName = movie.MainGenre, Score = communityLike.Score, Color = "Default" };
             return result.ToList();
         }
+
+        public List<Movie> GetLatestHorrorMovies(int chartSize)
+        {
+            return _context.Movies.Where(m => m.MainGenre == "Horror").OrderByDescending(m => m.ReleaseYear).Take(chartSize).ToList();
+        }
     }
 }

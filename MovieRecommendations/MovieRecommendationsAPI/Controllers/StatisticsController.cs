@@ -100,5 +100,15 @@ namespace MovieRecommendationsAPI.Controllers
             return Ok(result);
         }
 
+        // GET api/<StatisticsController>/community
+        [HttpGet("inventory/horror")]
+        [EnableCors("AllowAnyOrigin")]
+        public IActionResult GetLatestHorrorMovies()
+        {
+            int chartSize = 6;
+            List<Movie> latestHorrorMovies = _repository.GetLatestHorrorMovies(chartSize);
+            return Ok(latestHorrorMovies);
+        }
+
     }
 }

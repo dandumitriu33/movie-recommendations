@@ -36,5 +36,6 @@ namespace MoviesDataAccessLibrary.Models
         public List<PartyMember> GetPartyMembersForParty(int partyId);
         public List<GenreCountDTO> GetGenreCount();
         public List<CommunityGenreScoreDTO> GetCommunityGenresScore();
+        public List<Movie> GetLatestHorrorMovies(int chartSize);
     }
 }
