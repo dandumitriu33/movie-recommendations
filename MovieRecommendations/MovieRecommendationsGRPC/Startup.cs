@@ -12,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using MovieRecommendationsGRPC.Services;
 using MoviesDataAccessLibrary.Entities;
 using MoviesDataAccessLibrary.Contexts;
+using MoviesDataAccessLibrary.Repositories;
 
 namespace MovieRecommendationsGRPC
 {

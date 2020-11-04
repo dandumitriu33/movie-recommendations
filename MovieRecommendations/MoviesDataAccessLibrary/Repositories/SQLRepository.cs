@@ -5,8 +5,10 @@ using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
+using MoviesDataAccessLibrary.Entities;
+using MoviesDataAccessLibrary.Repositories;
 
-namespace MoviesDataAccessLibrary.Entities
+namespace MoviesDataAccessLibrary.Repositories
 {
     public class SQLRepository : IRepository
     {

@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using MoviesDataAccessLibrary.Entities;
 
-namespace MoviesDataAccessLibrary.Entities
+namespace MoviesDataAccessLibrary.Repositories
 {
     public interface IRepository
     {

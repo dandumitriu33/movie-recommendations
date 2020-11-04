@@ -13,6 +13,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using MoviesDataAccessLibrary.Entities;
 using MoviesDataAccessLibrary.Contexts;
+using MoviesDataAccessLibrary.Repositories;
 
 namespace MovieRecommendationsAPI
 {

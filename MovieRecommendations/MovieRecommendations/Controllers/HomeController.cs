@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using MovieRecommendations.Models;
 using MovieRecommendations.ViewModels;
 using MoviesDataAccessLibrary.Entities;
+using MoviesDataAccessLibrary.Repositories;
 
 namespace MovieRecommendations.Controllers
 {
