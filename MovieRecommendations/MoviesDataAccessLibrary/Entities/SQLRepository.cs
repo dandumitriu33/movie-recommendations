@@ -5,7 +5,7 @@ using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MoviesDataAccessLibrary.Models
+namespace MoviesDataAccessLibrary.Entities
 {
     public class SQLRepository : IRepository
     {

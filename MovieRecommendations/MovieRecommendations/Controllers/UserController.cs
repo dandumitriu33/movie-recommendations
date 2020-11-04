@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using MovieRecommendations.ViewModels;
-using MoviesDataAccessLibrary.Models;
+using MoviesDataAccessLibrary.Entities;
 
 namespace MovieRecommendations.Controllers
 {

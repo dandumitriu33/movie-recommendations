@@ -1,6 +1,6 @@
 ﻿using Grpc.Core;
 using Microsoft.Extensions.Logging;
-using MoviesDataAccessLibrary.Models;
+using MoviesDataAccessLibrary.Entities;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System;
