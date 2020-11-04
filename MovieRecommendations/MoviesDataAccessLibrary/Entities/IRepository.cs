@@ -34,8 +34,8 @@ namespace MoviesDataAccessLibrary.Entities
         public int GetPartyCount(int partyId);
         public List<PartyChoice> GetMovieIdsForParty(int partyId, int count);
         public List<PartyMember> GetPartyMembersForParty(int partyId);
-        public List<GenreCountDTO> GetGenreCount();
-        public List<CommunityGenreScoreDTO> GetCommunityGenresScore();
+        public List<GenreCount> GetGenreCount();
+        public List<CommunityGenreScore> GetCommunityGenresScore();
         public List<Movie> GetLatestHorrorMovies(int chartSize);
     }
 }

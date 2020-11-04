@@ -25,7 +25,7 @@ namespace MovieRecommendationsAPI.Controllers
         [EnableCors("AllowAnyOrigin")]
         public IActionResult GetInventoryGenresCount()
         {
-            List<GenreCountDTO> genreCount = new List<GenreCountDTO>();
+            List<GenreCount> genreCount = new List<GenreCount>();
             Dictionary<string, string> colors = new Dictionary<string, string>()
             {
                 { "Action", "#8AFAAB" },
@@ -44,7 +44,7 @@ namespace MovieRecommendationsAPI.Controllers
             var dbGenreCount = _repository.GetGenreCount();
             foreach (var dbGenre in dbGenreCount)
             {
-                GenreCountDTO tempGenreCount = new GenreCountDTO
+                GenreCount tempGenreCount = new GenreCount
                 {
                     GenreName = dbGenre.GenreName,
                     Count = dbGenre.Count,
@@ -52,7 +52,7 @@ namespace MovieRecommendationsAPI.Controllers
                 };
                 genreCount.Add(tempGenreCount);
             }
-            List<GenreCountDTO> sortedGenreCount = genreCount.OrderBy(g => g.Count).ToList();
+            List<GenreCount> sortedGenreCount = genreCount.OrderBy(g => g.Count).ToList();
             return Ok(sortedGenreCount);
         }
 
@@ -79,17 +79,17 @@ namespace MovieRecommendationsAPI.Controllers
             var communityGenreScore = _repository.GetCommunityGenresScore();
             var groupedCommunityGenreScore = communityGenreScore
                                                             .GroupBy(s => s.GenreName)
-                                                            .Select(s => new CommunityGenreScoreDTO
+                                                            .Select(s => new CommunityGenreScore
                                                             {
                                                                 GenreName = s.First().GenreName,
                                                                 Score = s.Sum(g => g.Score),
                                                                 Color = "Default"
                                                             })
                                                             .ToList();
-            List<CommunityGenreScoreDTO> result = new List<CommunityGenreScoreDTO>();
+            List<CommunityGenreScore> result = new List<CommunityGenreScore>();
             foreach (var genre in groupedCommunityGenreScore.Where(g => g.Score > 0).OrderByDescending(g => g.Score).ToList())
             {
-                CommunityGenreScoreDTO tempCommunityGenreScore = new CommunityGenreScoreDTO
+                CommunityGenreScore tempCommunityGenreScore = new CommunityGenreScore
                 {
                     GenreName = genre.GenreName,
                     Score = genre.Score,

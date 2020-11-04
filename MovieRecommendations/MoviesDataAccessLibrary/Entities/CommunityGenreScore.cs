@@ -4,10 +4,10 @@ using System.Text;
 
 namespace MoviesDataAccessLibrary.Entities
 {
-    public class GenreCountDTO
+    public class CommunityGenreScore
     {
         public string GenreName { get; set; }
-        public int Count { get; set; }
+        public int Score { get; set; }
         public string Color { get; set; }
     }
 }

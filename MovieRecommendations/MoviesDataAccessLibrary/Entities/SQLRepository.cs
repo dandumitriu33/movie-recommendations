@@ -232,24 +232,24 @@ namespace MoviesDataAccessLibrary.Entities
             return _context.PartyMembers.Where(p => p.PartyId == partyId).ToList();
         }
 
-        public List<GenreCountDTO> GetGenreCount()
+        public List<GenreCount> GetGenreCount()
         {
             return _context.Movies.GroupBy(
                 m => m.MainGenre,
                 m => m.Title,
-                (key, g) => new GenreCountDTO { 
+                (key, g) => new GenreCount { 
                                                 GenreName = key, 
                                                 Count = g.Count(), 
                                                 Color = "Default" }
                 ).ToList();
         }
 
-        public List<CommunityGenreScoreDTO> GetCommunityGenresScore()
+        public List<CommunityGenreScore> GetCommunityGenresScore()
         {
             // not the greatest Linq query - improve later
             var result = from communityLike in _context.CommunityLikes
                          join movie in _context.Movies on communityLike.MovieId equals movie.Id
-                         select new CommunityGenreScoreDTO { GenreName = movie.MainGenre, Score = communityLike.Score, Color = "Default" };
+                         select new CommunityGenreScore { GenreName = movie.MainGenre, Score = communityLike.Score, Color = "Default" };
             return result.ToList();
         }
 
