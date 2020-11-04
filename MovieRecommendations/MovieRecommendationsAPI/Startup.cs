@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using MoviesDataAccessLibrary.Entities;
+using MoviesDataAccessLibrary.Context;
 
 namespace MovieRecommendationsAPI
 {
