@@ -46,6 +46,7 @@ namespace MovieRecommendations.Components
                 Movie tempMovie = _repository.GetMovieByMovieId(likedMovie.MovieId);
                 MovieViewModel tempMovieViewModel = new MovieViewModel
                 {
+                    Id = tempMovie.Id,
                     Title = tempMovie.Title,
                     LengthInMinutes = tempMovie.LengthInMinutes,
                     ReleaseYear = tempMovie.ReleaseYear,

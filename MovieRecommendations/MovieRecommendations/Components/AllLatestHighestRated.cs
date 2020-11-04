@@ -28,6 +28,7 @@ namespace MovieRecommendations.Components
             {
                 MovieViewModel tempMovieViewModel = new MovieViewModel
                 {
+                    Id = movie.Id,
                     Title = movie.Title,
                     LengthInMinutes = movie.LengthInMinutes,
                     ReleaseYear = movie.ReleaseYear,

@@ -87,7 +87,18 @@ namespace MovieRecommendations.Controllers
         public IActionResult Details(int movieId)
         {
             Movie movie = _repository.GetMovieByMovieId(movieId);
-            return View(movie);
+            MovieViewModel movieViewModel = new MovieViewModel
+            {
+                Id = movie.Id,
+                Title = movie.Title,
+                LengthInMinutes = movie.LengthInMinutes,
+                ReleaseYear = movie.ReleaseYear,
+                Rating = movie.Rating,
+                MainGenre = movie.MainGenre,
+                SubGenre1 = movie.SubGenre1,
+                SubGenre2 = movie.SubGenre2
+            };
+            return View(movieViewModel);
         }
 
         /// <summary>
