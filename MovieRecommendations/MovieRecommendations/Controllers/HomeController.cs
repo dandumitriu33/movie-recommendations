@@ -77,7 +77,7 @@ namespace MovieRecommendations.Controllers
                     SubGenre2 = movie.SubGenre2
                 };
                 _repository.Add(newEntry);
-                return RedirectToAction("AddMovie", "Home");
+                return View();
             }
             return View(movie);
         }
