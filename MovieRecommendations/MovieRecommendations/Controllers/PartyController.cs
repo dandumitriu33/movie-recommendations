@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using MovieRecommendations.ViewModels;
 using MoviesDataAccessLibrary.Entities;
 using MoviesDataAccessLibrary.Repositories;
 
@@ -22,7 +23,18 @@ namespace MovieRecommendations.Controllers
         public IActionResult AllParties(string userEmail)
         {
             List<Party> userParties = _repository.GetUserParties(userEmail);
-            return View(userParties);
+            List<PartyViewModel> userPartiesViewModel = new List<PartyViewModel>();
+            foreach (var party in userParties)
+            {
+                PartyViewModel tempPartyViewModel = new PartyViewModel
+                {
+                    Id = party.Id,
+                    Name = party.Name,
+                    CreatorEmail = party.CreatorEmail
+                };
+                userPartiesViewModel.Add(tempPartyViewModel);
+            }
+            return View(userPartiesViewModel);
         }
 
         [HttpPost]

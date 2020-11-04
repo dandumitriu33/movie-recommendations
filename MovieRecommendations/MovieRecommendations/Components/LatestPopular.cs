@@ -21,10 +21,6 @@ namespace MovieRecommendations.Components
         public IViewComponentResult Invoke()
         {
             IEnumerable<Movie> top20FromDb = _repository.GetAllMoviesTop20();
-            //AllMoviesViewModel allMovies = new AllMoviesViewModel
-            //{
-            //    Movies = top20FromDb.OrderByDescending(m => m.ReleaseYear).ThenByDescending(m => m.Rating).ToList()
-            //};
 
             // sort by release yar and then by rating descending
             List<Movie> top20FromDbSorted = top20FromDb.OrderByDescending(m => m.ReleaseYear).ThenByDescending(m => m.Rating).ToList();
