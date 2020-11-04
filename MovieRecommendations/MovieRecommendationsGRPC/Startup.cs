@@ -11,7 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MovieRecommendationsGRPC.Services;
 using MoviesDataAccessLibrary.Entities;
-using MoviesDataAccessLibrary.Context;
+using MoviesDataAccessLibrary.Contexts;
 
 namespace MovieRecommendationsGRPC
 {

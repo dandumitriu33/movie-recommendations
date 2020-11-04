@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MoviesDataAccessLibrary.Context
+namespace MoviesDataAccessLibrary.Contexts
 {
     public class MoviesContext : IdentityDbContext<IdentityUser>
     {
