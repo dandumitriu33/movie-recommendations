@@ -1,4 +1,4 @@
-﻿@model AllMoviesViewModel
+﻿@model List<MovieViewModel>
 
 <hr />
 <h3>All movies</h3>
@@ -6,7 +6,7 @@
 
 <div class="container">
     <div class="card-deck">
-        @foreach (var movie in Model.Movies)
+        @foreach (var movie in Model)
         {
             string path = $"~/img/{@movie.MainGenre.ToLower()}.jpg";
 
