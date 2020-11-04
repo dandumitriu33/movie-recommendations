@@ -32,6 +32,10 @@ namespace MovieRecommendations.Components
 
             // based on email, get the latest movie the user watched
             History latestWatchedHistoryItem = _repository.GetLatestFromHistory(userEmail);
+            if (latestWatchedHistoryItem == null)
+            {
+                return View(currentRabbitHole);
+            }
             Movie latestWatchedMovie = _repository.GetMovieByMovieId(latestWatchedHistoryItem.MovieId);
 
             // map and add the Rabbit Hole entry point - the last movie in the History of the user
