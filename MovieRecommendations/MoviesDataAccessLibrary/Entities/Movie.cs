@@ -20,10 +20,8 @@ namespace MoviesDataAccessLibrary.Entities
         [Required]
         [Column(TypeName = ("varchar(20)"))]
         public string MainGenre { get; set; }
-        [Required]
         [Column(TypeName = ("varchar(20)"))]
         public string SubGenre1 { get; set; }
-        [Required]
         [Column(TypeName = ("varchar(20)"))]
         public string SubGenre2 { get; set; }
     }

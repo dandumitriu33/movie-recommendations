@@ -62,11 +62,21 @@ namespace MovieRecommendations.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddMovie(Movie movie)
+        public IActionResult AddMovie(MovieViewModel movie)
         {
             if (ModelState.IsValid)
             {
-                _repository.Add(movie);
+                Movie newEntry = new Movie
+                {
+                    Title = movie.Title,
+                    LengthInMinutes = movie.LengthInMinutes,
+                    ReleaseYear = movie.ReleaseYear,
+                    Rating = movie.Rating,
+                    MainGenre = movie.MainGenre,
+                    SubGenre1 = movie.SubGenre1,
+                    SubGenre2 = movie.SubGenre2
+                };
+                _repository.Add(newEntry);
                 return RedirectToAction("AddMovie", "Home");
             }
             return View(movie);
