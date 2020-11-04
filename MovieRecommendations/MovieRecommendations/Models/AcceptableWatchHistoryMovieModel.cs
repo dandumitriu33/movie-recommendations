@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MovieRecommendations.ViewModels
+namespace MovieRecommendations.Models
 {
-    public class MovieViewModel
+    public class AcceptableWatchHistoryMovieModel
     {
         public int Id { get; set; }
         public string Title { get; set; }
