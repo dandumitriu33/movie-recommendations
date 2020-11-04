@@ -10,6 +10,7 @@ namespace MoviesDataAccessLibrary.Entities
     {
         public int Id { get; set; }
         [Required]
+        [EmailAddress]
         [MaxLength(120)]
         public string Email { get; set; }
         [Required]

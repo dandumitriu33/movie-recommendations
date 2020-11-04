@@ -11,6 +11,7 @@ namespace MoviesDataAccessLibrary.Entities
         [Required]
         public int PartyId { get; set; }
         [Required]
+        [EmailAddress]
         [MaxLength(120)]
         public string Email { get; set; }
     }
