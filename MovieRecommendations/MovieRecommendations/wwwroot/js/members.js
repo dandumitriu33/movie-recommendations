@@ -9,23 +9,30 @@ $("#addMemberButton").click(function () {
 })
 
 async function addMemberToParty(partyId, memberEmail) {
-    let URL = `https://localhost:44311/api/parties/partyMembers/${partyId}/addMember/${memberEmail}`;
-    let data = JSON.stringify({ "email": memberEmail });
-    await $.ajax({
-        type: "POST",
-        url: URL,
-        data: data,
-        contentType: "application/json; charset=utf-8",
-        crossDomain: true,
-        dataType: "json",
-        success: function () {
-            console.log("Member added successfully.");
-        },
-        error: function (jqXHR, status) {
-            console.log(jqXHR);
-            console.log('fail' + status.code);
-        }
-    })
+    if (validateEmail(memberEmail) == true) {
+        let URL = `https://localhost:44311/api/parties/partyMembers/${partyId}/addMember/${memberEmail}`;
+        let data = JSON.stringify({ "email": memberEmail });
+        await $.ajax({
+            type: "POST",
+            url: URL,
+            data: data,
+            contentType: "application/json; charset=utf-8",
+            crossDomain: true,
+            dataType: "json",
+            success: function () {
+                console.log("Member added successfully.");
+            },
+            error: function (jqXHR, status) {
+                console.log(jqXHR);
+                console.log('fail' + status.code);
+            }
+        })
+    }
+}
+
+function validateEmail(email) {
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
 }
 
 
