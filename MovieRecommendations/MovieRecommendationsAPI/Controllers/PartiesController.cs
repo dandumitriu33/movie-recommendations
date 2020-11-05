@@ -205,11 +205,11 @@ namespace MovieRecommendationsAPI.Controllers
         [HttpPost]
         [Route("partyMembers/{partyId}/addMember/{memberEmail}")]
         [EnableCors("AllowAnyOrigin")]
-        public IActionResult AddMemberToParty(int partyId, string memberEmail)
+        public IActionResult AddMemberToParty(int partyId, MemberEmailDTO memberEmailDTO)
         {
             PartyMember newMember = new PartyMember
             {
-                Email = memberEmail,
+                Email = memberEmailDTO.Email,
                 PartyId = partyId
             };
             _repository.AddMemberToParty(newMember);
