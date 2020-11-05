@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using MovieRecommendationsAPI.Models;
 using MoviesDataAccessLibrary.Entities;
 using MoviesDataAccessLibrary.Repositories;
 
@@ -26,7 +27,7 @@ namespace MovieRecommendationsAPI.Controllers
         [EnableCors("AllowAnyOrigin")]
         public IActionResult GetInventoryGenresCount()
         {
-            List<GenreCount> genreCount = new List<GenreCount>();
+            List<GenreCountDTO> genreCount = new List<GenreCountDTO>();
             Dictionary<string, string> colors = new Dictionary<string, string>()
             {
                 { "Action", "#8AFAAB" },
@@ -45,15 +46,15 @@ namespace MovieRecommendationsAPI.Controllers
             var dbGenreCount = _repository.GetGenreCount();
             foreach (var dbGenre in dbGenreCount)
             {
-                GenreCount tempGenreCount = new GenreCount
+                GenreCountDTO tempGenreCountDTO = new GenreCountDTO
                 {
                     GenreName = dbGenre.GenreName,
                     Count = dbGenre.Count,
                     Color = colors[dbGenre.GenreName]
                 };
-                genreCount.Add(tempGenreCount);
+                genreCount.Add(tempGenreCountDTO);
             }
-            List<GenreCount> sortedGenreCount = genreCount.OrderBy(g => g.Count).ToList();
+            List<GenreCountDTO> sortedGenreCount = genreCount.OrderBy(g => g.Count).ToList();
             return Ok(sortedGenreCount);
         }
 
