@@ -8,6 +8,7 @@ namespace MovieRecommendationsAPI.Models
 {
     public class MemberEmailDTO
     {
+        [Required]
         [EmailAddress]
         public string Email { get; set; }
     }

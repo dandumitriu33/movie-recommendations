@@ -32,7 +32,7 @@
                                 <div class="text-center">
                                     <img class="card-img-top rounded" src="~/img/ajax-loader.gif" style="width: 16px;" alt="Card image cap">
                                 </div>
-                                
+
                                 <div class="card-body">
                                     <h5 class="card-title">Loading...</h5>
                                     <p class="card-text">IMDB: Loading...</p>
@@ -80,8 +80,17 @@
 
     <form class="form-inline">
         <label class="sr-only" for="inlineFormInputEmail">Email</label>
-        <input type="text" class="form-control mb-2 mr-sm-2" id="inlineFormInputEmail" placeholder="friend@email.com">
+        <input type="text"
+               class="form-control mb-2 mr-sm-2 input-validation-error"
+               id="inlineFormInputEmail"
+               name="EmailAddress"
+               placeholder="friend@email.com"
+               data-val="true"
+               data-val-email="The email address field is not a valid email address."
+               aria-describedby="email-error"
+               aria-invalid="true">
         <button type="submit" class="btn btn-primary mb-2" id="addMemberButton">Add Member</button>
+        <span class="field-validation-error text-danger" data-valmsg-for="EmailAddress" data-valmsg-replace="true"></span>
     </form>
 </div>
 
@@ -91,4 +100,5 @@
     <script type="module" src="~/js/matches.js"></script>
     <script type="module" src="~/js/members.js"></script>
     <script type="module" src="~/js/dragdrop.js"></script>
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }
