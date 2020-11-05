@@ -223,7 +223,18 @@ namespace MovieRecommendationsAPI.Controllers
         public IActionResult GetPartyMembers(int partyId)
         {
             List<PartyMember> partyMembers = _repository.GetPartyMembersForParty(partyId);
-            return Ok(partyMembers);
+            List<PartyMemberDTO> partyMembersDTO = new List<PartyMemberDTO>();
+            foreach (var member in partyMembers)
+            {
+                PartyMemberDTO tempPartyMemberDTO = new PartyMemberDTO
+                {
+                    Id = member.Id,
+                    Email = member.Email,
+                    PartyId = member.PartyId
+                };
+                partyMembersDTO.Add(tempPartyMemberDTO);
+            }
+            return Ok(partyMembersDTO);
         }
     }
 }
