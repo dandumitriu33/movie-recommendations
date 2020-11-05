@@ -109,7 +109,23 @@ namespace MovieRecommendationsAPI.Controllers
         {
             int chartSize = 6;
             List<Movie> latestHorrorMovies = _repository.GetLatestHorrorMovies(chartSize);
-            return Ok(latestHorrorMovies);
+            List<MovieDTO> latestHorrorMoviesDTO = new List<MovieDTO>();
+            foreach (var movie in latestHorrorMovies)
+            {
+                MovieDTO tempMovie = new MovieDTO
+                {
+                    Id = movie.Id,
+                    Title = movie.Title,
+                    LengthInMinutes = movie.LengthInMinutes,
+                    ReleaseYear = movie.ReleaseYear,
+                    Rating = movie.Rating,
+                    MainGenre = movie.MainGenre,
+                    SubGenre1 = movie.SubGenre1,
+                    SubGenre2 = movie.SubGenre2
+                };
+                latestHorrorMoviesDTO.Add(tempMovie);
+            }
+            return Ok(latestHorrorMoviesDTO);
         }
 
     }
