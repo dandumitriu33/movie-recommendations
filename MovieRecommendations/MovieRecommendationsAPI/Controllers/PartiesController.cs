@@ -122,8 +122,24 @@ namespace MovieRecommendationsAPI.Controllers
             // how many movies
             int limit = 10;
 
-            List<Movie> batch = _repository.GetBatch(newestId, oldestId, limit);
-            return Ok(batch);
+            List<Movie> batchFromDb = _repository.GetBatch(newestId, oldestId, limit);
+            List<MovieDTO> batchDTO = new List<MovieDTO>();
+            foreach (var movie in batchFromDb)
+            {
+                MovieDTO tempMovie = new MovieDTO
+                {
+                    Id = movie.Id,
+                    Title = movie.Title,
+                    LengthInMinutes = movie.LengthInMinutes,
+                    ReleaseYear = movie.ReleaseYear,
+                    Rating = movie.Rating,
+                    MainGenre = movie.MainGenre,
+                    SubGenre1 = movie.SubGenre1,
+                    SubGenre2 = movie.SubGenre2
+                };
+                batchDTO.Add(tempMovie);
+            }
+            return Ok(batchDTO);
         }
 
         // POST: api/<PartiesController>/partyChoices/{partyId}/choice/{movieId}
