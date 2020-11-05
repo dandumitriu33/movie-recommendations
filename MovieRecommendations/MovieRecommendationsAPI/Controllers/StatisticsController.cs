@@ -4,7 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using MoviesDataAccessLibrary.Models;
+using MovieRecommendationsAPI.Models;
+using MoviesDataAccessLibrary.Entities;
+using MoviesDataAccessLibrary.Repositories;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -44,13 +46,13 @@ namespace MovieRecommendationsAPI.Controllers
             var dbGenreCount = _repository.GetGenreCount();
             foreach (var dbGenre in dbGenreCount)
             {
-                GenreCountDTO tempGenreCount = new GenreCountDTO
+                GenreCountDTO tempGenreCountDTO = new GenreCountDTO
                 {
                     GenreName = dbGenre.GenreName,
                     Count = dbGenre.Count,
                     Color = colors[dbGenre.GenreName]
                 };
-                genreCount.Add(tempGenreCount);
+                genreCount.Add(tempGenreCountDTO);
             }
             List<GenreCountDTO> sortedGenreCount = genreCount.OrderBy(g => g.Count).ToList();
             return Ok(sortedGenreCount);
@@ -79,17 +81,17 @@ namespace MovieRecommendationsAPI.Controllers
             var communityGenreScore = _repository.GetCommunityGenresScore();
             var groupedCommunityGenreScore = communityGenreScore
                                                             .GroupBy(s => s.GenreName)
-                                                            .Select(s => new CommunityGenreScoreDTO
+                                                            .Select(s => new CommunityGenreScore
                                                             {
                                                                 GenreName = s.First().GenreName,
                                                                 Score = s.Sum(g => g.Score),
                                                                 Color = "Default"
                                                             })
                                                             .ToList();
-            List<CommunityGenreScoreDTO> result = new List<CommunityGenreScoreDTO>();
+            List<CommunityGenreScore> result = new List<CommunityGenreScore>();
             foreach (var genre in groupedCommunityGenreScore.Where(g => g.Score > 0).OrderByDescending(g => g.Score).ToList())
             {
-                CommunityGenreScoreDTO tempCommunityGenreScore = new CommunityGenreScoreDTO
+                CommunityGenreScore tempCommunityGenreScore = new CommunityGenreScore
                 {
                     GenreName = genre.GenreName,
                     Score = genre.Score,
@@ -107,7 +109,23 @@ namespace MovieRecommendationsAPI.Controllers
         {
             int chartSize = 6;
             List<Movie> latestHorrorMovies = _repository.GetLatestHorrorMovies(chartSize);
-            return Ok(latestHorrorMovies);
+            List<MovieDTO> latestHorrorMoviesDTO = new List<MovieDTO>();
+            foreach (var movie in latestHorrorMovies)
+            {
+                MovieDTO tempMovie = new MovieDTO
+                {
+                    Id = movie.Id,
+                    Title = movie.Title,
+                    LengthInMinutes = movie.LengthInMinutes,
+                    ReleaseYear = movie.ReleaseYear,
+                    Rating = movie.Rating,
+                    MainGenre = movie.MainGenre,
+                    SubGenre1 = movie.SubGenre1,
+                    SubGenre2 = movie.SubGenre2
+                };
+                latestHorrorMoviesDTO.Add(tempMovie);
+            }
+            return Ok(latestHorrorMoviesDTO);
         }
 
     }

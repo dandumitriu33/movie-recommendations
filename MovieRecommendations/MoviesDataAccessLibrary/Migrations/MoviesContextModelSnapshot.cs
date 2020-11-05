@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using MoviesDataAccessLibrary.Models;
+using MoviesDataAccessLibrary.Contexts;
 
 namespace MoviesDataAccessLibrary.Migrations
 {
@@ -215,7 +215,7 @@ namespace MoviesDataAccessLibrary.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("MoviesDataAccessLibrary.Models.History", b =>
+            modelBuilder.Entity("MoviesDataAccessLibrary.Entities.History", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -238,7 +238,7 @@ namespace MoviesDataAccessLibrary.Migrations
                     b.ToTable("Histories");
                 });
 
-            modelBuilder.Entity("MoviesDataAccessLibrary.Models.Movie", b =>
+            modelBuilder.Entity("MoviesDataAccessLibrary.Entities.Movie", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -250,8 +250,7 @@ namespace MoviesDataAccessLibrary.Migrations
 
                     b.Property<string>("MainGenre")
                         .IsRequired()
-                        .HasColumnType("nvarchar(20)")
-                        .HasMaxLength(20);
+                        .HasColumnType("varchar(20)");
 
                     b.Property<double>("Rating")
                         .HasColumnType("float");
@@ -260,14 +259,10 @@ namespace MoviesDataAccessLibrary.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("SubGenre1")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(20)")
-                        .HasMaxLength(20);
+                        .HasColumnType("varchar(20)");
 
                     b.Property<string>("SubGenre2")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(20)")
-                        .HasMaxLength(20);
+                        .HasColumnType("varchar(20)");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -278,7 +273,7 @@ namespace MoviesDataAccessLibrary.Migrations
                     b.ToTable("Movies");
                 });
 
-            modelBuilder.Entity("MoviesDataAccessLibrary.Models.NextMovie", b =>
+            modelBuilder.Entity("MoviesDataAccessLibrary.Entities.NextMovie", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -299,7 +294,7 @@ namespace MoviesDataAccessLibrary.Migrations
                     b.ToTable("NextMovies");
                 });
 
-            modelBuilder.Entity("MoviesDataAccessLibrary.Models.Party", b =>
+            modelBuilder.Entity("MoviesDataAccessLibrary.Entities.Party", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -320,7 +315,7 @@ namespace MoviesDataAccessLibrary.Migrations
                     b.ToTable("Parties");
                 });
 
-            modelBuilder.Entity("MoviesDataAccessLibrary.Models.PartyChoice", b =>
+            modelBuilder.Entity("MoviesDataAccessLibrary.Entities.PartyChoice", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -341,7 +336,7 @@ namespace MoviesDataAccessLibrary.Migrations
                     b.ToTable("PartyChoices");
                 });
 
-            modelBuilder.Entity("MoviesDataAccessLibrary.Models.PartyMember", b =>
+            modelBuilder.Entity("MoviesDataAccessLibrary.Entities.PartyMember", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -361,7 +356,7 @@ namespace MoviesDataAccessLibrary.Migrations
                     b.ToTable("PartyMembers");
                 });
 
-            modelBuilder.Entity("MoviesDataAccessLibrary.Models.UserLikedMovie", b =>
+            modelBuilder.Entity("MoviesDataAccessLibrary.Entities.UserLikedMovie", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()

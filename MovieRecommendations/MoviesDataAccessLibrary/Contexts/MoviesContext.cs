@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using MoviesDataAccessLibrary.Entities;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MoviesDataAccessLibrary.Models
+namespace MoviesDataAccessLibrary.Contexts
 {
     public class MoviesContext : IdentityDbContext<IdentityUser>
     {

@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MovieRecommendations.ViewModels;
-using MoviesDataAccessLibrary.Models;
+using MoviesDataAccessLibrary.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MoviesDataAccessLibrary.Repositories;
 
 namespace MovieRecommendations.Components
 {
@@ -19,7 +20,7 @@ namespace MovieRecommendations.Components
 
         public IViewComponentResult Invoke()
         {
-            List<Movie> allCommunityBasedRecommendation = new List<Movie>();
+            List<MovieViewModel> allCommunityBasedRecommendation = new List<MovieViewModel>();
 
             IEnumerable<UserLikedMovie> allCommunityLikesFromDb = _repository.GetAllCommunityLikes();
             if (allCommunityLikesFromDb.Count() == 0)
@@ -42,8 +43,19 @@ namespace MovieRecommendations.Components
 
             foreach (var likedMovie in allCommunityLikesMemory)
             {
-                Movie newMovie = _repository.GetMovieByMovieId(likedMovie.MovieId);
-                allCommunityBasedRecommendation.Add(newMovie);
+                Movie tempMovie = _repository.GetMovieByMovieId(likedMovie.MovieId);
+                MovieViewModel tempMovieViewModel = new MovieViewModel
+                {
+                    Id = tempMovie.Id,
+                    Title = tempMovie.Title,
+                    LengthInMinutes = tempMovie.LengthInMinutes,
+                    ReleaseYear = tempMovie.ReleaseYear,
+                    Rating = tempMovie.Rating,
+                    MainGenre = tempMovie.MainGenre,
+                    SubGenre1 = tempMovie.SubGenre1,
+                    SubGenre2 = tempMovie.SubGenre2
+                };
+                allCommunityBasedRecommendation.Add(tempMovieViewModel);
             }
             return View(allCommunityBasedRecommendation);
         }

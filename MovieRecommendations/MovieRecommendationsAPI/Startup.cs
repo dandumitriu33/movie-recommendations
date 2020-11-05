@@ -11,7 +11,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using MoviesDataAccessLibrary.Models;
+using MoviesDataAccessLibrary.Entities;
+using MoviesDataAccessLibrary.Contexts;
+using MoviesDataAccessLibrary.Repositories;
 
 namespace MovieRecommendationsAPI
 {

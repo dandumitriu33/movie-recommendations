@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using MovieRecommendations.ViewModels;
-using MoviesDataAccessLibrary.Models;
+using MovieRecommendations.Models;
+using MoviesDataAccessLibrary.Entities;
+using MoviesDataAccessLibrary.Repositories;
 
 namespace MovieRecommendations.Controllers
 {
@@ -22,12 +23,12 @@ namespace MovieRecommendations.Controllers
         {
             List<History> fullHistory = _repository.GetFullHistory(email);
 
-            List<MovieViewModel> moviesHistory = new List<MovieViewModel>();
+            List<AcceptableWatchHistoryMovieModel> moviesHistory = new List<AcceptableWatchHistoryMovieModel>();
 
             foreach (var entry in fullHistory)
             {
                 Movie tempMovie = _repository.GetMovieByMovieId(entry.MovieId);
-                MovieViewModel newMovie = new MovieViewModel
+                AcceptableWatchHistoryMovieModel newMovie = new AcceptableWatchHistoryMovieModel
                 {
                     Id = tempMovie.Id,
                     Title = tempMovie.Title,
@@ -41,7 +42,7 @@ namespace MovieRecommendations.Controllers
                 };
                 moviesHistory.Add(newMovie);
             }
-            List<MovieViewModel> orderedMovieHistory = moviesHistory.OrderByDescending(m => m.DateAddedToHistory).ToList();
+            List<AcceptableWatchHistoryMovieModel> orderedMovieHistory = moviesHistory.OrderByDescending(m => m.DateAddedToHistory).ToList();
             return View(orderedMovieHistory);
         }
 

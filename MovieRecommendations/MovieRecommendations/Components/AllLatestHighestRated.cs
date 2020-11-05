@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MovieRecommendations.ViewModels;
-using MoviesDataAccessLibrary.Models;
+using MoviesDataAccessLibrary.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MoviesDataAccessLibrary.Repositories;
 
 namespace MovieRecommendations.Components
 {
@@ -20,10 +21,24 @@ namespace MovieRecommendations.Components
         public IViewComponentResult Invoke()
         {
             IEnumerable<Movie> allMoviesFromDb = _repository.GetAllMovies();
-            AllMoviesViewModel allMovies = new AllMoviesViewModel
+            // sort by release yar and then by rating descending
+            List<Movie> allMoviesFromDbSorted = allMoviesFromDb.OrderByDescending(m => m.ReleaseYear).ThenByDescending(m => m.Rating).ToList();
+            List<MovieViewModel> allMovies = new List<MovieViewModel>();
+            foreach (var movie in allMoviesFromDbSorted)
             {
-                Movies = allMoviesFromDb.OrderByDescending(m => m.ReleaseYear).ThenByDescending(m => m.Rating).ToList()
-            };
+                MovieViewModel tempMovieViewModel = new MovieViewModel
+                {
+                    Id = movie.Id,
+                    Title = movie.Title,
+                    LengthInMinutes = movie.LengthInMinutes,
+                    ReleaseYear = movie.ReleaseYear,
+                    Rating = movie.Rating,
+                    MainGenre = movie.MainGenre,
+                    SubGenre1 = movie.SubGenre1,
+                    SubGenre2 = movie.SubGenre2
+                };
+                allMovies.Add(tempMovieViewModel);
+            }
             return View(allMovies);
         }
     }

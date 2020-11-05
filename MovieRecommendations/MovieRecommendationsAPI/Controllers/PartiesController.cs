@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using MoviesDataAccessLibrary.Models;
+using MovieRecommendationsAPI.Models;
+using MoviesDataAccessLibrary.Entities;
+using MoviesDataAccessLibrary.Repositories;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -33,37 +35,62 @@ namespace MovieRecommendationsAPI.Controllers
         public IActionResult Get(string userEmail)
         {
             List<Party> userParties = _repository.GetUserParties(userEmail);
-            return Ok(userParties);
+            List<PartyDTO> userPartiesDTOs = new List<PartyDTO>();
+            foreach (var party in userParties)
+            {
+                PartyDTO tempParty = new PartyDTO
+                {
+                    Id = party.Id,
+                    Name = party.Name,
+                    CreatorEmail = party.CreatorEmail
+                };
+                userPartiesDTOs.Add(tempParty);
+            }
+            return Ok(userPartiesDTOs);
         }
 
         // POST api/<PartiesController>
         [HttpPost]
-        public IActionResult Post([FromBody] Party party)
+        public IActionResult Post([FromBody] PartyDTO partyDTO)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest("The query is not formatted correctly");
             }
-            _repository.AddParty(party);
+            Party tempParty = new Party
+            {
+                Id = partyDTO.Id,
+                Name = partyDTO.Name,
+                CreatorEmail = partyDTO.CreatorEmail
+            };
+            _repository.AddParty(tempParty);
+
+            // adding the creator as a member of the party
             PartyMember newPartyMember = new PartyMember
             {
-                PartyId = party.Id,
-                Email = party.CreatorEmail
+                PartyId = partyDTO.Id,
+                Email = partyDTO.CreatorEmail
             };
             _repository.AddMemberToParty(newPartyMember);
             return NoContent();
         }
 
-        // unuset at this time, using API via JS
+        // unused at this time, using API via JS
         // POST api/<PartiesController>/addToParty/{partyId}
         [HttpPost]
         [Route("addToParty/{partyId}")]
-        public IActionResult AddMember([FromBody] PartyMember partyMember)
+        public IActionResult AddMember([FromBody] PartyMemberDTO partyMemberDTO)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest("The query is not formatted correctly");
             }
+            PartyMember partyMember = new PartyMember
+            {
+                Id = partyMemberDTO.Id,
+                PartyId = partyMemberDTO.PartyId,
+                Email = partyMemberDTO.Email
+            };
             _repository.AddMemberToParty(partyMember);
             return NoContent();
         }
@@ -95,8 +122,24 @@ namespace MovieRecommendationsAPI.Controllers
             // how many movies
             int limit = 10;
 
-            List<Movie> batch = _repository.GetBatch(newestId, oldestId, limit);
-            return Ok(batch);
+            List<Movie> batchFromDb = _repository.GetBatch(newestId, oldestId, limit);
+            List<MovieDTO> batchDTO = new List<MovieDTO>();
+            foreach (var movie in batchFromDb)
+            {
+                MovieDTO tempMovie = new MovieDTO
+                {
+                    Id = movie.Id,
+                    Title = movie.Title,
+                    LengthInMinutes = movie.LengthInMinutes,
+                    ReleaseYear = movie.ReleaseYear,
+                    Rating = movie.Rating,
+                    MainGenre = movie.MainGenre,
+                    SubGenre1 = movie.SubGenre1,
+                    SubGenre2 = movie.SubGenre2
+                };
+                batchDTO.Add(tempMovie);
+            }
+            return Ok(batchDTO);
         }
 
         // POST: api/<PartiesController>/partyChoices/{partyId}/choice/{movieId}
@@ -137,10 +180,21 @@ namespace MovieRecommendationsAPI.Controllers
         public IActionResult GetMatches(int partyId, int count)
         {
             List<PartyChoice> validChoices = _repository.GetMovieIdsForParty(partyId, count);
-            List<Movie> result = new List<Movie>();
+            List<MovieDTO> result = new List<MovieDTO>();
             foreach (PartyChoice choice in validChoices)
             {
-                Movie tempMovie = _repository.GetMovieByMovieId(choice.MovieId);
+                Movie movie = _repository.GetMovieByMovieId(choice.MovieId);
+                MovieDTO tempMovie = new MovieDTO
+                {
+                    Id = movie.Id,
+                    Title = movie.Title,
+                    LengthInMinutes = movie.LengthInMinutes,
+                    ReleaseYear = movie.ReleaseYear,
+                    Rating = movie.Rating,
+                    MainGenre = movie.MainGenre,
+                    SubGenre1 = movie.SubGenre1,
+                    SubGenre2 = movie.SubGenre2
+                };
                 result.Add(tempMovie);
             }
             result.Reverse();
@@ -151,11 +205,11 @@ namespace MovieRecommendationsAPI.Controllers
         [HttpPost]
         [Route("partyMembers/{partyId}/addMember/{memberEmail}")]
         [EnableCors("AllowAnyOrigin")]
-        public IActionResult AddMemberToParty(int partyId, string memberEmail)
+        public IActionResult AddMemberToParty(int partyId, MemberEmailDTO memberEmailDTO)
         {
             PartyMember newMember = new PartyMember
             {
-                Email = memberEmail,
+                Email = memberEmailDTO.Email,
                 PartyId = partyId
             };
             _repository.AddMemberToParty(newMember);
@@ -169,7 +223,18 @@ namespace MovieRecommendationsAPI.Controllers
         public IActionResult GetPartyMembers(int partyId)
         {
             List<PartyMember> partyMembers = _repository.GetPartyMembersForParty(partyId);
-            return Ok(partyMembers);
+            List<PartyMemberDTO> partyMembersDTO = new List<PartyMemberDTO>();
+            foreach (var member in partyMembers)
+            {
+                PartyMemberDTO tempPartyMemberDTO = new PartyMemberDTO
+                {
+                    Id = member.Id,
+                    Email = member.Email,
+                    PartyId = member.PartyId
+                };
+                partyMembersDTO.Add(tempPartyMemberDTO);
+            }
+            return Ok(partyMembersDTO);
         }
     }
 }

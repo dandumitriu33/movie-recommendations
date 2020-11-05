@@ -10,7 +10,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MovieRecommendationsGRPC.Services;
-using MoviesDataAccessLibrary.Models;
+using MoviesDataAccessLibrary.Entities;
+using MoviesDataAccessLibrary.Contexts;
+using MoviesDataAccessLibrary.Repositories;
 
 namespace MovieRecommendationsGRPC
 {

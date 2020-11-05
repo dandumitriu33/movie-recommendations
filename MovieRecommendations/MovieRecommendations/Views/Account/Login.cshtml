@@ -1,6 +1,6 @@
 ﻿@model LoginViewModel
 
-@{ 
+@{
     ViewBag.Title = "User Log In";
 }
 
@@ -14,8 +14,16 @@
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Email"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
+                <input asp-for="Email" class="form-control"
+                       name="EmailAddress"
+                       data-val="true"
+                       data-val-email="The email address field is not a valid email address."
+                       aria-describedby="email-error"
+                       aria-invalid="true"/>
+                <span asp-validation-for="Email" 
+                      class="field-validation-error text-danger ml-2 text-danger" 
+                      data-valmsg-for="EmailAddress" 
+                      data-valmsg-replace="true"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Password"></label>
@@ -29,8 +37,12 @@
                         @Html.DisplayNameFor(m => m.RememberMe)
                     </label>
                 </div>
-            </div>            
+            </div>
             <button type="submit" class="btn btn-primary">Log In</button>
         </form>
     </div>
 </div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

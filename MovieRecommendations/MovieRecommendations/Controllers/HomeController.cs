@@ -9,7 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MovieRecommendations.Models;
 using MovieRecommendations.ViewModels;
-using MoviesDataAccessLibrary.Models;
+using MoviesDataAccessLibrary.Entities;
+using MoviesDataAccessLibrary.Repositories;
 
 namespace MovieRecommendations.Controllers
 {
@@ -61,12 +62,22 @@ namespace MovieRecommendations.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddMovie(Movie movie)
+        public IActionResult AddMovie(MovieViewModel movie)
         {
             if (ModelState.IsValid)
             {
-                _repository.Add(movie);
-                return RedirectToAction("AddMovie", "Home");
+                Movie newEntry = new Movie
+                {
+                    Title = movie.Title,
+                    LengthInMinutes = movie.LengthInMinutes,
+                    ReleaseYear = movie.ReleaseYear,
+                    Rating = movie.Rating,
+                    MainGenre = movie.MainGenre,
+                    SubGenre1 = movie.SubGenre1,
+                    SubGenre2 = movie.SubGenre2
+                };
+                _repository.Add(newEntry);
+                return View();
             }
             return View(movie);
         }
@@ -76,7 +87,18 @@ namespace MovieRecommendations.Controllers
         public IActionResult Details(int movieId)
         {
             Movie movie = _repository.GetMovieByMovieId(movieId);
-            return View(movie);
+            MovieViewModel movieViewModel = new MovieViewModel
+            {
+                Id = movie.Id,
+                Title = movie.Title,
+                LengthInMinutes = movie.LengthInMinutes,
+                ReleaseYear = movie.ReleaseYear,
+                Rating = movie.Rating,
+                MainGenre = movie.MainGenre,
+                SubGenre1 = movie.SubGenre1,
+                SubGenre2 = movie.SubGenre2
+            };
+            return View(movieViewModel);
         }
 
         /// <summary>

@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using MoviesDataAccessLibrary.Models;
+using MovieRecommendationsAPI.Models;
+using MoviesDataAccessLibrary.Entities;
+using MoviesDataAccessLibrary.Repositories;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -24,7 +26,23 @@ namespace MovieRecommendationsAPI.Controllers
         public IActionResult Get()
         {
             IEnumerable<Movie> allMoviesFromDb = _repository.GetAllMovies();
-            return Ok(allMoviesFromDb);
+            List<MovieDTO> allMovieDTOs = new List<MovieDTO>();
+            foreach (var movie in allMoviesFromDb)
+            {
+                MovieDTO tempMovie = new MovieDTO
+                {
+                    Id = movie.Id,
+                    Title = movie.Title,
+                    LengthInMinutes = movie.LengthInMinutes,
+                    ReleaseYear = movie.ReleaseYear,
+                    Rating = movie.Rating,
+                    MainGenre = movie.MainGenre,
+                    SubGenre1 = movie.SubGenre1,
+                    SubGenre2 = movie.SubGenre2
+                };
+                allMovieDTOs.Add(tempMovie);
+            }
+            return Ok(allMovieDTOs);
         }
 
         // GET api/<AllMoviesController>/5
