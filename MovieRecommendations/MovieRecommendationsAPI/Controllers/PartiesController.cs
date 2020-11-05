@@ -64,6 +64,8 @@ namespace MovieRecommendationsAPI.Controllers
                 CreatorEmail = partyDTO.CreatorEmail
             };
             _repository.AddParty(tempParty);
+
+            // adding the creator as a member of the party
             PartyMember newPartyMember = new PartyMember
             {
                 PartyId = partyDTO.Id,
@@ -73,16 +75,22 @@ namespace MovieRecommendationsAPI.Controllers
             return NoContent();
         }
 
-        // unuset at this time, using API via JS
+        // unused at this time, using API via JS
         // POST api/<PartiesController>/addToParty/{partyId}
         [HttpPost]
         [Route("addToParty/{partyId}")]
-        public IActionResult AddMember([FromBody] PartyMember partyMember)
+        public IActionResult AddMember([FromBody] PartyMemberDTO partyMemberDTO)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest("The query is not formatted correctly");
             }
+            PartyMember partyMember = new PartyMember
+            {
+                Id = partyMemberDTO.Id,
+                PartyId = partyMemberDTO.PartyId,
+                Email = partyMemberDTO.Email
+            };
             _repository.AddMemberToParty(partyMember);
             return NoContent();
         }
