@@ -180,10 +180,21 @@ namespace MovieRecommendationsAPI.Controllers
         public IActionResult GetMatches(int partyId, int count)
         {
             List<PartyChoice> validChoices = _repository.GetMovieIdsForParty(partyId, count);
-            List<Movie> result = new List<Movie>();
+            List<MovieDTO> result = new List<MovieDTO>();
             foreach (PartyChoice choice in validChoices)
             {
-                Movie tempMovie = _repository.GetMovieByMovieId(choice.MovieId);
+                Movie movie = _repository.GetMovieByMovieId(choice.MovieId);
+                MovieDTO tempMovie = new MovieDTO
+                {
+                    Id = movie.Id,
+                    Title = movie.Title,
+                    LengthInMinutes = movie.LengthInMinutes,
+                    ReleaseYear = movie.ReleaseYear,
+                    Rating = movie.Rating,
+                    MainGenre = movie.MainGenre,
+                    SubGenre1 = movie.SubGenre1,
+                    SubGenre2 = movie.SubGenre2
+                };
                 result.Add(tempMovie);
             }
             result.Reverse();
