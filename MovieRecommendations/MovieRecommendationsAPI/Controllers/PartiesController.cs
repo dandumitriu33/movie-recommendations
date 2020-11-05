@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using MovieRecommendationsAPI.Models;
 using MoviesDataAccessLibrary.Entities;
 using MoviesDataAccessLibrary.Repositories;
 
@@ -34,7 +35,18 @@ namespace MovieRecommendationsAPI.Controllers
         public IActionResult Get(string userEmail)
         {
             List<Party> userParties = _repository.GetUserParties(userEmail);
-            return Ok(userParties);
+            List<PartyDTO> userPartiesDTOs = new List<PartyDTO>();
+            foreach (var party in userParties)
+            {
+                PartyDTO tempParty = new PartyDTO
+                {
+                    Id = party.Id,
+                    Name = party.Name,
+                    CreatorEmail = party.CreatorEmail
+                };
+                userPartiesDTOs.Add(tempParty);
+            }
+            return Ok(userPartiesDTOs);
         }
 
         // POST api/<PartiesController>
