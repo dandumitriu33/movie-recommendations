@@ -1,6 +1,6 @@
 ﻿@model MovieViewModel
 
-@{ 
+@{
     ViewBag.Title = "Add movie";
 }
 
@@ -14,27 +14,72 @@
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Title"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
+                <input asp-for="Title" 
+                       class="form-control" 
+                       name="Title"
+                       data-val="true"
+                       data-val-required="The movie title is required."
+                       aria-describedby="title-error"
+                       aria-invalid="true"/>
+                <span asp-validation-for="Title" 
+                      class="field-validation-error text-danger ml-2 text-danger" 
+                      data-valmsg-for="Title" 
+                      data-valmsg-replace="true"></span>
             </div>
             <div class="form-group">
                 <label asp-for="LengthInMinutes"></label>
-                <input asp-for="LengthInMinutes" class="form-control" />
-                <span asp-validation-for="LengthInMinutes" class="text-danger"></span>
+                <input asp-for="LengthInMinutes" 
+                       class="form-control" 
+                       name="LengthInMinutes"
+                       data-val="true"
+                       data-val-required="The movie runtime (minutes) is required."
+                       data-val-number="The movie runtime must be a number. Example: 120"
+                       aria-describedby="length-in-minutes-error"
+                       aria-invalid="true"/>
+                <span asp-validation-for="LengthInMinutes" 
+                      class="field-validation-error text-danger ml-2 text-danger" 
+                      data-valmsg-for="LengthInMinutes" 
+                      data-valmsg-replace="true"></span>
             </div>
             <div class="form-group">
                 <label asp-for="ReleaseYear"></label>
-                <input asp-for="ReleaseYear" class="form-control" />
-                <span asp-validation-for="ReleaseYear" class="text-danger"></span>
+                <input asp-for="ReleaseYear" 
+                       class="form-control" 
+                       name="ReleaseYear"
+                       data-val="true"
+                       data-val-required="The movie release year is required."
+                       data-val-number="The movie release year must be a number. Example: 2011"
+                       aria-describedby="release-year-error"
+                       aria-invalid="true"/>
+                <span asp-validation-for="ReleaseYear" 
+                      class="field-validation-error text-danger ml-2 text-danger" 
+                      data-valmsg-for="ReleaseYear" 
+                      data-valmsg-replace="true"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Rating"></label>
-                <input asp-for="Rating" class="form-control" />
-                <span asp-validation-for="Rating" class="text-danger"></span>
+                <input asp-for="Rating" 
+                       class="form-control" 
+                       name="Rating"
+                       data-val="true"
+                       data-val-required="The movie rating is required."
+                       data-val-number="The movie rating must be a number. Example: 7.1"
+                       aria-describedby="rating-error"
+                       aria-invalid="true"/>
+                <span asp-validation-for="Rating" 
+                      class="field-validation-error text-danger ml-2 text-danger" 
+                      data-valmsg-for="Rating" 
+                      data-valmsg-replace="true"></span>
             </div>
             <div class="form-group">
                 <label asp-for="MainGenre"></label>
-                <select asp-for="MainGenre" class="form-control">
+                <select asp-for="MainGenre" 
+                        class="form-control"
+                        name="MainGenre"
+                        data-val="true"
+                        data-val-required="The movie main genre is required."
+                        aria-describedby="main-genre-error"
+                        aria-invalid="true">
                     <option>Action</option>
                     <option>Adventure</option>
                     <option>Comedy</option>
@@ -47,11 +92,20 @@
                     <option>Sci-Fi</option>
                     <option>Western</option>
                 </select>
-                <span asp-validation-for="MainGenre" class="text-danger"></span>
+                <span asp-validation-for="MainGenre" 
+                      class="field-validation-error text-danger ml-2 text-danger" 
+                      data-valmsg-for="MainGenre" 
+                      data-valmsg-replace="true"></span>
             </div>
             <div class="form-group">
                 <label asp-for="SubGenre1"></label>
-                <select asp-for="SubGenre1" class="form-control">
+                <select asp-for="SubGenre1" 
+                        class="form-control"
+                        name="SubGenre1"
+                        data-val="true"
+                        data-val-required="The movie first sub-genre is required."
+                        aria-describedby="sub-genre-1-error"
+                        aria-invalid="true">
                     <option>Action</option>
                     <option>Adventure</option>
                     <option>Comedy</option>
@@ -64,11 +118,20 @@
                     <option>Sci-Fi</option>
                     <option>Western</option>
                 </select>
-                <span asp-validation-for="SubGenre1" class="text-danger"></span>
+                <span asp-validation-for="SubGenre1" 
+                      class="field-validation-error text-danger ml-2 text-danger" 
+                      data-valmsg-for="SubGenre1" 
+                      data-valmsg-replace="true"></span>
             </div>
             <div class="form-group">
                 <label asp-for="SubGenre2"></label>
-                <select asp-for="SubGenre2" class="form-control">
+                <select asp-for="SubGenre2" 
+                        class="form-control"
+                        name="SubGenre2"
+                        data-val="true"
+                        data-val-required="The movie second sub-genre is required."
+                        aria-describedby="sub-genre-2-error"
+                        aria-invalid="true">
                     <option>Action</option>
                     <option>Adventure</option>
                     <option>Comedy</option>
@@ -81,9 +144,16 @@
                     <option>Sci-Fi</option>
                     <option>Western</option>
                 </select>
-                <span asp-validation-for="SubGenre2" class="text-danger"></span>
+                <span asp-validation-for="SubGenre2" 
+                      class="field-validation-error text-danger ml-2 text-danger" 
+                      data-valmsg-for="SubGenre2" 
+                      data-valmsg-replace="true"></span>
             </div>
             <button type="submit" class="btn btn-primary">Add</button>
         </form>
     </div>
 </div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}
