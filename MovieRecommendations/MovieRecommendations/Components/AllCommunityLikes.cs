@@ -1,21 +1,23 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using MovieRecommendations.ViewModels;
 using MoviesDataAccessLibrary.Entities;
-using System;
+using MoviesDataAccessLibrary.Repositories;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using MoviesDataAccessLibrary.Repositories;
 
 namespace MovieRecommendations.Components
 {
     public class AllCommunityLikes : ViewComponent
     {
         private readonly IRepository _repository;
+        private readonly IMapper _mapper;
 
-        public AllCommunityLikes(IRepository repository)
+        public AllCommunityLikes(IRepository repository,
+                                 IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         public IViewComponentResult Invoke()
@@ -44,17 +46,7 @@ namespace MovieRecommendations.Components
             foreach (var likedMovie in allCommunityLikesMemory)
             {
                 Movie tempMovie = _repository.GetMovieByMovieId(likedMovie.MovieId);
-                MovieViewModel tempMovieViewModel = new MovieViewModel
-                {
-                    Id = tempMovie.Id,
-                    Title = tempMovie.Title,
-                    LengthInMinutes = tempMovie.LengthInMinutes,
-                    ReleaseYear = tempMovie.ReleaseYear,
-                    Rating = tempMovie.Rating,
-                    MainGenre = tempMovie.MainGenre,
-                    SubGenre1 = tempMovie.SubGenre1,
-                    SubGenre2 = tempMovie.SubGenre2
-                };
+                MovieViewModel tempMovieViewModel = _mapper.Map<Movie, MovieViewModel>(tempMovie);
                 allCommunityBasedRecommendation.Add(tempMovieViewModel);
             }
             return View(allCommunityBasedRecommendation);

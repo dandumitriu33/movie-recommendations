@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MovieRecommendations.Models;
 using MovieRecommendations.ViewModels;
 using MoviesDataAccessLibrary.Entities;
 using MoviesDataAccessLibrary.Repositories;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MovieRecommendations.Controllers
 {
