@@ -13,6 +13,8 @@ using Microsoft.Extensions.Hosting;
 using MoviesDataAccessLibrary.Entities;
 using MoviesDataAccessLibrary.Contexts;
 using MoviesDataAccessLibrary.Repositories;
+using AutoMapper;
+using System.Reflection;
 
 namespace MovieRecommendations
 {
@@ -46,6 +48,7 @@ namespace MovieRecommendations
                 })
                 .AddEntityFrameworkStores<MoviesContext>();
             services.AddScoped<IRepository, SQLRepository>();
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

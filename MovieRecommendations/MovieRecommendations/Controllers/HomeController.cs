@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MovieRecommendations.Models;
 using MovieRecommendations.ViewModels;
 using MoviesDataAccessLibrary.Entities;
 using MoviesDataAccessLibrary.Repositories;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MovieRecommendations.Controllers
 {
@@ -18,12 +17,15 @@ namespace MovieRecommendations.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IRepository _repository;
+        private readonly IMapper _mapper;
 
         public HomeController(ILogger<HomeController> logger,
-                              IRepository repository)
+                              IRepository repository,
+                              IMapper mapper)
         {
             _logger = logger;
             _repository = repository;
+            _mapper = mapper;
         }
 
         public IActionResult Index()
@@ -66,16 +68,7 @@ namespace MovieRecommendations.Controllers
         {
             if (ModelState.IsValid)
             {
-                Movie newEntry = new Movie
-                {
-                    Title = movie.Title,
-                    LengthInMinutes = movie.LengthInMinutes,
-                    ReleaseYear = movie.ReleaseYear,
-                    Rating = movie.Rating,
-                    MainGenre = movie.MainGenre,
-                    SubGenre1 = movie.SubGenre1,
-                    SubGenre2 = movie.SubGenre2
-                };
+                Movie newEntry = _mapper.Map<MovieViewModel, Movie>(movie);
                 _repository.Add(newEntry);
                 return View();
             }
@@ -87,17 +80,7 @@ namespace MovieRecommendations.Controllers
         public IActionResult Details(int movieId)
         {
             Movie movie = _repository.GetMovieByMovieId(movieId);
-            MovieViewModel movieViewModel = new MovieViewModel
-            {
-                Id = movie.Id,
-                Title = movie.Title,
-                LengthInMinutes = movie.LengthInMinutes,
-                ReleaseYear = movie.ReleaseYear,
-                Rating = movie.Rating,
-                MainGenre = movie.MainGenre,
-                SubGenre1 = movie.SubGenre1,
-                SubGenre2 = movie.SubGenre2
-            };
+            MovieViewModel movieViewModel = _mapper.Map<Movie, MovieViewModel>(movie);
             return View(movieViewModel);
         }
 

@@ -9,16 +9,20 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using MoviesDataAccessLibrary.Repositories;
+using AutoMapper;
 
 namespace MovieRecommendations.Components
 {
     public class CommunityBasedFiltering : ViewComponent
     {
         private readonly IRepository _repository;
+        private readonly IMapper _mapper;
 
-        public CommunityBasedFiltering(IRepository repository)
+        public CommunityBasedFiltering(IRepository repository,
+                                       IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         public IViewComponentResult Invoke()
@@ -49,17 +53,7 @@ namespace MovieRecommendations.Components
             foreach (var likedMovie in communityTopMemory)
             {
                 Movie tempMovie = _repository.GetMovieByMovieId(likedMovie.MovieId);
-                MovieViewModel newMovieViewModel = new MovieViewModel
-                {
-                    Id = tempMovie.Id,
-                    Title = tempMovie.Title,
-                    LengthInMinutes = tempMovie.LengthInMinutes,
-                    ReleaseYear = tempMovie.ReleaseYear,
-                    Rating = tempMovie.Rating,
-                    MainGenre = tempMovie.MainGenre,
-                    SubGenre1 = tempMovie.SubGenre1,
-                    SubGenre2 = tempMovie.SubGenre2
-                };
+                var newMovieViewModel = _mapper.Map<Movie, MovieViewModel>(tempMovie);                
                 communityBasedRecommendation.Add(newMovieViewModel);
             }
             return View(communityBasedRecommendation);
