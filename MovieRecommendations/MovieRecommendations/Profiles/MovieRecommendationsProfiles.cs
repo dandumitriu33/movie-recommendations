@@ -15,6 +15,8 @@ namespace MovieRecommendations.Profiles
             CreateMap<Movie, MovieViewModel>()
                 .ForMember(vm => vm.Title, o => o.MapFrom(s => s.Title))
                 .ReverseMap();
+            CreateMap<Party, PartyViewModel>()
+                .ReverseMap();
         }
     }
 }

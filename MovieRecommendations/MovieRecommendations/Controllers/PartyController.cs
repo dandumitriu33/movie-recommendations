@@ -1,21 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using MovieRecommendations.ViewModels;
 using MoviesDataAccessLibrary.Entities;
 using MoviesDataAccessLibrary.Repositories;
+using System.Collections.Generic;
 
 namespace MovieRecommendations.Controllers
 {
     public class PartyController : Controller
     {
         private readonly IRepository _repository;
+        private readonly IMapper _mapper;
 
-        public PartyController(IRepository repository)
+        public PartyController(IRepository repository,
+                               IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -23,17 +24,8 @@ namespace MovieRecommendations.Controllers
         public IActionResult AllParties(string userEmail)
         {
             List<Party> userParties = _repository.GetUserParties(userEmail);
-            List<PartyViewModel> userPartiesViewModel = new List<PartyViewModel>();
-            foreach (var party in userParties)
-            {
-                PartyViewModel tempPartyViewModel = new PartyViewModel
-                {
-                    Id = party.Id,
-                    Name = party.Name,
-                    CreatorEmail = party.CreatorEmail
-                };
-                userPartiesViewModel.Add(tempPartyViewModel);
-            }
+            List<PartyViewModel> userPartiesViewModel = _mapper.Map<List<Party>, List<PartyViewModel>>(userParties);
+            
             return View(userPartiesViewModel);
         }
 
@@ -47,10 +39,6 @@ namespace MovieRecommendations.Controllers
                 CreatorEmail = userEmail
             };
             _repository.AddParty(newParty);
-
-            // cookies for seen movies range
-            //HttpContext.Response.Cookies.Append($"{partyName.Replace(" ", "")}NewestMovieId", "0");
-            //HttpContext.Response.Cookies.Append($"{partyName.Replace(" ", "")}OldestMovieId", "0");
 
             PartyMember newPartyMember = new PartyMember
             {

@@ -32,22 +32,6 @@ namespace MovieRecommendations.Components
             // using automapper to switch to View Models
             var top20MovieViewModel = _mapper.Map<List<Movie>, List<MovieViewModel>>(top20FromDbSorted);
 
-            //List<MovieViewModel> top20MovieViewModel = new List<MovieViewModel>();
-            //foreach (var movie in top20FromDbSorted)
-            //{
-            //    MovieViewModel tempMovieViewModel = new MovieViewModel
-            //    {
-            //        Id = movie.Id,
-            //        Title = movie.Title,
-            //        LengthInMinutes = movie.LengthInMinutes,
-            //        ReleaseYear = movie.ReleaseYear,
-            //        Rating = movie.Rating,
-            //        MainGenre = movie.MainGenre,
-            //        SubGenre1 = movie.SubGenre1,
-            //        SubGenre2 = movie.SubGenre2
-            //    };
-            //    top20MovieViewModel.Add(tempMovieViewModel);
-            //}
             return View(top20MovieViewModel);
         }
     }
