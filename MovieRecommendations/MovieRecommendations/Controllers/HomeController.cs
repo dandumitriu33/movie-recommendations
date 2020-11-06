@@ -82,17 +82,7 @@ namespace MovieRecommendations.Controllers
         public IActionResult Details(int movieId)
         {
             Movie movie = _repository.GetMovieByMovieId(movieId);
-            MovieViewModel movieViewModel = new MovieViewModel
-            {
-                Id = movie.Id,
-                Title = movie.Title,
-                LengthInMinutes = movie.LengthInMinutes,
-                ReleaseYear = movie.ReleaseYear,
-                Rating = movie.Rating,
-                MainGenre = movie.MainGenre,
-                SubGenre1 = movie.SubGenre1,
-                SubGenre2 = movie.SubGenre2
-            };
+            MovieViewModel movieViewModel = _mapper.Map<Movie, MovieViewModel>(movie);
             return View(movieViewModel);
         }
 
