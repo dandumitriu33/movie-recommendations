@@ -1,14 +1,13 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MovieRecommendations.ViewModels;
 using MoviesDataAccessLibrary.Entities;
+using MoviesDataAccessLibrary.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
-using MoviesDataAccessLibrary.Repositories;
 
 namespace MovieRecommendations.Components
 {
@@ -16,19 +15,19 @@ namespace MovieRecommendations.Components
     {
         private readonly IRepository _repository;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        
+        private readonly IMapper _mapper;
 
         public DistanceContentBasedFiltering(IRepository repository,
-                                             IHttpContextAccessor httpContextAccessor)
+                                             IHttpContextAccessor httpContextAccessor,
+                                             IMapper mapper)
         {
             _repository = repository;
             _httpContextAccessor = httpContextAccessor;
+            _mapper = mapper;
         }
 
         public IViewComponentResult Invoke()
         {
-            List<MovieViewModel> distanceRecommendation = new List<MovieViewModel>();
-
             // get history last movie and search in that distance
             string userEmail = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Name).Value.ToString();
 
@@ -45,22 +44,8 @@ namespace MovieRecommendations.Components
             // limit set to 20, offset 0 because we always want the newest here
             int limit = 20;
             int offset = 0;
-            var distanceRecommendationFromDb = _repository.GetDistanceRecommendation(mainGenre, rating, limit, offset);
-            foreach (var movie in distanceRecommendationFromDb)
-            {
-                MovieViewModel newMovieViewModel = new MovieViewModel
-                {
-                    Id = movie.Id,
-                    Title = movie.Title,
-                    Rating = movie.Rating,
-                    ReleaseYear = movie.ReleaseYear,
-                    LengthInMinutes = movie.LengthInMinutes,
-                    MainGenre = movie.MainGenre,
-                    SubGenre1 = movie.SubGenre1,
-                    SubGenre2 = movie.SubGenre2
-                };
-                distanceRecommendation.Add(newMovieViewModel);
-            }
+            var distanceRecommendationFromDb = _repository.GetDistanceRecommendation(mainGenre, rating, limit, offset).ToList();
+            List<MovieViewModel> distanceRecommendation = _mapper.Map<List<Movie>, List<MovieViewModel>>(distanceRecommendationFromDb);
 
             return View(distanceRecommendation);
         }
