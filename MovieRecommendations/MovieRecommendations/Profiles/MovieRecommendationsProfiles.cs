@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using MovieRecommendations.Models;
 using MovieRecommendations.ViewModels;
 using MoviesDataAccessLibrary.Entities;
 using System;
@@ -16,6 +17,8 @@ namespace MovieRecommendations.Profiles
                 .ForMember(vm => vm.Title, o => o.MapFrom(s => s.Title))
                 .ReverseMap();
             CreateMap<Party, PartyViewModel>()
+                .ReverseMap();
+            CreateMap<Movie, AcceptableWatchHistoryMovieModel>()
                 .ReverseMap();
         }
     }

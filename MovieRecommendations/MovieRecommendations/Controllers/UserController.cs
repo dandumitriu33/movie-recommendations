@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using MovieRecommendations.Models;
+using MovieRecommendations.ViewModels;
 using MoviesDataAccessLibrary.Entities;
 using MoviesDataAccessLibrary.Repositories;
 
@@ -12,10 +14,13 @@ namespace MovieRecommendations.Controllers
     public class UserController : Controller
     {
         private readonly IRepository _repository;
+        private readonly IMapper _mapper;
 
-        public UserController(IRepository repository)
+        public UserController(IRepository repository,
+                              IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
         [HttpGet]
         [Route("user/userhistory/{email}")]
@@ -99,26 +104,15 @@ namespace MovieRecommendations.Controllers
                 contentLimit = 8;
             }
             
-            var initialRecommendation = _repository.GetDistanceRecommendation(latestWatchedMovie.MainGenre, latestWatchedMovie.Rating, contentLimit, contentOffset*contentLimit);
+            List<Movie> initialRecommendation = _repository.GetDistanceRecommendation(latestWatchedMovie.MainGenre, latestWatchedMovie.Rating, contentLimit, contentOffset*contentLimit).ToList();
             if (initialRecommendation.Count() < contentLimit)
             {
                 contentOffset = 0;
                 newContentOffset = "1";
-                initialRecommendation = _repository.GetDistanceRecommendation(latestWatchedMovie.MainGenre, latestWatchedMovie.Rating, contentLimit, contentOffset * contentLimit);
+                initialRecommendation = _repository.GetDistanceRecommendation(latestWatchedMovie.MainGenre, latestWatchedMovie.Rating, contentLimit, contentOffset * contentLimit).ToList();
             }
-            foreach (var movie in initialRecommendation)
+            foreach (Movie movie in initialRecommendation)
             {
-                Movie newMovie = new Movie
-                {
-                    Id = movie.Id,
-                    Title = movie.Title,
-                    Rating = movie.Rating,
-                    ReleaseYear = movie.ReleaseYear,
-                    LengthInMinutes = movie.LengthInMinutes,
-                    MainGenre = movie.MainGenre,
-                    SubGenre1 = movie.SubGenre1,
-                    SubGenre2 = movie.SubGenre2
-                };
                 historyBasedSuggestions.Add(movie);
             }
 
@@ -145,9 +139,6 @@ namespace MovieRecommendations.Controllers
                 communityBasedSuggestions.Add(tempMovie);
             }
 
-            
-            
-
             // arranging the history, community and rabbitHole suggestions in result 4-1-4-1
             for (int i = 0; i < 4; i++)
             {
@@ -169,15 +160,16 @@ namespace MovieRecommendations.Controllers
                     result.Add(historyBasedSuggestions[i]);
                 }
             }
-            
 
+            // map result to MovieViewModel
+            List<MovieViewModel> resultMovieViewModel = _mapper.Map<List<Movie>, List<MovieViewModel>>(result);
 
             // cookie management - increasing offsets for next refresh
             HttpContext.Response.Cookies.Append("contentOffset", newContentOffset);
             HttpContext.Response.Cookies.Append("communityOffset", newCommunityOffset);
             HttpContext.Response.Cookies.Append("rabbitHoleOffset", newRabbitHoleOffset);
 
-            return View(result);
+            return View(resultMovieViewModel);
         }
     }
 }
