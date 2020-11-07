@@ -159,17 +159,6 @@ namespace MovieRecommendationsAPI.Controllers
             {
                 Movie movie = _repository.GetMovieByMovieId(choice.MovieId);
                 MovieDTO tempMovie = _mapper.Map<Movie, MovieDTO>(movie);
-                //MovieDTO tempMovie = new MovieDTO
-                //{
-                //    Id = movie.Id,
-                //    Title = movie.Title,
-                //    LengthInMinutes = movie.LengthInMinutes,
-                //    ReleaseYear = movie.ReleaseYear,
-                //    Rating = movie.Rating,
-                //    MainGenre = movie.MainGenre,
-                //    SubGenre1 = movie.SubGenre1,
-                //    SubGenre2 = movie.SubGenre2
-                //};
                 result.Add(tempMovie);
             }
             result.Reverse();
@@ -198,17 +187,7 @@ namespace MovieRecommendationsAPI.Controllers
         public IActionResult GetPartyMembers(int partyId)
         {
             List<PartyMember> partyMembers = _repository.GetPartyMembersForParty(partyId);
-            List<PartyMemberDTO> partyMembersDTO = new List<PartyMemberDTO>();
-            foreach (var member in partyMembers)
-            {
-                PartyMemberDTO tempPartyMemberDTO = new PartyMemberDTO
-                {
-                    Id = member.Id,
-                    Email = member.Email,
-                    PartyId = member.PartyId
-                };
-                partyMembersDTO.Add(tempPartyMemberDTO);
-            }
+            List<PartyMemberDTO> partyMembersDTO = _mapper.Map<List<PartyMember>, List<PartyMemberDTO>>(partyMembers);
             return Ok(partyMembersDTO);
         }
     }
