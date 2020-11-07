@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using MovieRecommendationsAPI.Models;
@@ -17,10 +18,13 @@ namespace MovieRecommendationsAPI.Controllers
     public class StatisticsController : ControllerBase
     {
         private readonly IRepository _repository;
+        private readonly IMapper _mapper;
 
-        public StatisticsController(IRepository repository)
+        public StatisticsController(IRepository repository,
+                                    IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
         // GET: api/<StatisticsController>
         [HttpGet]
@@ -107,24 +111,9 @@ namespace MovieRecommendationsAPI.Controllers
         [EnableCors("AllowAnyOrigin")]
         public IActionResult GetLatestHorrorMovies()
         {
-            int chartSize = 6;
-            List<Movie> latestHorrorMovies = _repository.GetLatestHorrorMovies(chartSize);
-            List<MovieDTO> latestHorrorMoviesDTO = new List<MovieDTO>();
-            foreach (var movie in latestHorrorMovies)
-            {
-                MovieDTO tempMovie = new MovieDTO
-                {
-                    Id = movie.Id,
-                    Title = movie.Title,
-                    LengthInMinutes = movie.LengthInMinutes,
-                    ReleaseYear = movie.ReleaseYear,
-                    Rating = movie.Rating,
-                    MainGenre = movie.MainGenre,
-                    SubGenre1 = movie.SubGenre1,
-                    SubGenre2 = movie.SubGenre2
-                };
-                latestHorrorMoviesDTO.Add(tempMovie);
-            }
+            const int CHARTSIZE = 6;
+            List<Movie> latestHorrorMovies = _repository.GetLatestHorrorMovies(CHARTSIZE);
+            List<MovieDTO> latestHorrorMoviesDTO = _mapper.Map<List<Movie>, List<MovieDTO>>(latestHorrorMovies);
             return Ok(latestHorrorMoviesDTO);
         }
 
