@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -18,10 +19,13 @@ namespace MovieRecommendationsAPI.Controllers
     public class PartiesController : ControllerBase
     {
         private readonly IRepository _repository;
+        private readonly IMapper _mapper;
 
-        public PartiesController(IRepository repository)
+        public PartiesController(IRepository repository,
+                                 IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
         // GET: api/<PartiesController>
         [HttpGet]
@@ -38,12 +42,7 @@ namespace MovieRecommendationsAPI.Controllers
             List<PartyDTO> userPartiesDTOs = new List<PartyDTO>();
             foreach (var party in userParties)
             {
-                PartyDTO tempParty = new PartyDTO
-                {
-                    Id = party.Id,
-                    Name = party.Name,
-                    CreatorEmail = party.CreatorEmail
-                };
+                PartyDTO tempParty = _mapper.Map<Party, PartyDTO>(party);
                 userPartiesDTOs.Add(tempParty);
             }
             return Ok(userPartiesDTOs);
