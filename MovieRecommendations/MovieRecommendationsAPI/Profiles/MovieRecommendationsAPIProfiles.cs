@@ -16,6 +16,8 @@ namespace MovieRecommendationsAPI.Profiles
                 .ReverseMap();
             CreateMap<Party, PartyDTO>()
                 .ReverseMap();
+            CreateMap<PartyMember, PartyMemberDTO>()
+                .ReverseMap();
         }
     }
 }

@@ -56,12 +56,7 @@ namespace MovieRecommendationsAPI.Controllers
             {
                 return BadRequest("The query is not formatted correctly");
             }
-            Party tempParty = new Party
-            {
-                Id = partyDTO.Id,
-                Name = partyDTO.Name,
-                CreatorEmail = partyDTO.CreatorEmail
-            };
+            Party tempParty = _mapper.Map<PartyDTO, Party>(partyDTO);
             _repository.AddParty(tempParty);
 
             // adding the creator as a member of the party
@@ -74,7 +69,7 @@ namespace MovieRecommendationsAPI.Controllers
             return NoContent();
         }
 
-        // unused at this time, using API via JS
+        // UNUSED at this time, using API via JS
         // POST api/<PartiesController>/addToParty/{partyId}
         [HttpPost]
         [Route("addToParty/{partyId}")]
@@ -84,12 +79,7 @@ namespace MovieRecommendationsAPI.Controllers
             {
                 return BadRequest("The query is not formatted correctly");
             }
-            PartyMember partyMember = new PartyMember
-            {
-                Id = partyMemberDTO.Id,
-                PartyId = partyMemberDTO.PartyId,
-                Email = partyMemberDTO.Email
-            };
+            PartyMember partyMember = _mapper.Map<PartyMemberDTO, PartyMember>(partyMemberDTO);
             _repository.AddMemberToParty(partyMember);
             return NoContent();
         }
