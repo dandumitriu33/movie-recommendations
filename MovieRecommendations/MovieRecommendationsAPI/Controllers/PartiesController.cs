@@ -158,17 +158,18 @@ namespace MovieRecommendationsAPI.Controllers
             foreach (PartyChoice choice in validChoices)
             {
                 Movie movie = _repository.GetMovieByMovieId(choice.MovieId);
-                MovieDTO tempMovie = new MovieDTO
-                {
-                    Id = movie.Id,
-                    Title = movie.Title,
-                    LengthInMinutes = movie.LengthInMinutes,
-                    ReleaseYear = movie.ReleaseYear,
-                    Rating = movie.Rating,
-                    MainGenre = movie.MainGenre,
-                    SubGenre1 = movie.SubGenre1,
-                    SubGenre2 = movie.SubGenre2
-                };
+                MovieDTO tempMovie = _mapper.Map<Movie, MovieDTO>(movie);
+                //MovieDTO tempMovie = new MovieDTO
+                //{
+                //    Id = movie.Id,
+                //    Title = movie.Title,
+                //    LengthInMinutes = movie.LengthInMinutes,
+                //    ReleaseYear = movie.ReleaseYear,
+                //    Rating = movie.Rating,
+                //    MainGenre = movie.MainGenre,
+                //    SubGenre1 = movie.SubGenre1,
+                //    SubGenre2 = movie.SubGenre2
+                //};
                 result.Add(tempMovie);
             }
             result.Reverse();
