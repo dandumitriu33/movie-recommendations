@@ -11,6 +11,8 @@ namespace MovieRecommendations.Tests
         {
             MovieViewModel movieVM = new MovieViewModel();
 
+            Assert.True(movieVM != null);
+
         }
     }
 }
