@@ -9,10 +9,27 @@ namespace MovieRecommendations.Tests
         [Fact]
         public void BeNotNullOnCreation()
         {
+            // Arrange
             MovieViewModel movieVM = new MovieViewModel();
 
-            Assert.True(movieVM != null);
+            // Act
+            // included in the Arrange stage
 
+            // Assert
+            Assert.True(movieVM != null);
+        }
+
+        [Fact]
+        public void HaveNameStrtingWithThe()
+        {
+            // Arrange
+            MovieViewModel movieVM = new MovieViewModel();
+            
+            // Act
+            movieVM.Title = "The Best Movie";
+
+            // Assert
+            Assert.StartsWith("The", movieVM.Title);
         }
     }
 }
