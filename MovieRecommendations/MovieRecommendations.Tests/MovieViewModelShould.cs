@@ -11,6 +11,7 @@ namespace MovieRecommendations.Tests
     {
         private readonly ITestOutputHelper _output;
         private readonly MovieViewModel _movieVM;
+        private readonly int _currentYear = DateTime.Now.Year;
 
         // Some of these tests are extremey simple. This is an educational
         // project and this is the XUnit part.
@@ -263,6 +264,22 @@ namespace MovieRecommendations.Tests
 
             // Assert
             Assert.Equal(8.0, _movieVM.Rating, 2);
+        }
+
+        [Theory] // this method is to be executed multiple time according to number of inputs
+        [InlineData(1800, true)]
+        [InlineData(1995, true)]
+        [InlineData(1791, false)]
+        [InlineData(3001, false)]  // can be shared with multiple classes like Movie via MemberData attribute and class
+        public void ReleaseYearIsValid(int releaseYear, bool result)
+        {
+            // Arrange
+
+            // Act
+            _movieVM.ReleaseYear = releaseYear;
+
+            // Assert
+            Assert.Equal(result, _movieVM.ReleaseYear >= 1800 && _movieVM.ReleaseYear <= 3000);
         }
     }
 }
