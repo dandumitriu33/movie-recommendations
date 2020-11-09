@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -18,10 +19,13 @@ namespace MovieRecommendationsAPI.Controllers
     public class PartiesController : ControllerBase
     {
         private readonly IRepository _repository;
+        private readonly IMapper _mapper;
 
-        public PartiesController(IRepository repository)
+        public PartiesController(IRepository repository,
+                                 IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
         // GET: api/<PartiesController>
         [HttpGet]
@@ -38,12 +42,7 @@ namespace MovieRecommendationsAPI.Controllers
             List<PartyDTO> userPartiesDTOs = new List<PartyDTO>();
             foreach (var party in userParties)
             {
-                PartyDTO tempParty = new PartyDTO
-                {
-                    Id = party.Id,
-                    Name = party.Name,
-                    CreatorEmail = party.CreatorEmail
-                };
+                PartyDTO tempParty = _mapper.Map<Party, PartyDTO>(party);
                 userPartiesDTOs.Add(tempParty);
             }
             return Ok(userPartiesDTOs);
@@ -57,12 +56,7 @@ namespace MovieRecommendationsAPI.Controllers
             {
                 return BadRequest("The query is not formatted correctly");
             }
-            Party tempParty = new Party
-            {
-                Id = partyDTO.Id,
-                Name = partyDTO.Name,
-                CreatorEmail = partyDTO.CreatorEmail
-            };
+            Party tempParty = _mapper.Map<PartyDTO, Party>(partyDTO);
             _repository.AddParty(tempParty);
 
             // adding the creator as a member of the party
@@ -75,7 +69,7 @@ namespace MovieRecommendationsAPI.Controllers
             return NoContent();
         }
 
-        // unused at this time, using API via JS
+        // UNUSED at this time, using API via JS
         // POST api/<PartiesController>/addToParty/{partyId}
         [HttpPost]
         [Route("addToParty/{partyId}")]
@@ -85,12 +79,7 @@ namespace MovieRecommendationsAPI.Controllers
             {
                 return BadRequest("The query is not formatted correctly");
             }
-            PartyMember partyMember = new PartyMember
-            {
-                Id = partyMemberDTO.Id,
-                PartyId = partyMemberDTO.PartyId,
-                Email = partyMemberDTO.Email
-            };
+            PartyMember partyMember = _mapper.Map<PartyMemberDTO, PartyMember>(partyMemberDTO);
             _repository.AddMemberToParty(partyMember);
             return NoContent();
         }
@@ -123,22 +112,7 @@ namespace MovieRecommendationsAPI.Controllers
             int limit = 10;
 
             List<Movie> batchFromDb = _repository.GetBatch(newestId, oldestId, limit);
-            List<MovieDTO> batchDTO = new List<MovieDTO>();
-            foreach (var movie in batchFromDb)
-            {
-                MovieDTO tempMovie = new MovieDTO
-                {
-                    Id = movie.Id,
-                    Title = movie.Title,
-                    LengthInMinutes = movie.LengthInMinutes,
-                    ReleaseYear = movie.ReleaseYear,
-                    Rating = movie.Rating,
-                    MainGenre = movie.MainGenre,
-                    SubGenre1 = movie.SubGenre1,
-                    SubGenre2 = movie.SubGenre2
-                };
-                batchDTO.Add(tempMovie);
-            }
+            List<MovieDTO> batchDTO = _mapper.Map<List<Movie>, List<MovieDTO>>(batchFromDb);
             return Ok(batchDTO);
         }
 
@@ -184,17 +158,7 @@ namespace MovieRecommendationsAPI.Controllers
             foreach (PartyChoice choice in validChoices)
             {
                 Movie movie = _repository.GetMovieByMovieId(choice.MovieId);
-                MovieDTO tempMovie = new MovieDTO
-                {
-                    Id = movie.Id,
-                    Title = movie.Title,
-                    LengthInMinutes = movie.LengthInMinutes,
-                    ReleaseYear = movie.ReleaseYear,
-                    Rating = movie.Rating,
-                    MainGenre = movie.MainGenre,
-                    SubGenre1 = movie.SubGenre1,
-                    SubGenre2 = movie.SubGenre2
-                };
+                MovieDTO tempMovie = _mapper.Map<Movie, MovieDTO>(movie);
                 result.Add(tempMovie);
             }
             result.Reverse();
@@ -223,17 +187,7 @@ namespace MovieRecommendationsAPI.Controllers
         public IActionResult GetPartyMembers(int partyId)
         {
             List<PartyMember> partyMembers = _repository.GetPartyMembersForParty(partyId);
-            List<PartyMemberDTO> partyMembersDTO = new List<PartyMemberDTO>();
-            foreach (var member in partyMembers)
-            {
-                PartyMemberDTO tempPartyMemberDTO = new PartyMemberDTO
-                {
-                    Id = member.Id,
-                    Email = member.Email,
-                    PartyId = member.PartyId
-                };
-                partyMembersDTO.Add(tempPartyMemberDTO);
-            }
+            List<PartyMemberDTO> partyMembersDTO = _mapper.Map<List<PartyMember>, List<PartyMemberDTO>>(partyMembers);
             return Ok(partyMembersDTO);
         }
     }

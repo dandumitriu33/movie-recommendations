@@ -84,6 +84,13 @@ namespace MovieRecommendations.Controllers
             return View(movieViewModel);
         }
 
+        [Route("/Home/HandleError/{code:int}")]
+        public IActionResult HandleError(int code)
+        {
+            ViewData["ErrorMessage"] = $"The action you were trying to complete encountered an error. ErrorCode: {code}";
+            return View("~/Views/Shared/HandleError.cshtml");
+        }
+
         /// <summary>
         /// Process a movie after it has been watched > 90%. Add to CommunityLikes, NextMovies and User History.
         /// </summary>

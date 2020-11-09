@@ -14,6 +14,8 @@ using Microsoft.Extensions.Logging;
 using MoviesDataAccessLibrary.Entities;
 using MoviesDataAccessLibrary.Contexts;
 using MoviesDataAccessLibrary.Repositories;
+using AutoMapper;
+using System.Reflection;
 
 namespace MovieRecommendationsAPI
 {
@@ -45,6 +47,7 @@ namespace MovieRecommendationsAPI
                 options.UseSqlServer(Configuration.GetConnectionString("Default"));
             });
             services.AddScoped<IRepository, SQLRepository>();
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

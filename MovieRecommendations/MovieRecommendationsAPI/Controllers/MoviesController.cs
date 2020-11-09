@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using MovieRecommendationsAPI.Models;
 using MoviesDataAccessLibrary.Entities;
@@ -16,32 +17,20 @@ namespace MovieRecommendationsAPI.Controllers
     public class MoviesController : ControllerBase
     {
         private readonly IRepository _repository;
+        private readonly IMapper _mapper;
 
-        public MoviesController(IRepository repository)
+        public MoviesController(IRepository repository,
+                                IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
         // GET: api/<AllMoviesController>
         [HttpGet]
         public IActionResult Get()
         {
-            IEnumerable<Movie> allMoviesFromDb = _repository.GetAllMovies();
-            List<MovieDTO> allMovieDTOs = new List<MovieDTO>();
-            foreach (var movie in allMoviesFromDb)
-            {
-                MovieDTO tempMovie = new MovieDTO
-                {
-                    Id = movie.Id,
-                    Title = movie.Title,
-                    LengthInMinutes = movie.LengthInMinutes,
-                    ReleaseYear = movie.ReleaseYear,
-                    Rating = movie.Rating,
-                    MainGenre = movie.MainGenre,
-                    SubGenre1 = movie.SubGenre1,
-                    SubGenre2 = movie.SubGenre2
-                };
-                allMovieDTOs.Add(tempMovie);
-            }
+            List<Movie> allMoviesFromDb = _repository.GetAllMovies().ToList();
+            List<MovieDTO> allMovieDTOs = _mapper.Map<List<Movie>, List<MovieDTO>>(allMoviesFromDb);
             return Ok(allMovieDTOs);
         }
 
