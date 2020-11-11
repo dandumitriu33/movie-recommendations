@@ -8,7 +8,7 @@ namespace MoviesDataAccessLibrary.Repositories
     {
         Task<Movie> Add(Movie movie);
         IEnumerable<Movie> GetAllMovies();
-        IEnumerable<Movie> GetAllMoviesTop20();
+        List<Movie> GetTop20YearRating();
         public Movie GetMovieByMovieId(int movieId);
         public List<History> GetFullHistory(string email);
         public void AddToHistory(string email, int movieId);

@@ -24,14 +24,8 @@ namespace MovieRecommendations.Components
 
         public IViewComponentResult Invoke()
         {
-            IEnumerable<Movie> top20FromDb = _repository.GetAllMoviesTop20();
-
-            // sort by release yar and then by rating descending
-            List<Movie> top20FromDbSorted = top20FromDb.OrderByDescending(m => m.ReleaseYear).ThenByDescending(m => m.Rating).ToList();
-
-            // using automapper to switch to View Models
-            var top20MovieViewModel = _mapper.Map<List<Movie>, List<MovieViewModel>>(top20FromDbSorted);
-
+            List<Movie> top20FromDb = _repository.GetTop20YearRating();
+            var top20MovieViewModel = _mapper.Map<List<Movie>, List<MovieViewModel>>(top20FromDb);
             return View(top20MovieViewModel);
         }
     }

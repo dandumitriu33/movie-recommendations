@@ -32,9 +32,14 @@ namespace MoviesDataAccessLibrary.Repositories
             return _context.Movies.Where(m => m.Rating > 0).OrderByDescending(m => m.ReleaseYear).ThenBy(m => m.Rating);
         }
 
-        public IEnumerable<Movie> GetAllMoviesTop20()
+        //public IEnumerable<Movie> GetAllMoviesTop20()
+        //{
+        //    return _context.Movies.Where(m => m.Rating > 6.5).OrderByDescending(m => m.ReleaseYear).ThenBy(m => m.Rating).Take(20);
+        //}
+
+        public List<Movie> GetTop20YearRating()
         {
-            return _context.Movies.Where(m => m.Rating > 6.5).OrderByDescending(m => m.ReleaseYear).ThenBy(m => m.Rating).Take(20);
+            return _context.Movies.Where(m => m.Rating > 6.5).OrderByDescending(m => m.ReleaseYear).ThenByDescending(m => m.Rating).Take(20).ToList();
         }
 
         public Movie GetMovieByMovieId(int movieId)

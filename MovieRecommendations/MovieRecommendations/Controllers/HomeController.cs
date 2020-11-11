@@ -30,6 +30,7 @@ namespace MovieRecommendations.Controllers
 
         public IActionResult Index()
         {
+            // setting or resetting refresh cookies - rec results are cycled based on them
             HttpContext.Response.Cookies.Append("contentOffset", "0");
             HttpContext.Response.Cookies.Append("communityOffset", "0");
             HttpContext.Response.Cookies.Append("rabbitHoleOffset", "0");
