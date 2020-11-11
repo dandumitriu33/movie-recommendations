@@ -102,10 +102,9 @@ namespace MoviesDataAccessLibrary.Repositories
             _context.SaveChanges();
         }
 
-        public IEnumerable<UserLikedMovie> GetCommunityTop(int limit, int offset)
+        public List<UserLikedMovie> GetCommunityTop(int limit, int offset)
         {
-            var communityTop = _context.CommunityLikes.OrderByDescending(m => m.Score).Skip(offset).Take(limit);
-            return communityTop;
+            return _context.CommunityLikes.OrderByDescending(m => m.Score).Skip(offset).Take(limit).ToList(); ;
         }
 
         public IEnumerable<UserLikedMovie> GetAllCommunityLikes()

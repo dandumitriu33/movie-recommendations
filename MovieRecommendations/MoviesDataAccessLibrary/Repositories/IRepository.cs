@@ -16,7 +16,7 @@ namespace MoviesDataAccessLibrary.Repositories
         UserLikedMovie GetCommunityLikedMovieById(int movieId);
         void IncrementCommunityLikedMovieScore(int movieId);
         void AddToCommunityLikes(int movieId);
-        IEnumerable<UserLikedMovie> GetCommunityTop(int limit, int offset);
+        List<UserLikedMovie> GetCommunityTop(int limit, int offset);
         IEnumerable<UserLikedMovie> GetAllCommunityLikes();
         History GetLatestFromHistory(string userEmail);
         public List<NextMovie> GetNextMoviesForMovieById(int currentMovie);
