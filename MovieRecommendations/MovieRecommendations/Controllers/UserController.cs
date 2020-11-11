@@ -80,10 +80,10 @@ namespace MovieRecommendations.Controllers
             {
                 contentLimit = 8;
             }
-            List<Movie> historyBasedSuggestions = GetContentList(latestWatchedMovie, contentLimit);
+            List<Movie> contentBasedSuggestions = GetContentList(latestWatchedMovie, contentLimit);
 
             // arranging the rabbitHole, community and history(content) suggestions in result 1-1-8
-            List<Movie> result = _recommendationsBuilder.Build(rabbitHoleSuggestions, communityBasedSuggestions, historyBasedSuggestions);
+            List<Movie> result = _recommendationsBuilder.Build(rabbitHoleSuggestions, communityBasedSuggestions, contentBasedSuggestions);
 
             // map result to MovieViewModel
             List<MovieViewModel> resultMovieViewModel = _mapper.Map<List<Movie>, List<MovieViewModel>>(result);

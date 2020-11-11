@@ -7,7 +7,7 @@ namespace MovieRecommendations.Models
     public class PersonalizedRecommendationsBuilder : IPersonalizedRecommendationsBuilder
     {
         private const int personalizedRecommendationsLength = 10;
-        public List<Movie> Build(List<Movie> rabbitHoleSuggestions, List<Movie> communityBasedSuggestions, List<Movie> historyBasedSuggestions)
+        public List<Movie> Build(List<Movie> rabbitHoleSuggestions, List<Movie> communityBasedSuggestions, List<Movie> contentBasedSuggestions)
         {
             int personalizedRecommendationsLength = 10;
             // arranging the history, community and rabbitHole suggestions in result 1RH - 1Com - 8History
@@ -22,11 +22,11 @@ namespace MovieRecommendations.Models
                 output.Add(communityBasedSuggestions[0]);
                 personalizedRecommendationsLength--;
             }
-            if (historyBasedSuggestions.Count > 0)
+            if (contentBasedSuggestions.Count > 0)
             {
                 for (int i = 0; i < personalizedRecommendationsLength; i++)
                 {
-                    output.Add(historyBasedSuggestions[i]);
+                    output.Add(contentBasedSuggestions[i]);
                 }
             }
             return output;

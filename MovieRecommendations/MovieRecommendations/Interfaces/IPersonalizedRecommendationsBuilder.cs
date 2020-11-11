@@ -5,6 +5,6 @@ namespace MovieRecommendations.Interfaces
 {
     public interface IPersonalizedRecommendationsBuilder
     {
-        List<Movie> Build(List<Movie> rabbitHoleSuggestions, List<Movie> communityBasedSuggestions, List<Movie> historyBasedSuggestions);
+        List<Movie> Build(List<Movie> rabbitHoleSuggestions, List<Movie> communityBasedSuggestions, List<Movie> contentBasedSuggestions);
     }
 }

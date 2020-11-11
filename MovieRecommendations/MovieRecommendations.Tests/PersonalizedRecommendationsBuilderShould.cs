@@ -47,13 +47,13 @@ namespace MovieRecommendations.Tests
                 SubGenre2 = "Adventure"
             };
             communityBasedSuggestions.Add(communityEntry);
-            List<Movie> historyBasedSuggestions = new List<Movie>();
+            List<Movie> contentBasedSuggestions = new List<Movie>();
             for (int i = 0; i < 8; i++)
             {
-                Movie historyEntry = new Movie
+                Movie contentEntry = new Movie
                 {
                     Id = 101,
-                    Title = $"Test History Entry {i}",
+                    Title = $"Test Content Entry {i}",
                     LengthInMinutes = 142,
                     Rating = 5.6,
                     ReleaseYear = 2019,
@@ -61,26 +61,26 @@ namespace MovieRecommendations.Tests
                     SubGenre1 = "Crime",
                     SubGenre2 = "Adventure"
                 };
-                historyBasedSuggestions.Add(historyEntry);
+                contentBasedSuggestions.Add(contentEntry);
             }
             List<Movie> expected = new List<Movie>();
             expected.Add(rabbitHoleSuggestions[0]);
             expected.Add(communityBasedSuggestions[0]);
-            foreach (var entry in historyBasedSuggestions)
+            foreach (var entry in contentBasedSuggestions)
             {
                 expected.Add(entry);
             }
 
             // Act
             PersonalizedRecommendationsBuilder builder = new PersonalizedRecommendationsBuilder();
-            List<Movie> actual = builder.Build(rabbitHoleSuggestions, communityBasedSuggestions, historyBasedSuggestions);
+            List<Movie> actual = builder.Build(rabbitHoleSuggestions, communityBasedSuggestions, contentBasedSuggestions);
 
             // Assert
             Assert.Equal(expected, actual);
             Assert.Equal("Test Rabbit Hole Entry", actual[0].Title);
             Assert.Equal("Test Community Entry", actual[1].Title);
-            Assert.Equal("Test History Entry 1", actual[3].Title);
-            Assert.Equal("Test History Entry 7", actual[9].Title);
+            Assert.Equal("Test Content Entry 1", actual[3].Title);
+            Assert.Equal("Test Content Entry 7", actual[9].Title);
             Assert.Equal(10, actual.Count);
         }
 
@@ -102,13 +102,13 @@ namespace MovieRecommendations.Tests
                 SubGenre2 = "Adventure"
             };
             communityBasedSuggestions.Add(communityEntry);
-            List<Movie> historyBasedSuggestions = new List<Movie>();
+            List<Movie> contentBasedSuggestions = new List<Movie>();
             for (int i = 0; i < 9; i++)
             {
-                Movie historyEntry = new Movie
+                Movie contentEntry = new Movie
                 {
                     Id = 101,
-                    Title = $"Test History Entry {i}",
+                    Title = $"Test Content Entry {i}",
                     LengthInMinutes = 142,
                     Rating = 5.6,
                     ReleaseYear = 2019,
@@ -116,11 +116,11 @@ namespace MovieRecommendations.Tests
                     SubGenre1 = "Crime",
                     SubGenre2 = "Adventure"
                 };
-                historyBasedSuggestions.Add(historyEntry);
+                contentBasedSuggestions.Add(contentEntry);
             }
             List<Movie> expected = new List<Movie>();            
             expected.Add(communityBasedSuggestions[0]);
-            foreach (var entry in historyBasedSuggestions)
+            foreach (var entry in contentBasedSuggestions)
             {
                 expected.Add(entry);
             }
@@ -131,7 +131,7 @@ namespace MovieRecommendations.Tests
 
             // Act
             PersonalizedRecommendationsBuilder builder = new PersonalizedRecommendationsBuilder();
-            List<Movie> actual = builder.Build(rabbitHoleSuggestions, communityBasedSuggestions, historyBasedSuggestions);
+            List<Movie> actual = builder.Build(rabbitHoleSuggestions, communityBasedSuggestions, contentBasedSuggestions);
             foreach (var mv in actual)
             {
                 _output.WriteLine(mv.Title);
@@ -140,8 +140,8 @@ namespace MovieRecommendations.Tests
             // Assert
             Assert.Equal(expected, actual);
             Assert.Equal("Test Community Entry", actual[0].Title);
-            Assert.Equal("Test History Entry 1", actual[2].Title);
-            Assert.Equal("Test History Entry 7", actual[8].Title);
+            Assert.Equal("Test Content Entry 1", actual[2].Title);
+            Assert.Equal("Test Content Entry 7", actual[8].Title);
             Assert.Equal(10, actual.Count);
         }
 
@@ -163,13 +163,13 @@ namespace MovieRecommendations.Tests
             };
             rabbitHoleSuggestions.Add(rabbitHoleEntry);
             List<Movie> communityBasedSuggestions = new List<Movie>();
-            List<Movie> historyBasedSuggestions = new List<Movie>();
+            List<Movie> contentBasedSuggestions = new List<Movie>();
             for (int i = 0; i < 9; i++)
             {
-                Movie historyEntry = new Movie
+                Movie contentEntry = new Movie
                 {
                     Id = 101,
-                    Title = $"Test History Entry {i}",
+                    Title = $"Test Content Entry {i}",
                     LengthInMinutes = 142,
                     Rating = 5.6,
                     ReleaseYear = 2019,
@@ -177,11 +177,11 @@ namespace MovieRecommendations.Tests
                     SubGenre1 = "Crime",
                     SubGenre2 = "Adventure"
                 };
-                historyBasedSuggestions.Add(historyEntry);
+                contentBasedSuggestions.Add(contentEntry);
             }
             List<Movie> expected = new List<Movie>();
             expected.Add(rabbitHoleSuggestions[0]);
-            foreach (var entry in historyBasedSuggestions)
+            foreach (var entry in contentBasedSuggestions)
             {
                 expected.Add(entry);
             }
@@ -192,7 +192,7 @@ namespace MovieRecommendations.Tests
 
             // Act
             PersonalizedRecommendationsBuilder builder = new PersonalizedRecommendationsBuilder();
-            List<Movie> actual = builder.Build(rabbitHoleSuggestions, communityBasedSuggestions, historyBasedSuggestions);
+            List<Movie> actual = builder.Build(rabbitHoleSuggestions, communityBasedSuggestions, contentBasedSuggestions);
             foreach (var mv in actual)
             {
                 _output.WriteLine(mv.Title);
@@ -201,8 +201,8 @@ namespace MovieRecommendations.Tests
             // Assert
             Assert.Equal(expected, actual);
             Assert.Equal("Test Rabbit Hole Entry", actual[0].Title);
-            Assert.Equal("Test History Entry 1", actual[2].Title);
-            Assert.Equal("Test History Entry 7", actual[8].Title);
+            Assert.Equal("Test Content Entry 1", actual[2].Title);
+            Assert.Equal("Test Content Entry 7", actual[8].Title);
             Assert.Equal(10, actual.Count);
         }
 
@@ -236,14 +236,14 @@ namespace MovieRecommendations.Tests
                 SubGenre2 = "Adventure"
             };
             communityBasedSuggestions.Add(communityEntry);
-            List<Movie> historyBasedSuggestions = new List<Movie>();
+            List<Movie> contentBasedSuggestions = new List<Movie>();
             List<Movie> expected = new List<Movie>();
             expected.Add(rabbitHoleSuggestions[0]);
             expected.Add(communityBasedSuggestions[0]);
 
             // Act
             PersonalizedRecommendationsBuilder builder = new PersonalizedRecommendationsBuilder();
-            List<Movie> actual = builder.Build(rabbitHoleSuggestions, communityBasedSuggestions, historyBasedSuggestions);
+            List<Movie> actual = builder.Build(rabbitHoleSuggestions, communityBasedSuggestions, contentBasedSuggestions);
 
             // Assert
             Assert.Equal(expected, actual);
