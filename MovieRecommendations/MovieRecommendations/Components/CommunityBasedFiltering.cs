@@ -29,7 +29,7 @@ namespace MovieRecommendations.Components
         {
             List<MovieViewModel> communityBasedRecommendation = new List<MovieViewModel>();
 
-            // limit set to 20, offset is 0 as we always want to top
+            // limit set to 20, offset is 0 as we always want the top
             int limit = 20;
             int offset = 0;
             var communityTop = _repository.GetCommunityTop(limit, offset);

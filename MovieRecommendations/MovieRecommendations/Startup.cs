@@ -15,6 +15,7 @@ using MoviesDataAccessLibrary.Contexts;
 using MoviesDataAccessLibrary.Repositories;
 using AutoMapper;
 using System.Reflection;
+using MovieRecommendations.Models;
 
 namespace MovieRecommendations
 {
@@ -48,6 +49,7 @@ namespace MovieRecommendations
                 })
                 .AddEntityFrameworkStores<MoviesContext>();
             services.AddScoped<IRepository, SQLRepository>();
+            services.AddScoped<IPersonalizedRecommendationsBuilder, PersonalizedRecommendationsBuilder>();
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
         }
 

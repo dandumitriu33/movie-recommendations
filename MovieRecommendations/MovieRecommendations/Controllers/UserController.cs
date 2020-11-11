@@ -15,12 +15,15 @@ namespace MovieRecommendations.Controllers
     {
         private readonly IRepository _repository;
         private readonly IMapper _mapper;
+        private readonly IPersonalizedRecommendationsBuilder _recommendationsBuilder;
 
         public UserController(IRepository repository,
-                              IMapper mapper)
+                              IMapper mapper,
+                              IPersonalizedRecommendationsBuilder recommendationsBuilder)
         {
             _repository = repository;
             _mapper = mapper;
+            _recommendationsBuilder = recommendationsBuilder;
         }
         [HttpGet]
         [Route("user/userhistory/{email}")]
@@ -139,27 +142,8 @@ namespace MovieRecommendations.Controllers
                 communityBasedSuggestions.Add(tempMovie);
             }
 
-            // arranging the history, community and rabbitHole suggestions in result 4-1-4-1
-            for (int i = 0; i < 4; i++)
-            {
-                result.Add(historyBasedSuggestions[i]);
-            }
-            result.Add(communityBasedSuggestions[0]);
-            if (rabbitHoleEntries.Count() > 0)
-            {
-                for (int i = 4; i < 8; i++)
-                {
-                    result.Add(historyBasedSuggestions[i]);
-                }
-                result.Add(rabbitHoleSuggestions[0]);
-            }
-            else
-            {
-                for (int i = 4; i < 9; i++)
-                {
-                    result.Add(historyBasedSuggestions[i]);
-                }
-            }
+            // arranging the history, community and rabbitHole suggestions in result 1-1-8
+            result = _recommendationsBuilder.Build(historyBasedSuggestions, communityBasedSuggestions, rabbitHoleSuggestions);
 
             // map result to MovieViewModel
             List<MovieViewModel> resultMovieViewModel = _mapper.Map<List<Movie>, List<MovieViewModel>>(result);
