@@ -64,12 +64,12 @@ namespace MovieRecommendations.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddMovie(MovieViewModel movie)
+        public async Task<IActionResult> AddMovie(MovieViewModel movie)
         {
             if (ModelState.IsValid)
             {
                 Movie newEntry = _mapper.Map<MovieViewModel, Movie>(movie);
-                _repository.Add(newEntry);
+                await _repository.Add(newEntry);
                 return View();
             }
             return View(movie);
