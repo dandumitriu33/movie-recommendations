@@ -9,7 +9,10 @@ ASP.NET Core Identity 3.1
 Entity Framework Core 3.1  
 Data generated with Mockaroo - https://mockaroo.com/  
 Bootstrap 4  
-Statistics Panel with Chart.js - https://www.chartjs.org/
+Statistics Panel with Chart.js - https://www.chartjs.org/  
+Backend Validation via .NET Attribute Annotations  
+Frontend Validation via JQuery including Register and Login  
+Unit Tests via XUnit  
 
 **Simple Filtering** - just a query getting the newest movies with the highest rating  
 **Content Based Filtering** - similar movies to what the user watched last (last history entry - by Main Genre and year)  
