@@ -29,6 +29,14 @@ namespace MovieRecommendations.Models
                     output.Add(contentBasedSuggestions[i]);
                 }
             }
+            else
+            {
+                output.Clear();
+                for (int i = 0; i < communityBasedSuggestions.Count; i++)
+                {
+                    output.Add(communityBasedSuggestions[i]);
+                }
+            }
             return output;
         }
     }

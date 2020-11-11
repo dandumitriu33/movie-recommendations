@@ -61,14 +61,19 @@ namespace MovieRecommendations.Controllers
             ViewBag.Text = userEmail;
 
             // get the last movie from history
+            Movie latestWatchedMovie = new Movie();
             History latestWatchedHistory = _repository.GetLatestFromHistory(userEmail);
-            Movie latestWatchedMovie = _repository.GetMovieByMovieId(latestWatchedHistory.MovieId);
+            if (latestWatchedHistory != null)
+            {
+                latestWatchedMovie = _repository.GetMovieByMovieId(latestWatchedHistory.MovieId);
+            }
+            
 
             // STEP 1 - get the rabbitHole list - order matters as step 3 depends on 1's result
             List<Movie> rabbitHoleSuggestions = GetRabbitHoleList(latestWatchedHistory);
 
             // Step 2 - get the community top pick - order matters as step 3 depends on 2's result as well
-            List<Movie> communityBasedSuggestions = GetCommunityList();
+            List<Movie> communityBasedSuggestions = GetCommunityList(latestWatchedHistory);
 
             // STEP 3 - get 8 or 9 newest, similar rating movies, if rabbit hole has entries or not
             int contentLimit = 10;
@@ -121,12 +126,17 @@ namespace MovieRecommendations.Controllers
         /// Gets community based recommendations from the database based on the entire community views.
         /// </summary>
         /// <returns></returns>
-        private List<Movie> GetCommunityList()
+        private List<Movie> GetCommunityList(History latestWatchedHistory)
         {
+            int maxListSizeWhenNoHistory = 10;
             int communityOffset = Convert.ToInt32(HttpContext.Request.Cookies["communityOffset"]);
             string newCommunityOffset = (communityOffset + 1).ToString();
             List<Movie> output = new List<Movie>();
             int communityLimit = 1;
+            if (latestWatchedHistory == null)
+            {
+                communityLimit = maxListSizeWhenNoHistory;
+            }
             List<UserLikedMovie> communityTopPicks = _repository.GetCommunityTop(communityLimit, communityOffset * communityLimit);
             if (communityTopPicks.Count() == 0)
             {
@@ -153,9 +163,13 @@ namespace MovieRecommendations.Controllers
         /// <returns></returns>
         private List<Movie> GetRabbitHoleList(History latestWatchedHistory)
         {
+            List<Movie> output = new List<Movie>();
+            if (latestWatchedHistory == null)
+            {
+                return output;
+            }
             int rabbitHoleOffset = Convert.ToInt32(HttpContext.Request.Cookies["rabbitHoleOffset"]);
             string newRabbitHoleOffset = (rabbitHoleOffset + 1).ToString();
-            List<Movie> output = new List<Movie>();
             int rabbitHoleLimit = 1;
             var rabbitHoleEntries = _repository.GetNextMoviesForMovieByIdForSuggestions(latestWatchedHistory.MovieId, rabbitHoleLimit, rabbitHoleOffset * rabbitHoleLimit);
             // lazy loading doesn't close DB connection ? so transfer to memory
