@@ -39,17 +39,9 @@ namespace MovieRecommendations.Components
             }
 
             // transferring to memory because iterating over a lazy loaded query doesn't close the connection
-            List<UserLikedMovie> communityTopMemory = new List<UserLikedMovie>();
-            foreach (var entry in communityTop)
-            {
-                UserLikedMovie newEntry = new UserLikedMovie
-                {
-                    Id = entry.Id,
-                    MovieId = entry.MovieId,
-                    Score = entry.Score
-                };
-                communityTopMemory.Add(newEntry);
-            }
+            // don't need deep copy, the objects are in memory
+            List<UserLikedMovie> communityTopMemory = communityTop;
+            
             foreach (var likedMovie in communityTopMemory)
             {
                 Movie tempMovie = _repository.GetMovieByMovieId(likedMovie.MovieId);
