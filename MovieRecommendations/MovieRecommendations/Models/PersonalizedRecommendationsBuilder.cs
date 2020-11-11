@@ -1,16 +1,13 @@
-﻿using MovieRecommendations.ViewModels;
+﻿using MovieRecommendations.Interfaces;
 using MoviesDataAccessLibrary.Entities;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace MovieRecommendations.Models
 {
     public class PersonalizedRecommendationsBuilder : IPersonalizedRecommendationsBuilder
     {
         private const int personalizedRecommendationsLength = 10;
-        public List<Movie> Build(List<Movie> rabbitHoleSuggestions, List<Movie> communityBasedSuggestions, List<Movie> historyBasedSuggestions)
+        public List<Movie> Build(List<Movie> rabbitHoleSuggestions, List<Movie> communityBasedSuggestions, List<Movie> contentBasedSuggestions)
         {
             int personalizedRecommendationsLength = 10;
             // arranging the history, community and rabbitHole suggestions in result 1RH - 1Com - 8History
@@ -25,9 +22,20 @@ namespace MovieRecommendations.Models
                 output.Add(communityBasedSuggestions[0]);
                 personalizedRecommendationsLength--;
             }
-            for (int i = 0; i < personalizedRecommendationsLength; i++)
+            if (contentBasedSuggestions.Count > 0)
             {
-                output.Add(historyBasedSuggestions[i]);
+                for (int i = 0; i < personalizedRecommendationsLength; i++)
+                {
+                    output.Add(contentBasedSuggestions[i]);
+                }
+            }
+            else
+            {
+                output.Clear();
+                for (int i = 0; i < communityBasedSuggestions.Count; i++)
+                {
+                    output.Add(communityBasedSuggestions[i]);
+                }
             }
             return output;
         }
