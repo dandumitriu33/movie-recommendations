@@ -63,15 +63,19 @@ namespace MovieRecommendations.Controllers
             History latestWatchedHistory = _repository.GetLatestFromHistory(userEmail);
             Movie latestWatchedMovie = _repository.GetMovieByMovieId(latestWatchedHistory.MovieId);
 
-            // STEP 1 - get the rabbitHole list
+            // STEP 1 - get the rabbitHole list - order matters as step 3 depends on 1's result
             List<Movie> rabbitHoleSuggestions = GetRabbitHoleList(latestWatchedHistory);
 
-            // Step 2 - get the community top pick
+            // Step 2 - get the community top pick - order matters as step 3 depends on 2's result as well
             List<Movie> communityBasedSuggestions = GetCommunityList();
 
             // STEP 3 - get 8 or 9 newest, similar rating movies, if rabbit hole has entries or not
-            int contentLimit = 9;
+            int contentLimit = 10;
             if (rabbitHoleSuggestions.Count() > 0)
+            {
+                contentLimit = 9;
+            }
+            if (communityBasedSuggestions.Count() > 0)
             {
                 contentLimit = 8;
             }
@@ -86,6 +90,12 @@ namespace MovieRecommendations.Controllers
             return View(resultMovieViewModel);
         }
 
+        /// <summary>
+        /// Gets content based recommendations from the database based on the newest movie in the user's history.
+        /// </summary>
+        /// <param name="latestWatchedMovie"></param>
+        /// <param name="contentLimit"></param>
+        /// <returns></returns>
         private List<Movie> GetContentList(Movie latestWatchedMovie, int contentLimit)
         {
             List<Movie> output = new List<Movie>();
@@ -106,6 +116,10 @@ namespace MovieRecommendations.Controllers
             return output;
         }
 
+        /// <summary>
+        /// Gets community based recommendations from the database based on the entire community views.
+        /// </summary>
+        /// <returns></returns>
         private List<Movie> GetCommunityList()
         {
             int communityOffset = Convert.ToInt32(HttpContext.Request.Cookies["communityOffset"]);
@@ -131,6 +145,11 @@ namespace MovieRecommendations.Controllers
             return output;
         }
 
+        /// <summary>
+        /// Gets the list of movies that are NextMovies for that newest user history entry. These are the next steps in their rabbit holes.
+        /// </summary>
+        /// <param name="latestWatchedHistory"></param>
+        /// <returns></returns>
         private List<Movie> GetRabbitHoleList(History latestWatchedHistory)
         {
             int rabbitHoleOffset = Convert.ToInt32(HttpContext.Request.Cookies["rabbitHoleOffset"]);
