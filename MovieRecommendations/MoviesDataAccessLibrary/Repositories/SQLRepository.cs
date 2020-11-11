@@ -32,9 +32,14 @@ namespace MoviesDataAccessLibrary.Repositories
             return _context.Movies.Where(m => m.Rating > 0).OrderByDescending(m => m.ReleaseYear).ThenBy(m => m.Rating);
         }
 
-        public IEnumerable<Movie> GetAllMoviesTop20()
+        //public IEnumerable<Movie> GetAllMoviesTop20()
+        //{
+        //    return _context.Movies.Where(m => m.Rating > 6.5).OrderByDescending(m => m.ReleaseYear).ThenBy(m => m.Rating).Take(20);
+        //}
+
+        public List<Movie> GetTop20YearRating()
         {
-            return _context.Movies.Where(m => m.Rating > 6.5).OrderByDescending(m => m.ReleaseYear).ThenBy(m => m.Rating).Take(20);
+            return _context.Movies.Where(m => m.Rating > 6.5).OrderByDescending(m => m.ReleaseYear).ThenByDescending(m => m.Rating).Take(20).ToList();
         }
 
         public Movie GetMovieByMovieId(int movieId)
@@ -97,10 +102,9 @@ namespace MoviesDataAccessLibrary.Repositories
             _context.SaveChanges();
         }
 
-        public IEnumerable<UserLikedMovie> GetCommunityTop(int limit, int offset)
+        public List<UserLikedMovie> GetCommunityTop(int limit, int offset)
         {
-            var communityTop = _context.CommunityLikes.OrderByDescending(m => m.Score).Skip(offset).Take(limit);
-            return communityTop;
+            return _context.CommunityLikes.OrderByDescending(m => m.Score).Skip(offset).Take(limit).ToList(); ;
         }
 
         public IEnumerable<UserLikedMovie> GetAllCommunityLikes()

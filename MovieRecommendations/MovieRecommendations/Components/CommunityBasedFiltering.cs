@@ -29,7 +29,7 @@ namespace MovieRecommendations.Components
         {
             List<MovieViewModel> communityBasedRecommendation = new List<MovieViewModel>();
 
-            // limit set to 20, offset is 0 as we always want to top
+            // limit set to 20, offset is 0 as we always want the top
             int limit = 20;
             int offset = 0;
             var communityTop = _repository.GetCommunityTop(limit, offset);
@@ -39,17 +39,9 @@ namespace MovieRecommendations.Components
             }
 
             // transferring to memory because iterating over a lazy loaded query doesn't close the connection
-            List<UserLikedMovie> communityTopMemory = new List<UserLikedMovie>();
-            foreach (var entry in communityTop)
-            {
-                UserLikedMovie newEntry = new UserLikedMovie
-                {
-                    Id = entry.Id,
-                    MovieId = entry.MovieId,
-                    Score = entry.Score
-                };
-                communityTopMemory.Add(newEntry);
-            }
+            // don't need deep copy, the objects are in memory
+            List<UserLikedMovie> communityTopMemory = communityTop;
+            
             foreach (var likedMovie in communityTopMemory)
             {
                 Movie tempMovie = _repository.GetMovieByMovieId(likedMovie.MovieId);

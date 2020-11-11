@@ -17,8 +17,10 @@ namespace MovieRecommendations.ViewModels
         public int LengthInMinutes { get; set; }
         [Required]
         [Display(Name = "Release year")]
+        [Range(1800, 3000, ErrorMessage ="The release year must be between 1800 and 3000.")]
         public int ReleaseYear { get; set; }
         [Required]
+        [Range(0, 10, ErrorMessage ="The rating must be between 0 and 10.")]
         public double Rating { get; set; }
         [Required]
         [Display(Name = "Main genre")]

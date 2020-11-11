@@ -30,6 +30,7 @@ namespace MovieRecommendations.Controllers
 
         public IActionResult Index()
         {
+            // setting or resetting refresh cookies - rec results are cycled based on them
             HttpContext.Response.Cookies.Append("contentOffset", "0");
             HttpContext.Response.Cookies.Append("communityOffset", "0");
             HttpContext.Response.Cookies.Append("rabbitHoleOffset", "0");
@@ -64,12 +65,12 @@ namespace MovieRecommendations.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddMovie(MovieViewModel movie)
+        public async Task<IActionResult> AddMovie(MovieViewModel movie)
         {
             if (ModelState.IsValid)
             {
                 Movie newEntry = _mapper.Map<MovieViewModel, Movie>(movie);
-                _repository.Add(newEntry);
+                await _repository.Add(newEntry);
                 return View();
             }
             return View(movie);

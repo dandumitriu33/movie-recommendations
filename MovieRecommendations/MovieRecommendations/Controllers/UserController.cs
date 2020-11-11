@@ -15,12 +15,15 @@ namespace MovieRecommendations.Controllers
     {
         private readonly IRepository _repository;
         private readonly IMapper _mapper;
+        private readonly IPersonalizedRecommendationsBuilder _recommendationsBuilder;
 
         public UserController(IRepository repository,
-                              IMapper mapper)
+                              IMapper mapper,
+                              IPersonalizedRecommendationsBuilder recommendationsBuilder)
         {
             _repository = repository;
             _mapper = mapper;
+            _recommendationsBuilder = recommendationsBuilder;
         }
         [HttpGet]
         [Route("user/userhistory/{email}")]
@@ -53,25 +56,105 @@ namespace MovieRecommendations.Controllers
 
         [HttpGet]
         public IActionResult Personalized(string userEmail)
-        {
-            // cookie management - reading offsets for db query
-            // cookies initially set to 0 on home index
-            int contentOffset = Convert.ToInt32(HttpContext.Request.Cookies["contentOffset"]);
-            string newContentOffset = (contentOffset + 1).ToString();
-            int communityOffset = Convert.ToInt32(HttpContext.Request.Cookies["communityOffset"]);
-            string newCommunityOffset = (communityOffset + 1).ToString();
-            int rabbitHoleOffset = Convert.ToInt32(HttpContext.Request.Cookies["rabbitHoleOffset"]);
-            string newRabbitHoleOffset = (rabbitHoleOffset + 1).ToString();
-            
-            List<Movie> result = new List<Movie>();
+        {            
             ViewBag.Text = userEmail;
 
             // get the last movie from history
             History latestWatchedHistory = _repository.GetLatestFromHistory(userEmail);
             Movie latestWatchedMovie = _repository.GetMovieByMovieId(latestWatchedHistory.MovieId);
 
-            // STEP 1 - get the rabbitHole top pick
-            List<Movie> rabbitHoleSuggestions = new List<Movie>();
+            // STEP 1 - get the rabbitHole list - order matters as step 3 depends on 1's result
+            List<Movie> rabbitHoleSuggestions = GetRabbitHoleList(latestWatchedHistory);
+
+            // Step 2 - get the community top pick - order matters as step 3 depends on 2's result as well
+            List<Movie> communityBasedSuggestions = GetCommunityList();
+
+            // STEP 3 - get 8 or 9 newest, similar rating movies, if rabbit hole has entries or not
+            int contentLimit = 10;
+            if (rabbitHoleSuggestions.Count() > 0)
+            {
+                contentLimit = 9;
+            }
+            if (communityBasedSuggestions.Count() > 0)
+            {
+                contentLimit = 8;
+            }
+            List<Movie> historyBasedSuggestions = GetContentList(latestWatchedMovie, contentLimit);
+
+            // arranging the rabbitHole, community and history(content) suggestions in result 1-1-8
+            List<Movie> result = _recommendationsBuilder.Build(historyBasedSuggestions, communityBasedSuggestions, rabbitHoleSuggestions);
+
+            // map result to MovieViewModel
+            List<MovieViewModel> resultMovieViewModel = _mapper.Map<List<Movie>, List<MovieViewModel>>(result);
+
+            return View(resultMovieViewModel);
+        }
+
+        /// <summary>
+        /// Gets content based recommendations from the database based on the newest movie in the user's history.
+        /// </summary>
+        /// <param name="latestWatchedMovie"></param>
+        /// <param name="contentLimit"></param>
+        /// <returns></returns>
+        private List<Movie> GetContentList(Movie latestWatchedMovie, int contentLimit)
+        {
+            List<Movie> output = new List<Movie>();
+            int contentOffset = Convert.ToInt32(HttpContext.Request.Cookies["contentOffset"]);
+            string newContentOffset = (contentOffset + 1).ToString();
+            List<Movie> initialRecommendation = _repository.GetDistanceRecommendation(latestWatchedMovie.MainGenre, latestWatchedMovie.Rating, contentLimit, contentOffset * contentLimit).ToList();
+            if (initialRecommendation.Count() < contentLimit)
+            {
+                contentOffset = 0;
+                newContentOffset = "1";
+                initialRecommendation = _repository.GetDistanceRecommendation(latestWatchedMovie.MainGenre, latestWatchedMovie.Rating, contentLimit, contentOffset * contentLimit).ToList();
+            }
+            foreach (Movie movie in initialRecommendation)
+            {
+                output.Add(movie);
+            }
+            HttpContext.Response.Cookies.Append("contentOffset", newContentOffset);
+            return output;
+        }
+
+        /// <summary>
+        /// Gets community based recommendations from the database based on the entire community views.
+        /// </summary>
+        /// <returns></returns>
+        private List<Movie> GetCommunityList()
+        {
+            int communityOffset = Convert.ToInt32(HttpContext.Request.Cookies["communityOffset"]);
+            string newCommunityOffset = (communityOffset + 1).ToString();
+            List<Movie> output = new List<Movie>();
+            int communityLimit = 1;
+            List<UserLikedMovie> communityTopPicks = _repository.GetCommunityTop(communityLimit, communityOffset * communityLimit);
+            if (communityTopPicks.Count() == 0)
+            {
+                communityOffset = 0;
+                newCommunityOffset = "1";
+                communityTopPicks = _repository.GetCommunityTop(communityLimit, communityOffset * communityLimit);
+            }
+            // lazy loading doesn't close DB connection so transfer to memory
+            List<UserLikedMovie> communityTopPicksMemory = communityTopPicks;
+            // convert to movie
+            foreach (var pick in communityTopPicksMemory)
+            {
+                Movie tempMovie = _repository.GetMovieByMovieId(pick.MovieId);
+                output.Add(tempMovie);
+            }
+            HttpContext.Response.Cookies.Append("communityOffset", newCommunityOffset);
+            return output;
+        }
+
+        /// <summary>
+        /// Gets the list of movies that are NextMovies for that newest user history entry. These are the next steps in their rabbit holes.
+        /// </summary>
+        /// <param name="latestWatchedHistory"></param>
+        /// <returns></returns>
+        private List<Movie> GetRabbitHoleList(History latestWatchedHistory)
+        {
+            int rabbitHoleOffset = Convert.ToInt32(HttpContext.Request.Cookies["rabbitHoleOffset"]);
+            string newRabbitHoleOffset = (rabbitHoleOffset + 1).ToString();
+            List<Movie> output = new List<Movie>();
             int rabbitHoleLimit = 1;
             var rabbitHoleEntries = _repository.GetNextMoviesForMovieByIdForSuggestions(latestWatchedHistory.MovieId, rabbitHoleLimit, rabbitHoleOffset * rabbitHoleLimit);
             // lazy loading doesn't close DB connection ? so transfer to memory
@@ -92,84 +175,11 @@ namespace MovieRecommendations.Controllers
                 foreach (var entry in rabbitHoleEntriesMemory)
                 {
                     Movie tempMovie = _repository.GetMovieByMovieId(entry.NextMovieId);
-                    rabbitHoleSuggestions.Add(tempMovie);
+                    output.Add(tempMovie);
                 }
             }
-
-            // STEP 2 - get 8 or 9 newest, similar rating movies, if rabbit hole has entries or not
-            List<Movie> historyBasedSuggestions = new List<Movie>();
-            int contentLimit = 9;
-            if (rabbitHoleEntries.Count() > 0)
-            {
-                contentLimit = 8;
-            }
-            
-            List<Movie> initialRecommendation = _repository.GetDistanceRecommendation(latestWatchedMovie.MainGenre, latestWatchedMovie.Rating, contentLimit, contentOffset*contentLimit).ToList();
-            if (initialRecommendation.Count() < contentLimit)
-            {
-                contentOffset = 0;
-                newContentOffset = "1";
-                initialRecommendation = _repository.GetDistanceRecommendation(latestWatchedMovie.MainGenre, latestWatchedMovie.Rating, contentLimit, contentOffset * contentLimit).ToList();
-            }
-            foreach (Movie movie in initialRecommendation)
-            {
-                historyBasedSuggestions.Add(movie);
-            }
-
-            // get the community top pick
-            List<Movie> communityBasedSuggestions = new List<Movie>();
-            int communityLimit = 1;
-            IEnumerable<UserLikedMovie> communityTopPicks = _repository.GetCommunityTop(communityLimit, communityOffset*communityLimit);
-            if (communityTopPicks.Count() == 0)
-            {
-                communityOffset = 0;
-                newCommunityOffset = "1";
-                communityTopPicks = _repository.GetCommunityTop(communityLimit, communityOffset * communityLimit);
-            }
-            // lazy loading doesn't close DB connection ? so transfer to memory
-            List<UserLikedMovie> communityTopPicksMemory = new List<UserLikedMovie>();
-            foreach (var pick in communityTopPicks)
-            {
-                communityTopPicksMemory.Add(pick);
-            }
-            // convert to movie
-            foreach (var pick in communityTopPicksMemory)
-            {
-                Movie tempMovie = _repository.GetMovieByMovieId(pick.MovieId);
-                communityBasedSuggestions.Add(tempMovie);
-            }
-
-            // arranging the history, community and rabbitHole suggestions in result 4-1-4-1
-            for (int i = 0; i < 4; i++)
-            {
-                result.Add(historyBasedSuggestions[i]);
-            }
-            result.Add(communityBasedSuggestions[0]);
-            if (rabbitHoleEntries.Count() > 0)
-            {
-                for (int i = 4; i < 8; i++)
-                {
-                    result.Add(historyBasedSuggestions[i]);
-                }
-                result.Add(rabbitHoleSuggestions[0]);
-            }
-            else
-            {
-                for (int i = 4; i < 9; i++)
-                {
-                    result.Add(historyBasedSuggestions[i]);
-                }
-            }
-
-            // map result to MovieViewModel
-            List<MovieViewModel> resultMovieViewModel = _mapper.Map<List<Movie>, List<MovieViewModel>>(result);
-
-            // cookie management - increasing offsets for next refresh
-            HttpContext.Response.Cookies.Append("contentOffset", newContentOffset);
-            HttpContext.Response.Cookies.Append("communityOffset", newCommunityOffset);
             HttpContext.Response.Cookies.Append("rabbitHoleOffset", newRabbitHoleOffset);
-
-            return View(resultMovieViewModel);
+            return output;
         }
     }
 }
