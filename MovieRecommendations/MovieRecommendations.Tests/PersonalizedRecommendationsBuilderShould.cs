@@ -205,5 +205,51 @@ namespace MovieRecommendations.Tests
             Assert.Equal("Test History Entry 7", actual[8].Title);
             Assert.Equal(10, actual.Count);
         }
+
+        [Fact]
+        public void OutputCorrectListNoHistory()
+        {
+            // Arrange
+            List<Movie> rabbitHoleSuggestions = new List<Movie>();
+            Movie rabbitHoleEntry = new Movie
+            {
+                Id = 101,
+                Title = "Test Rabbit Hole Entry",
+                LengthInMinutes = 142,
+                Rating = 5.6,
+                ReleaseYear = 2019,
+                MainGenre = "Action",
+                SubGenre1 = "Crime",
+                SubGenre2 = "Adventure"
+            };
+            rabbitHoleSuggestions.Add(rabbitHoleEntry);
+            List<Movie> communityBasedSuggestions = new List<Movie>();
+            Movie communityEntry = new Movie
+            {
+                Id = 101,
+                Title = "Test Community Entry",
+                LengthInMinutes = 142,
+                Rating = 5.6,
+                ReleaseYear = 2019,
+                MainGenre = "Action",
+                SubGenre1 = "Crime",
+                SubGenre2 = "Adventure"
+            };
+            communityBasedSuggestions.Add(communityEntry);
+            List<Movie> historyBasedSuggestions = new List<Movie>();
+            List<Movie> expected = new List<Movie>();
+            expected.Add(rabbitHoleSuggestions[0]);
+            expected.Add(communityBasedSuggestions[0]);
+
+            // Act
+            PersonalizedRecommendationsBuilder builder = new PersonalizedRecommendationsBuilder();
+            List<Movie> actual = builder.Build(rabbitHoleSuggestions, communityBasedSuggestions, historyBasedSuggestions);
+
+            // Assert
+            Assert.Equal(expected, actual);
+            Assert.Equal("Test Rabbit Hole Entry", actual[0].Title);
+            Assert.Equal("Test Community Entry", actual[1].Title);
+            Assert.Equal(2, actual.Count);
+        }
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using MovieRecommendations.Interfaces;
 using MovieRecommendations.Models;
 using MovieRecommendations.ViewModels;
 using MoviesDataAccessLibrary.Entities;

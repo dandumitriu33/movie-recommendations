@@ -16,6 +16,7 @@ using MoviesDataAccessLibrary.Repositories;
 using AutoMapper;
 using System.Reflection;
 using MovieRecommendations.Models;
+using MovieRecommendations.Interfaces;
 
 namespace MovieRecommendations
 {

@@ -1,9 +1,6 @@
-﻿using MovieRecommendations.ViewModels;
+﻿using MovieRecommendations.Interfaces;
 using MoviesDataAccessLibrary.Entities;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace MovieRecommendations.Models
 {
@@ -25,9 +22,12 @@ namespace MovieRecommendations.Models
                 output.Add(communityBasedSuggestions[0]);
                 personalizedRecommendationsLength--;
             }
-            for (int i = 0; i < personalizedRecommendationsLength; i++)
+            if (historyBasedSuggestions.Count > 0)
             {
-                output.Add(historyBasedSuggestions[i]);
+                for (int i = 0; i < personalizedRecommendationsLength; i++)
+                {
+                    output.Add(historyBasedSuggestions[i]);
+                }
             }
             return output;
         }
