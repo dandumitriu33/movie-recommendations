@@ -15,18 +15,26 @@ namespace MovieRecommendations.Tests.Controller
 {
     public class HomeControllerShould
     {
+        private readonly Mock<ILogger<HomeController>> _mockLogger;
+        private readonly Mock<IRepository> _mockRepository;
+        private readonly Mock<IMapper> _mockMapper;
+        // sut = System Under Test
+        private readonly HomeController _sut;
+
+        public HomeControllerShould()
+        {
+            _mockLogger = new Mock<ILogger<HomeController>>();
+            _mockRepository = new Mock<IRepository>();
+            _mockMapper = new Mock<IMapper>();
+            _sut = new HomeController(_mockLogger.Object, _mockRepository.Object, _mockMapper.Object);
+        }
+
         // FAILS because of HTTPContext for cookie management
         //[Fact]
         //public void ReturnViewForIndex()
         //{
-        //    var mockLogger = new Mock<ILogger<HomeController>>();
-        //    var mockRepository = new Mock<IRepository>();
-        //    var mockMapper = new Mock<IMapper>();
-
-        //    // sut = System Under Test
-        //    var sut = new HomeController(mockLogger.Object, mockRepository.Object, mockMapper.Object);
-
-        //    IActionResult result = sut.Index();
+        
+        //    IActionResult result = _sut.Index();
 
         //    Assert.IsType<ViewResult>(result);
         //}
@@ -34,14 +42,7 @@ namespace MovieRecommendations.Tests.Controller
         [Fact]
         public void ReturnViewForPrivacy()
         {
-            var mockLogger = new Mock<ILogger<HomeController>>();
-            var mockRepository = new Mock<IRepository>();
-            var mockMapper = new Mock<IMapper>();
-
-            // sut = System Under Test
-            var sut = new HomeController(mockLogger.Object, mockRepository.Object, mockMapper.Object);
-
-            IActionResult result = sut.Privacy();
+            IActionResult result = _sut.Privacy();
 
             Assert.IsType<ViewResult>(result);
         }
@@ -49,14 +50,7 @@ namespace MovieRecommendations.Tests.Controller
         [Fact]
         public void ReturnViewForAllMovies()
         {
-            var mockLogger = new Mock<ILogger<HomeController>>();
-            var mockRepository = new Mock<IRepository>();
-            var mockMapper = new Mock<IMapper>();
-
-            // sut = System Under Test
-            var sut = new HomeController(mockLogger.Object, mockRepository.Object, mockMapper.Object);
-
-            IActionResult result = sut.AllMovies();
+            IActionResult result = _sut.AllMovies();
 
             Assert.IsType<ViewResult>(result);
         }
@@ -64,14 +58,7 @@ namespace MovieRecommendations.Tests.Controller
         [Fact]
         public void ReturnViewForAllCommunityLikes()
         {
-            var mockLogger = new Mock<ILogger<HomeController>>();
-            var mockRepository = new Mock<IRepository>();
-            var mockMapper = new Mock<IMapper>();
-
-            // sut = System Under Test
-            var sut = new HomeController(mockLogger.Object, mockRepository.Object, mockMapper.Object);
-
-            IActionResult result = sut.AllCommunityLikes();
+            IActionResult result = _sut.AllCommunityLikes();
 
             Assert.IsType<ViewResult>(result);
         }
@@ -79,14 +66,7 @@ namespace MovieRecommendations.Tests.Controller
         [Fact]
         public void ReturnViewForAddMovie()
         {
-            var mockLogger = new Mock<ILogger<HomeController>>();
-            var mockRepository = new Mock<IRepository>();
-            var mockMapper = new Mock<IMapper>();
-
-            // sut = System Under Test
-            var sut = new HomeController(mockLogger.Object, mockRepository.Object, mockMapper.Object);
-
-            IActionResult result = sut.AddMovie();
+            IActionResult result = _sut.AddMovie();
 
             Assert.IsType<ViewResult>(result);
         }
@@ -94,14 +74,7 @@ namespace MovieRecommendations.Tests.Controller
         [Fact]
         public void ReturnViewForDetails()
         {
-            var mockLogger = new Mock<ILogger<HomeController>>();
-            var mockRepository = new Mock<IRepository>();
-            var mockMapper = new Mock<IMapper>();
-
-            // sut = System Under Test
-            var sut = new HomeController(mockLogger.Object, mockRepository.Object, mockMapper.Object);
-
-            IActionResult result = sut.Details(1);
+            IActionResult result = _sut.Details(1);
 
             Assert.IsType<ViewResult>(result);
         }
@@ -109,14 +82,7 @@ namespace MovieRecommendations.Tests.Controller
         [Fact]
         public void ReturnViewForHandleError()
         {
-            var mockLogger = new Mock<ILogger<HomeController>>();
-            var mockRepository = new Mock<IRepository>();
-            var mockMapper = new Mock<IMapper>();
-
-            // sut = System Under Test
-            var sut = new HomeController(mockLogger.Object, mockRepository.Object, mockMapper.Object);
-
-            IActionResult result = sut.HandleError(404);
+            IActionResult result = _sut.HandleError(404);
 
             Assert.IsType<ViewResult>(result);
         }
@@ -124,14 +90,7 @@ namespace MovieRecommendations.Tests.Controller
         [Fact]
         public void ReturnViewForAddMoviePost()
         {
-            var mockLogger = new Mock<ILogger<HomeController>>();
-            var mockRepository = new Mock<IRepository>();
-            var mockMapper = new Mock<IMapper>();
-
-            // sut = System Under Test
-            var sut = new HomeController(mockLogger.Object, mockRepository.Object, mockMapper.Object);
-
-            IActionResult result = sut.AddMovie(new MovieViewModel 
+            IActionResult result = _sut.AddMovie(new MovieViewModel 
             { 
                 Id = 1,
                 Title = "Test Title",
@@ -149,14 +108,7 @@ namespace MovieRecommendations.Tests.Controller
         [Fact]
         public void ReturnViewForAddMoviePostInvalidModel()
         {
-            var mockLogger = new Mock<ILogger<HomeController>>();
-            var mockRepository = new Mock<IRepository>();
-            var mockMapper = new Mock<IMapper>();
-
-            // sut = System Under Test
-            var sut = new HomeController(mockLogger.Object, mockRepository.Object, mockMapper.Object);
-
-            IActionResult result = sut.AddMovie(new MovieViewModel
+            IActionResult result = _sut.AddMovie(new MovieViewModel
             {
                 Id = 1,
                 Title = "Test Title",
@@ -174,14 +126,7 @@ namespace MovieRecommendations.Tests.Controller
         [Fact]
         public void ReturnRedirectToActionForProcessWatchedMovie()
         {
-            var mockLogger = new Mock<ILogger<HomeController>>();
-            var mockRepository = new Mock<IRepository>();
-            var mockMapper = new Mock<IMapper>();
-
-            // sut = System Under Test
-            var sut = new HomeController(mockLogger.Object, mockRepository.Object, mockMapper.Object);
-
-            IActionResult result = sut.ProcessWatchedMovie("john@email.com", 1);
+            IActionResult result = _sut.ProcessWatchedMovie("john@email.com", 1);
 
             Assert.IsType<RedirectToActionResult>(result);
         }
