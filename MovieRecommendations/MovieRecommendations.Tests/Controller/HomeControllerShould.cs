@@ -27,5 +27,20 @@ namespace MovieRecommendations.Tests.Controller
 
             Assert.IsType<ViewResult>(result);
         }
+
+        [Fact]
+        public void ReturnViewForAllMovies()
+        {
+            var mockLogger = new Mock<ILogger<HomeController>>();
+            var mockRepository = new Mock<IRepository>();
+            var mockMapper = new Mock<IMapper>();
+
+            // sut = System Under Test
+            var sut = new HomeController(mockLogger.Object, mockRepository.Object, mockMapper.Object);
+
+            IActionResult result = sut.AllMovies();
+
+            Assert.IsType<ViewResult>(result);
+        }
     }
 }
