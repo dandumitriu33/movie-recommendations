@@ -28,5 +28,20 @@ namespace MovieRecommendations.Tests.Controller
             Assert.IsType<ViewResult>(result);
         }
 
+        // FAILS because of HTTPContext for cookie management
+        //[Fact]
+        //public void ReturnViewForPersonalized()
+        //{
+        //    var mockRepository = new Mock<IRepository>();
+        //    var mockMapper = new Mock<IMapper>();
+        //    var mockBuilder = new Mock<IPersonalizedRecommendationsBuilder>();
+
+        //    // sut = System Under Test
+        //    var sut = new UserController(mockRepository.Object, mockMapper.Object, mockBuilder.Object);
+
+        //    IActionResult result = sut.Personalized("john@email.com");
+
+        //    Assert.IsType<ViewResult>(result);
+        //}
     }
 }
