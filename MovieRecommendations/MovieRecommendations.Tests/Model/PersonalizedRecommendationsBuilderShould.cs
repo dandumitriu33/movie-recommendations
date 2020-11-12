@@ -6,7 +6,7 @@ using System.Text;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace MovieRecommendations.Tests
+namespace MovieRecommendations.Tests.Model
 {
     public class PersonalizedRecommendationsBuilderShould
     {
@@ -211,35 +211,28 @@ namespace MovieRecommendations.Tests
         {
             // Arrange
             List<Movie> rabbitHoleSuggestions = new List<Movie>();
-            Movie rabbitHoleEntry = new Movie
-            {
-                Id = 101,
-                Title = "Test Rabbit Hole Entry",
-                LengthInMinutes = 142,
-                Rating = 5.6,
-                ReleaseYear = 2019,
-                MainGenre = "Action",
-                SubGenre1 = "Crime",
-                SubGenre2 = "Adventure"
-            };
-            rabbitHoleSuggestions.Add(rabbitHoleEntry);
             List<Movie> communityBasedSuggestions = new List<Movie>();
-            Movie communityEntry = new Movie
+            for (int i = 0; i < 10; i++)
             {
-                Id = 101,
-                Title = "Test Community Entry",
-                LengthInMinutes = 142,
-                Rating = 5.6,
-                ReleaseYear = 2019,
-                MainGenre = "Action",
-                SubGenre1 = "Crime",
-                SubGenre2 = "Adventure"
-            };
-            communityBasedSuggestions.Add(communityEntry);
+                Movie communityEntry = new Movie
+                {
+                    Id = 101,
+                    Title = $"Test Community Entry {i}",
+                    LengthInMinutes = 142,
+                    Rating = 5.6,
+                    ReleaseYear = 2019,
+                    MainGenre = "Action",
+                    SubGenre1 = "Crime",
+                    SubGenre2 = "Adventure"
+                };
+                communityBasedSuggestions.Add(communityEntry);
+            }
             List<Movie> contentBasedSuggestions = new List<Movie>();
             List<Movie> expected = new List<Movie>();
-            expected.Add(rabbitHoleSuggestions[0]);
-            expected.Add(communityBasedSuggestions[0]);
+            foreach (var mv in communityBasedSuggestions)
+            {
+                expected.Add(mv);
+            }
 
             // Act
             PersonalizedRecommendationsBuilder builder = new PersonalizedRecommendationsBuilder();
@@ -247,9 +240,8 @@ namespace MovieRecommendations.Tests
 
             // Assert
             Assert.Equal(expected, actual);
-            Assert.Equal("Test Rabbit Hole Entry", actual[0].Title);
-            Assert.Equal("Test Community Entry", actual[1].Title);
-            Assert.Equal(2, actual.Count);
+            Assert.Equal("Test Community Entry 0", actual[0].Title);
+            Assert.Equal(10, actual.Count);
         }
     }
 }

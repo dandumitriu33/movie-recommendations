@@ -4,7 +4,7 @@ using System;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace MovieRecommendations.Tests
+namespace MovieRecommendations.Tests.Model
 {
     [Trait("Category", "MovieViewModel")]
     public class MovieViewModelShould
