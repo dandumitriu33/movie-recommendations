@@ -39,5 +39,20 @@ namespace MovieRecommendations.Tests.Controller
 
             Assert.IsType<RedirectToActionResult>(result);
         }
+
+        // FAILS because of HTTPContext for cookie management
+        //[Fact]
+        //public void ReturnViewForDetails()
+        //{
+        //    var mockRepository = new Mock<IRepository>();
+        //    var mockMapper = new Mock<IMapper>();
+
+        //    // sut = System Under Test
+        //    var sut = new PartyController(mockRepository.Object, mockMapper.Object);
+
+        //    IActionResult result = sut.Details(1);
+
+        //    Assert.IsType<ViewResult>(result);
+        //}
     }
 }
