@@ -165,17 +165,6 @@ namespace MovieRecommendations.Tests.Controller
             // sut = System Under Test
             var sut = new HomeController(mockLogger.Object, mockRepository.Object, mockMapper.Object);
 
-            //IActionResult result = sut.AddMovie(new MovieViewModel
-            //{
-            //    Id = 1,
-            //    Title = "Test Title",
-            //    LengthInMinutes = 121,
-            //    Rating = 3.4,
-            //    ReleaseYear = 2003,
-            //    MainGenre = "Comedy",
-            //    SubGenre1 = "Adventure",
-            //    SubGenre2 = "Crime"
-            //});
             IActionResult result = sut.ProcessWatchedMovie("john@email.com", 1);
 
             Assert.IsType<RedirectToActionResult>(result);

@@ -32,7 +32,15 @@ namespace MovieRecommendations.Controllers
         [HttpPost]
         public IActionResult CreateParty(string userEmail)
         {
-            string partyName = Request.Form["partyName"];
+            string partyName;
+            try
+            {
+                partyName = Request.Form["partyName"];
+            }
+            catch (System.Exception)
+            {
+                partyName = "New Party";
+            }
             Party newParty = new Party
             {
                 Name = partyName,
