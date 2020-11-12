@@ -12,16 +12,22 @@ namespace MovieRecommendations.Tests.Controller
 {
     public class PartyControllerShould
     {
+        private readonly Mock<IRepository> _mockRepository;
+        private readonly Mock<IMapper> _mockMapper;
+        private readonly PartyController _sut;
+
+        public PartyControllerShould()
+        {
+            _mockRepository = new Mock<IRepository>();
+            _mockMapper = new Mock<IMapper>();
+            _sut = new PartyController(_mockRepository.Object, _mockMapper.Object);
+        }
+
+
         [Fact]
         public void ReturnViewForAllParties()
         {
-            var mockRepository = new Mock<IRepository>();
-            var mockMapper = new Mock<IMapper>();
-
-            // sut = System Under Test
-            var sut = new PartyController(mockRepository.Object, mockMapper.Object);
-
-            IActionResult result = sut.AllParties("john@email.com");
+            IActionResult result = _sut.AllParties("john@email.com");
 
             Assert.IsType<ViewResult>(result);
         }
@@ -29,13 +35,7 @@ namespace MovieRecommendations.Tests.Controller
         [Fact]
         public void ReturnRedirectToActionForCreatePartyPost()
         {
-            var mockRepository = new Mock<IRepository>();
-            var mockMapper = new Mock<IMapper>();
-
-            // sut = System Under Test
-            var sut = new PartyController(mockRepository.Object, mockMapper.Object);
-
-            IActionResult result = sut.CreateParty("john@email.com");
+            IActionResult result = _sut.CreateParty("john@email.com");
 
             Assert.IsType<RedirectToActionResult>(result);
         }
@@ -44,13 +44,7 @@ namespace MovieRecommendations.Tests.Controller
         //[Fact]
         //public void ReturnViewForDetails()
         //{
-        //    var mockRepository = new Mock<IRepository>();
-        //    var mockMapper = new Mock<IMapper>();
-
-        //    // sut = System Under Test
-        //    var sut = new PartyController(mockRepository.Object, mockMapper.Object);
-
-        //    IActionResult result = sut.Details(1);
+        //    IActionResult result = _sut.Details(1);
 
         //    Assert.IsType<ViewResult>(result);
         //}
