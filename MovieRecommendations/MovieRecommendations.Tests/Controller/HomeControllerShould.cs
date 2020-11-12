@@ -57,5 +57,35 @@ namespace MovieRecommendations.Tests.Controller
 
             Assert.IsType<ViewResult>(result);
         }
+
+        [Fact]
+        public void ReturnViewForAddMovie()
+        {
+            var mockLogger = new Mock<ILogger<HomeController>>();
+            var mockRepository = new Mock<IRepository>();
+            var mockMapper = new Mock<IMapper>();
+
+            // sut = System Under Test
+            var sut = new HomeController(mockLogger.Object, mockRepository.Object, mockMapper.Object);
+
+            IActionResult result = sut.AddMovie();
+
+            Assert.IsType<ViewResult>(result);
+        }
+
+        [Fact]
+        public void ReturnViewForDetails()
+        {
+            var mockLogger = new Mock<ILogger<HomeController>>();
+            var mockRepository = new Mock<IRepository>();
+            var mockMapper = new Mock<IMapper>();
+
+            // sut = System Under Test
+            var sut = new HomeController(mockLogger.Object, mockRepository.Object, mockMapper.Object);
+
+            IActionResult result = sut.Details(1);
+
+            Assert.IsType<ViewResult>(result);
+        }
     }
 }
