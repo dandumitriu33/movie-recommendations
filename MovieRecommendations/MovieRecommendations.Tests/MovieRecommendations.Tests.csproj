@@ -18,8 +18,4 @@
     <ProjectReference Include="..\MovieRecommendations\MovieRecommendations.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controller\" />
-  </ItemGroup>
-
 </Project>
