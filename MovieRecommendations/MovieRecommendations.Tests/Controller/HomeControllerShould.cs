@@ -149,24 +149,6 @@ namespace MovieRecommendations.Tests.Controller
         }
 
         [Fact]
-        public async Task ReturnViewForAddMoviePostInvalidModel()
-        {
-            IActionResult result = await _sut.AddMovie(new MovieViewModel
-            {
-                Id = 1,
-                Title = "Test Title",
-                LengthInMinutes = 121,
-                Rating = 3.4,
-                ReleaseYear = 2003,
-                MainGenre = "Comedy",
-                SubGenre1 = "Adventure",
-                SubGenre2 = "Crime"
-            });
-
-            Assert.IsType<ViewResult>(result);
-        }
-
-        [Fact]
         public async Task ReturnViewForAddMoviePostInvalidModelTitleDisplay()
         {
             _sut.ModelState.AddModelError("x", "Test error.");
@@ -187,6 +169,7 @@ namespace MovieRecommendations.Tests.Controller
             var model = Assert.IsType<MovieViewModel>(viewResult.Model);
             Assert.Equal(newEntry.Title, model.Title);
             _output.WriteLine($"Movie title in model: {model.Title}");
+            _mockRepository.Verify(x => x.Add(It.IsAny<Movie>()), Times.Never);
         }
 
         [Fact]
