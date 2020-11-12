@@ -10,6 +10,8 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using MoviesDataAccessLibrary.Entities;
 using MovieRecommendations.ViewModels;
+using Xunit.Abstractions;
+using System.Threading.Tasks;
 
 namespace MovieRecommendations.Tests.Controller
 {
@@ -18,14 +20,16 @@ namespace MovieRecommendations.Tests.Controller
         private readonly Mock<ILogger<HomeController>> _mockLogger;
         private readonly Mock<IRepository> _mockRepository;
         private readonly Mock<IMapper> _mockMapper;
+        private readonly ITestOutputHelper _output;
         // sut = System Under Test
         private readonly HomeController _sut;
 
-        public HomeControllerShould()
+        public HomeControllerShould(ITestOutputHelper output)
         {
             _mockLogger = new Mock<ILogger<HomeController>>();
             _mockRepository = new Mock<IRepository>();
             _mockMapper = new Mock<IMapper>();
+            _output = output;
             _sut = new HomeController(_mockLogger.Object, _mockRepository.Object, _mockMapper.Object);
         }
 
@@ -88,9 +92,9 @@ namespace MovieRecommendations.Tests.Controller
         }
 
         [Fact]
-        public void ReturnViewForAddMoviePost()
+        public async Task ReturnViewForAddMoviePost()
         {
-            IActionResult result = _sut.AddMovie(new MovieViewModel 
+            IActionResult result = await _sut.AddMovie(new MovieViewModel 
             { 
                 Id = 1,
                 Title = "Test Title",
@@ -106,9 +110,48 @@ namespace MovieRecommendations.Tests.Controller
         }
 
         [Fact]
-        public void ReturnViewForAddMoviePostInvalidModel()
+        public async Task RunAddOnceForValidModel()
         {
-            IActionResult result = _sut.AddMovie(new MovieViewModel
+            MovieViewModel newEntry = new MovieViewModel
+            {
+                Id = 1,
+                Title = "Test Title",
+                LengthInMinutes = 121,
+                Rating = 3.4,
+                ReleaseYear = 2003,
+                MainGenre = "Comedy",
+                SubGenre1 = "Adventure",
+                SubGenre2 = "Crime"
+            };
+            await _sut.AddMovie(newEntry);
+
+            _mockRepository.Verify(x => x.Add(It.IsAny<Movie>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task NotRunAddForInvalidModel()
+        {
+            _sut.ModelState.AddModelError("x", "Test error.");
+            MovieViewModel newEntry = new MovieViewModel
+            {
+                Id = 1,
+                Title = "Test Title",
+                LengthInMinutes = 121,
+                Rating = 3.4,
+                ReleaseYear = 2003,
+                MainGenre = "Comedy",
+                SubGenre1 = "Adventure",
+                SubGenre2 = "Crime"
+            };
+            await _sut.AddMovie(newEntry);
+
+            _mockRepository.Verify(x => x.Add(It.IsAny<Movie>()), Times.Never);
+        }
+
+        [Fact]
+        public async Task ReturnViewForAddMoviePostInvalidModel()
+        {
+            IActionResult result = await _sut.AddMovie(new MovieViewModel
             {
                 Id = 1,
                 Title = "Test Title",
