@@ -87,5 +87,20 @@ namespace MovieRecommendations.Tests.Controller
 
             Assert.IsType<ViewResult>(result);
         }
+
+        [Fact]
+        public void ReturnViewForHandleError()
+        {
+            var mockLogger = new Mock<ILogger<HomeController>>();
+            var mockRepository = new Mock<IRepository>();
+            var mockMapper = new Mock<IMapper>();
+
+            // sut = System Under Test
+            var sut = new HomeController(mockLogger.Object, mockRepository.Object, mockMapper.Object);
+
+            IActionResult result = sut.HandleError(404);
+
+            Assert.IsType<ViewResult>(result);
+        }
     }
 }
