@@ -7,6 +7,8 @@ using MoviesDataAccessLibrary.Repositories;
 using AutoMapper;
 using MovieRecommendations.Controllers;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
+using MoviesDataAccessLibrary.Entities;
 
 namespace MovieRecommendations.Tests.Controller
 {
@@ -33,11 +35,32 @@ namespace MovieRecommendations.Tests.Controller
         }
 
         [Fact]
-        public void ReturnRedirectToActionForCreatePartyPost()
+        public async Task ReturnRedirectToActionForCreatePartyPost()
         {
-            IActionResult result = _sut.CreateParty("john@email.com");
+            IActionResult result = await _sut.CreateParty("john@email.com");
 
             Assert.IsType<RedirectToActionResult>(result);
+
+        }
+
+        [Fact]
+        public async Task RunsAddPartyOnCreatePartyPost()
+        {
+            IActionResult result = await _sut.CreateParty("john@email.com");
+
+            Assert.IsType<RedirectToActionResult>(result);
+            
+            _mockRepository.Verify(x => x.AddParty(It.IsAny<Party>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task RunsAddMemberToPartyOnCreatePartyPost()
+        {
+            IActionResult result = await _sut.CreateParty("john@email.com");
+
+            Assert.IsType<RedirectToActionResult>(result);
+
+            _mockRepository.Verify(x => x.AddMemberToParty(It.IsAny<PartyMember>()), Times.Once);
         }
 
         // FAILS because of HTTPContext for cookie management

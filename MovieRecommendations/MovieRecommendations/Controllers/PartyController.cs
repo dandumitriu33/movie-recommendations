@@ -4,6 +4,7 @@ using MovieRecommendations.ViewModels;
 using MoviesDataAccessLibrary.Entities;
 using MoviesDataAccessLibrary.Repositories;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace MovieRecommendations.Controllers
 {
@@ -30,7 +31,7 @@ namespace MovieRecommendations.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateParty(string userEmail)
+        public async Task<IActionResult> CreateParty(string userEmail)
         {
             string partyName;
             try
@@ -46,14 +47,14 @@ namespace MovieRecommendations.Controllers
                 Name = partyName,
                 CreatorEmail = userEmail
             };
-            _repository.AddParty(newParty);
+            await _repository.AddParty(newParty);
 
             PartyMember newPartyMember = new PartyMember
             {
                 PartyId = newParty.Id,
                 Email = newParty.CreatorEmail
             };
-            _repository.AddMemberToParty(newPartyMember);
+            await _repository.AddMemberToParty(newPartyMember);
             return RedirectToAction("AllParties", new { userEmail = userEmail });
         }
 

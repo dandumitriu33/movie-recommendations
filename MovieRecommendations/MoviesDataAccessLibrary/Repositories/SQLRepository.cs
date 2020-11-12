@@ -23,7 +23,6 @@ namespace MoviesDataAccessLibrary.Repositories
         {
             await _context.Movies.AddAsync(movie);
             await _context.SaveChangesAsync();
-
             return movie;
         }
 
@@ -172,16 +171,18 @@ namespace MoviesDataAccessLibrary.Repositories
             return _context.Parties.Where(p => p.Id == partyId).FirstOrDefault();
         }
 
-        public void AddParty(Party party)
+        public async Task<Party> AddParty(Party party)
         {
-            _context.Parties.Add(party);
-            _context.SaveChanges();
+            await _context.Parties.AddAsync(party);
+            await _context.SaveChangesAsync();
+            return party;
         }
 
-        public void AddMemberToParty(PartyMember newPartyMember)
+        public async Task<PartyMember> AddMemberToParty(PartyMember newPartyMember)
         {
-            _context.PartyMembers.Add(newPartyMember);
-            _context.SaveChanges();
+            await _context.PartyMembers.AddAsync(newPartyMember);
+            await _context.SaveChangesAsync();
+            return newPartyMember;
         }
 
         public PartyMember GetPartyMember(int partyId, string userEmail)
