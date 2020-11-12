@@ -32,7 +32,7 @@ namespace MovieRecommendations.Controllers
         {
             List<History> fullHistory = _repository.GetFullHistory(email);
             List<AcceptableWatchHistoryMovieModel> orderedMovieHistory = new List<AcceptableWatchHistoryMovieModel>();
-            if (fullHistory.Count == 0)
+            if (fullHistory == null)
             {
                 return View(orderedMovieHistory);
             }
