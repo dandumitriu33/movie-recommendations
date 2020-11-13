@@ -26,7 +26,7 @@ namespace MoviesDataAccessLibrary.Repositories
         public List<Party> GetUserParties(string userEmail);
         public Party GetPartyById(int partyId);
         public Task<Party> AddParty(Party party);
-        public Task<PartyMember> AddMemberToParty(PartyMember newPartyMember);
+        public Task AddMemberToParty(PartyMember newPartyMember);
         public PartyMember GetPartyMember(int partyId, string userEmail);
         public void RemoveMemberFromParty(PartyMember partyMember);
         public void ResetChoicesForParty(int partyId);

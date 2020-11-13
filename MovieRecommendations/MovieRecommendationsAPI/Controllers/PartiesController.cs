@@ -50,38 +50,29 @@ namespace MovieRecommendationsAPI.Controllers
 
         // POST api/<PartiesController>
         [HttpPost]
-        public IActionResult Post([FromBody] PartyDTO partyDTO)
+        public async Task<IActionResult> Post([FromBody] PartyDTO partyDTO)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid == false)
             {
-                return BadRequest("The query is not formatted correctly");
+                return BadRequest("Bad request.");
             }
             Party tempParty = _mapper.Map<PartyDTO, Party>(partyDTO);
-            _repository.AddParty(tempParty);
+            Party addedParty = await _repository.AddParty(tempParty);
 
             // adding the creator as a member of the party
-            PartyMember newPartyMember = new PartyMember
-            {
-                PartyId = partyDTO.Id,
-                Email = partyDTO.CreatorEmail
-            };
-            _repository.AddMemberToParty(newPartyMember);
-            return NoContent();
+            await addCreatorToParty(addedParty);
+
+            return Ok($"Party \"{addedParty.Name}\" was created successfully.");
         }
 
-        // UNUSED at this time, using API via JS
-        // POST api/<PartiesController>/addToParty/{partyId}
-        [HttpPost]
-        [Route("addToParty/{partyId}")]
-        public IActionResult AddMember([FromBody] PartyMemberDTO partyMemberDTO)
+        private async Task addCreatorToParty(Party addedParty)
         {
-            if (!ModelState.IsValid)
+            PartyMember newPartyMember = new PartyMember
             {
-                return BadRequest("The query is not formatted correctly");
-            }
-            PartyMember partyMember = _mapper.Map<PartyMemberDTO, PartyMember>(partyMemberDTO);
-            _repository.AddMemberToParty(partyMember);
-            return NoContent();
+                PartyId = addedParty.Id,
+                Email = addedParty.CreatorEmail
+            };
+            await _repository.AddMemberToParty(newPartyMember);
         }
 
         // DELETE api/<PartiesController>/RemoveFromParty/{partyId}
@@ -165,19 +156,24 @@ namespace MovieRecommendationsAPI.Controllers
             return Ok(result);
         }
 
-        // POST: api/<PartiesController>/partyMembers/{partyId}/addMember/{memberEmail}
+        // POST: api/<PartiesController>/partyMembers/{partyId}/addMember
         [HttpPost]
-        [Route("partyMembers/{partyId}/addMember/{memberEmail}")]
+        [Route("partyMembers/{partyId}/addMember")]
         [EnableCors("AllowAnyOrigin")]
-        public IActionResult AddMemberToParty(int partyId, MemberEmailDTO memberEmailDTO)
+        public async Task<IActionResult> AddMemberToParty(PartyMemberDTO partyMemberDTO)
         {
+            if (ModelState.IsValid == false)
+            {
+                return BadRequest("Bad request.");
+            }
             PartyMember newMember = new PartyMember
             {
-                Email = memberEmailDTO.Email,
-                PartyId = partyId
+                PartyId = partyMemberDTO.PartyId,
+                Email = partyMemberDTO.Email
+                
             };
-            _repository.AddMemberToParty(newMember);
-            return NoContent();
+            await _repository.AddMemberToParty(newMember);
+            return Ok($"Party member \"{partyMemberDTO.Email}\" was added to party \"{partyMemberDTO.PartyId}\" successfully.");
         }
 
         // GET api/<PartiesController>/getMembers/{partyId}

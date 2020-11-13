@@ -84,6 +84,32 @@ namespace MovieRecommendations.Tests.Controller
         }
 
         [Fact]
+        public void RunGetMovieByMovieIdOnceForDetails()
+        {
+            IActionResult result = _sut.Details(1);
+
+            Assert.IsType<ViewResult>(result);
+            _mockRepository.Verify(x => x.GetMovieByMovieId(It.IsAny<int>()), Times.Once);
+        }
+
+        [Fact]
+        public void RunMapperForDetails()
+        {
+            IActionResult result = _sut.Details(1);
+
+            Assert.IsType<ViewResult>(result);
+            _mockMapper.Verify(x => x.Map<Movie, MovieViewModel>(It.IsAny<Movie>()), Times.Once);
+        }
+
+        [Fact]
+        public void ReturnsCorrectViewForDetails()
+        {
+            ViewResult result = (ViewResult) _sut.Details(1);
+            
+            Assert.Equal("Details", result.ViewName);
+        }
+
+        [Fact]
         public void ReturnViewForHandleError()
         {
             IActionResult result = _sut.HandleError(404);

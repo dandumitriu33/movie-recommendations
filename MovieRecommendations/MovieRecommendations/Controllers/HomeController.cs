@@ -82,7 +82,7 @@ namespace MovieRecommendations.Controllers
         {
             Movie movie = _repository.GetMovieByMovieId(movieId);
             MovieViewModel movieViewModel = _mapper.Map<Movie, MovieViewModel>(movie);
-            return View(movieViewModel);
+            return View("Details", movieViewModel);
         }
 
         [Route("/Home/HandleError/{code:int}")]
@@ -171,8 +171,8 @@ namespace MovieRecommendations.Controllers
         /// Utility route and method to import data from CSV
         /// </summary>
         /// <returns></returns>
-        public async Task<IActionResult> PopulateDb()
-        {
+        //public async Task<IActionResult> PopulateDb()
+        //{
             // commented out to not duplicate db data by mistake
 
             //List<Movie> inMemoryTempDb = new List<Movie>();
@@ -203,8 +203,8 @@ namespace MovieRecommendations.Controllers
             //{
             //    await _repository.Add(movie);
             //}
-            return View();
-        }
+            //return View();
+        //}
 
         /// <summary>
         /// Utility method to generate genre data during import from CSV

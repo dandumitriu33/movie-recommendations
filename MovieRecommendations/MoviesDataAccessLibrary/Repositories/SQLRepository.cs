@@ -178,11 +178,10 @@ namespace MoviesDataAccessLibrary.Repositories
             return party;
         }
 
-        public async Task<PartyMember> AddMemberToParty(PartyMember newPartyMember)
+        public async Task AddMemberToParty(PartyMember newPartyMember)
         {
             await _context.PartyMembers.AddAsync(newPartyMember);
             await _context.SaveChangesAsync();
-            return newPartyMember;
         }
 
         public PartyMember GetPartyMember(int partyId, string userEmail)
