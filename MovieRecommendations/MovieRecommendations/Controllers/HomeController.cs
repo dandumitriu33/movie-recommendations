@@ -44,6 +44,7 @@ namespace MovieRecommendations.Controllers
 
         public IActionResult AllMovies(int page, int cards)
         {
+            ViewData["inventoryTotal"] = _repository.GetInventoryTotal();
             ViewData["page"] = page;
             ViewData["cards"] = cards;
             return View("AllMovies");

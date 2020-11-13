@@ -36,6 +36,11 @@ namespace MoviesDataAccessLibrary.Repositories
                 .ToList();
         }
 
+        public int GetInventoryTotal()
+        {
+            return _context.Movies.Count();
+        }
+
         public List<Movie> GetTop20YearRating()
         {
             

@@ -8,6 +8,7 @@ namespace MoviesDataAccessLibrary.Repositories
     {
         Task<Movie> Add(Movie movie);
         List<Movie> GetAllMovies(int page, int cards);
+        int GetInventoryTotal();
         List<Movie> GetTop20YearRating();
         public Movie GetMovieByMovieId(int movieId);
         public List<History> GetFullHistory(string email);
