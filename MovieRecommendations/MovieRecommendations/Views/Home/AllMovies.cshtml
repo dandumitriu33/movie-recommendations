@@ -5,6 +5,8 @@
 <div class="text-center">
     <h2>All movies</h2>
 </div>
-
-
-@await Component.InvokeAsync("AllLatestHighestRated")
+@{ 
+    int page = (int) ViewData["page"];
+    int cards = (int) ViewData["cards"];
+}
+@await Component.InvokeAsync("AllLatestHighestRated", new { page = page, cards = cards });

@@ -3,8 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 using MovieRecommendations.ViewModels;
 using MoviesDataAccessLibrary.Entities;
 using MoviesDataAccessLibrary.Repositories;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 
 namespace MovieRecommendations.Components
 {
@@ -20,12 +22,10 @@ namespace MovieRecommendations.Components
             _mapper = mapper;
         }
 
-        public IViewComponentResult Invoke()
+        public IViewComponentResult Invoke(int page, int cards)
         {
-            IEnumerable<Movie> allMoviesFromDb = _repository.GetAllMovies();
-            // sort by release year and then by rating descending
-            List<Movie> allMoviesFromDbSorted = allMoviesFromDb.OrderByDescending(m => m.ReleaseYear).ThenByDescending(m => m.Rating).ToList();
-            List<MovieViewModel> allMovies = _mapper.Map<List<Movie>, List<MovieViewModel>>(allMoviesFromDbSorted);
+            List<Movie> allMoviesFromDb = _repository.GetAllMovies(page, cards);            
+            List<MovieViewModel> allMovies = _mapper.Map<List<Movie>, List<MovieViewModel>>(allMoviesFromDb);
             return View(allMovies);
         }
     }

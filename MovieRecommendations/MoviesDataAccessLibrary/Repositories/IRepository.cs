@@ -7,7 +7,7 @@ namespace MoviesDataAccessLibrary.Repositories
     public interface IRepository
     {
         Task<Movie> Add(Movie movie);
-        IEnumerable<Movie> GetAllMovies();
+        List<Movie> GetAllMovies(int page, int cards);
         List<Movie> GetTop20YearRating();
         public Movie GetMovieByMovieId(int movieId);
         public List<History> GetFullHistory(string email);

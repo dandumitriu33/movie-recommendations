@@ -170,7 +170,6 @@ namespace MovieRecommendationsAPI.Controllers
             {
                 PartyId = partyMemberDTO.PartyId,
                 Email = partyMemberDTO.Email
-                
             };
             await _repository.AddMemberToParty(newMember);
             return Ok($"Party member \"{partyMemberDTO.Email}\" was added to party \"{partyMemberDTO.PartyId}\" successfully.");

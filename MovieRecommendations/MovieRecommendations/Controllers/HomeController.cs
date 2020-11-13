@@ -42,9 +42,11 @@ namespace MovieRecommendations.Controllers
             return View();
         }
 
-        public IActionResult AllMovies()
+        public IActionResult AllMovies(int page, int cards)
         {
-            return View();
+            ViewData["page"] = page;
+            ViewData["cards"] = cards;
+            return View("AllMovies");
         }
 
         public IActionResult AllCommunityLikes()

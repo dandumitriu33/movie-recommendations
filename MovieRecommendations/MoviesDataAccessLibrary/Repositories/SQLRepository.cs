@@ -26,18 +26,19 @@ namespace MoviesDataAccessLibrary.Repositories
             return movie;
         }
 
-        public IEnumerable<Movie> GetAllMovies()
+        public List<Movie> GetAllMovies(int page, int cards)
         {
-            return _context.Movies.Where(m => m.Rating > 0).OrderByDescending(m => m.ReleaseYear).ThenBy(m => m.Rating);
+            return _context.Movies.Where(m => m.Rating > 0)
+                .OrderByDescending(m => m.ReleaseYear)
+                .ThenByDescending(m => m.Rating)
+                .Skip((page-1)*cards)
+                .Take(cards)
+                .ToList();
         }
-
-        //public IEnumerable<Movie> GetAllMoviesTop20()
-        //{
-        //    return _context.Movies.Where(m => m.Rating > 6.5).OrderByDescending(m => m.ReleaseYear).ThenBy(m => m.Rating).Take(20);
-        //}
 
         public List<Movie> GetTop20YearRating()
         {
+            
             return _context.Movies.Where(m => m.Rating > 6.5).OrderByDescending(m => m.ReleaseYear).ThenByDescending(m => m.Rating).Take(20).ToList();
         }
 
