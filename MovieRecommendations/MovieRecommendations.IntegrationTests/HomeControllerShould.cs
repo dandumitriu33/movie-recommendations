@@ -65,7 +65,7 @@ namespace MovieRecommendations.IntegrationTests
         [Fact]
         public async Task NotAcceptANewMovieWithoutTitle()
         {
-            
+            string expectedMatch = "The movie was not added to the database. Please check the details and submit when ready.";
             var builder = new WebHostBuilder()
                                 .UseContentRoot(@"C:\Users\Dan\Projects\movie-recommendations\MovieRecommendations\MovieRecommendations")
                                 .UseEnvironment("Development")
@@ -98,7 +98,7 @@ namespace MovieRecommendations.IntegrationTests
             var formData = new Dictionary<string, string>
             {
                 {AntiForgeryFieldName, antiForgeryToken },
-                // title missing
+                //{ "Title", "Mem test movie"},
                 { "LengthInMinutes", "121" },
                 { "Rating", "3.4" },
                 { "ReleaseYear", "2003" },
@@ -116,7 +116,180 @@ namespace MovieRecommendations.IntegrationTests
             var responseString = await postResponse.Content.ReadAsStringAsync();
 
             // the expectation is for validation to kick in and generate this warning
-            Assert.Contains("The movie title is required.", responseString);
+            Assert.Contains(expectedMatch, responseString);
+        }
+
+        [Fact]
+        public async Task NotAcceptANewMovieWithoutLengthInMinutes()
+        {
+            // Required validation on the server https://docs.microsoft.com/en-us/aspnet/core/mvc/models/validation?view=aspnetcore-5.0
+            string expectedMatch = "The movie was not added to the database. Please check the details and submit when ready.";
+            var builder = new WebHostBuilder()
+                                .UseContentRoot(@"C:\Users\Dan\Projects\movie-recommendations\MovieRecommendations\MovieRecommendations")
+                                .UseEnvironment("Development")
+                                .UseStartup<MovieRecommendations.Startup>()
+                                .ConfigureServices(x =>
+                                {
+                                    x.AddAntiforgery(t =>
+                                    {
+                                        t.Cookie.Name = AntiForgeryCookieName;
+                                        t.FormFieldName = AntiForgeryFieldName;
+                                    });
+                                });
+
+            var server = new TestServer(builder);
+            var client = server.CreateClient();
+
+            // Get initial response that contains the anti forgery tokens
+            HttpResponseMessage initialResponse = await client.GetAsync("Home/AddMovie");
+
+            string antiForgeryCookieValue = ExtractAntiForgeryCookieValueFrom(initialResponse);
+
+            string antiForgeryToken = ExtractAntiForgeryToken(await initialResponse.Content.ReadAsStringAsync());
+
+
+            HttpRequestMessage postRequest = new HttpRequestMessage(HttpMethod.Post, "Home/AddMovie");
+            postRequest.Headers.Add("Cookie",
+                new CookieHeaderValue(AntiForgeryCookieName,
+                                      antiForgeryCookieValue).ToString());
+
+            var formData = new Dictionary<string, string>
+            {
+                {AntiForgeryFieldName, antiForgeryToken },
+                { "Title", "Mem test movie"},
+                //{ "LengthInMinutes", "121" },
+                { "Rating", "3.4" },
+                { "ReleaseYear", "2003" },
+                { "MainGenre", "Comedy" },
+                { "SubGenre1", "Adventure" },
+                { "SubGenre2", "Crime" }
+            };
+
+            postRequest.Content = new FormUrlEncodedContent(formData);
+
+            HttpResponseMessage postResponse = await client.SendAsync(postRequest);
+
+            postResponse.EnsureSuccessStatusCode();
+
+            var responseString = await postResponse.Content.ReadAsStringAsync();
+            _output.WriteLine(responseString);
+            // the expectation is for validation to kick in and generate this warning
+            Assert.Contains(expectedMatch, responseString);
+        }
+
+        [Fact]
+        public async Task NotAcceptANewMovieWithoutRating()
+        {
+            // Required validation on the server https://docs.microsoft.com/en-us/aspnet/core/mvc/models/validation?view=aspnetcore-5.0
+            string expectedMatch = "The movie was not added to the database. Please check the details and submit when ready.";
+            var builder = new WebHostBuilder()
+                                .UseContentRoot(@"C:\Users\Dan\Projects\movie-recommendations\MovieRecommendations\MovieRecommendations")
+                                .UseEnvironment("Development")
+                                .UseStartup<MovieRecommendations.Startup>()
+                                .ConfigureServices(x =>
+                                {
+                                    x.AddAntiforgery(t =>
+                                    {
+                                        t.Cookie.Name = AntiForgeryCookieName;
+                                        t.FormFieldName = AntiForgeryFieldName;
+                                    });
+                                });
+
+            var server = new TestServer(builder);
+            var client = server.CreateClient();
+
+            // Get initial response that contains the anti forgery tokens
+            HttpResponseMessage initialResponse = await client.GetAsync("Home/AddMovie");
+
+            string antiForgeryCookieValue = ExtractAntiForgeryCookieValueFrom(initialResponse);
+
+            string antiForgeryToken = ExtractAntiForgeryToken(await initialResponse.Content.ReadAsStringAsync());
+
+
+            HttpRequestMessage postRequest = new HttpRequestMessage(HttpMethod.Post, "Home/AddMovie");
+            postRequest.Headers.Add("Cookie",
+                new CookieHeaderValue(AntiForgeryCookieName,
+                                      antiForgeryCookieValue).ToString());
+
+            var formData = new Dictionary<string, string>
+            {
+                {AntiForgeryFieldName, antiForgeryToken },
+                { "Title", "Mem test movie"},
+                { "LengthInMinutes", "121" },
+                //{ "Rating", "3.4" },
+                { "ReleaseYear", "2003" },
+                { "MainGenre", "Comedy" },
+                { "SubGenre1", "Adventure" },
+                { "SubGenre2", "Crime" }
+            };
+
+            postRequest.Content = new FormUrlEncodedContent(formData);
+
+            HttpResponseMessage postResponse = await client.SendAsync(postRequest);
+
+            postResponse.EnsureSuccessStatusCode();
+
+            var responseString = await postResponse.Content.ReadAsStringAsync();
+
+            // the expectation is for validation to kick in and generate this warning
+            Assert.Contains(expectedMatch, responseString);
+        }
+
+        [Fact]
+        public async Task NotAcceptANewMovieWithoutReleaseYear()
+        {
+            string expectedMatch = "The movie was not added to the database. Please check the details and submit when ready.";
+            var builder = new WebHostBuilder()
+                                .UseContentRoot(@"C:\Users\Dan\Projects\movie-recommendations\MovieRecommendations\MovieRecommendations")
+                                .UseEnvironment("Development")
+                                .UseStartup<MovieRecommendations.Startup>()
+                                .ConfigureServices(x =>
+                                {
+                                    x.AddAntiforgery(t =>
+                                    {
+                                        t.Cookie.Name = AntiForgeryCookieName;
+                                        t.FormFieldName = AntiForgeryFieldName;
+                                    });
+                                });
+
+            var server = new TestServer(builder);
+            var client = server.CreateClient();
+
+            // Get initial response that contains the anti forgery tokens
+            HttpResponseMessage initialResponse = await client.GetAsync("Home/AddMovie");
+
+            string antiForgeryCookieValue = ExtractAntiForgeryCookieValueFrom(initialResponse);
+
+            string antiForgeryToken = ExtractAntiForgeryToken(await initialResponse.Content.ReadAsStringAsync());
+
+
+            HttpRequestMessage postRequest = new HttpRequestMessage(HttpMethod.Post, "Home/AddMovie");
+            postRequest.Headers.Add("Cookie",
+                new CookieHeaderValue(AntiForgeryCookieName,
+                                      antiForgeryCookieValue).ToString());
+
+            var formData = new Dictionary<string, string>
+            {
+                {AntiForgeryFieldName, antiForgeryToken },
+                { "Title", "Mem test movie"},
+                { "LengthInMinutes", "121" },
+                { "Rating", "3.4" },
+                //{ "ReleaseYear", "2003" },
+                { "MainGenre", "Comedy" },
+                { "SubGenre1", "Adventure" },
+                { "SubGenre2", "Crime" }
+            };
+
+            postRequest.Content = new FormUrlEncodedContent(formData);
+
+            HttpResponseMessage postResponse = await client.SendAsync(postRequest);
+
+            postResponse.EnsureSuccessStatusCode();
+
+            var responseString = await postResponse.Content.ReadAsStringAsync();
+
+            // the expectation is for validation to kick in and generate this warning
+            Assert.Contains(expectedMatch, responseString);
         }
 
         private static string ExtractAntiForgeryCookieValueFrom(HttpResponseMessage response)
@@ -140,7 +313,6 @@ namespace MovieRecommendations.IntegrationTests
         {
 
             var requestVerificationTokenMatch = Regex.Match(htmlBody, $@"\<input name=""{AntiForgeryFieldName}"" type=""hidden"" value=""([^""]+)"" \/\>");
-            _output.WriteLine(htmlBody);
             if (requestVerificationTokenMatch.Success)
             {
                 return requestVerificationTokenMatch.Groups[1].Captures[0].Value;
