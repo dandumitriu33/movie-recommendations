@@ -10,8 +10,8 @@ $("#addMemberButton").click(function () {
 
 async function addMemberToParty(partyId, memberEmail) {
     if (validateEmail(memberEmail) == true) {
-        let URL = `https://localhost:44311/api/parties/partyMembers/${partyId}/addMember/${memberEmail}`;
-        let data = JSON.stringify({ "email": memberEmail });
+        let URL = `https://localhost:44311/api/parties/partyMembers/${partyId}/addMember`;
+        let data = JSON.stringify({ "partyId": partyId, "email": memberEmail });
         await $.ajax({
             type: "POST",
             url: URL,

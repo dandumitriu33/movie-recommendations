@@ -7,7 +7,8 @@ namespace MoviesDataAccessLibrary.Repositories
     public interface IRepository
     {
         Task<Movie> Add(Movie movie);
-        IEnumerable<Movie> GetAllMovies();
+        List<Movie> GetAllMovies(int page, int cards);
+        int GetInventoryTotal();
         List<Movie> GetTop20YearRating();
         public Movie GetMovieByMovieId(int movieId);
         public List<History> GetFullHistory(string email);
@@ -25,8 +26,8 @@ namespace MoviesDataAccessLibrary.Repositories
         public void UpdateNextMovieScore(int currentMovieId, int nextMovieId, int score);
         public List<Party> GetUserParties(string userEmail);
         public Party GetPartyById(int partyId);
-        public void AddParty(Party party);
-        public void AddMemberToParty(PartyMember newPartyMember);
+        public Task<Party> AddParty(Party party);
+        public Task AddMemberToParty(PartyMember newPartyMember);
         public PartyMember GetPartyMember(int partyId, string userEmail);
         public void RemoveMemberFromParty(PartyMember partyMember);
         public void ResetChoicesForParty(int partyId);

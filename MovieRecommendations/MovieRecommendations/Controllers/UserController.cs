@@ -31,9 +31,12 @@ namespace MovieRecommendations.Controllers
         public IActionResult UserHistory(string email)
         {
             List<History> fullHistory = _repository.GetFullHistory(email);
-
+            List<AcceptableWatchHistoryMovieModel> orderedMovieHistory = new List<AcceptableWatchHistoryMovieModel>();
+            if (fullHistory == null)
+            {
+                return View(orderedMovieHistory);
+            }
             List<AcceptableWatchHistoryMovieModel> moviesHistory = new List<AcceptableWatchHistoryMovieModel>();
-
             foreach (var entry in fullHistory)
             {
                 Movie tempMovie = _repository.GetMovieByMovieId(entry.MovieId);
@@ -51,7 +54,7 @@ namespace MovieRecommendations.Controllers
                 };
                 moviesHistory.Add(newMovie);
             }
-            List<AcceptableWatchHistoryMovieModel> orderedMovieHistory = moviesHistory.OrderByDescending(m => m.DateAddedToHistory).ToList();
+            orderedMovieHistory = moviesHistory.OrderByDescending(m => m.DateAddedToHistory).ToList();
             return View(orderedMovieHistory);
         }
 

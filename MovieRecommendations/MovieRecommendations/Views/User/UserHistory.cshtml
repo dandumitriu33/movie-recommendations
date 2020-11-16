@@ -4,29 +4,38 @@
     ViewData["Title"] = "History";
 }
 
+<h3>View History</h3>
+<hr />
+
 <div class="container">
     <div class="card-deck">
-
-        @foreach (var movie in Model)
+        @if (Model == null || Model.Count == 0)
         {
-            string path = $"~/img/{@movie.MainGenre.ToLower()}.jpg";
+            <p>There is no data at this time.</p>
+        }
+        else
+        {
+            @foreach (var movie in Model)
+            {
+                string path = $"~/img/{@movie.MainGenre.ToLower()}.jpg";
 
-            <div class="card mb-4" style="min-width: 12rem; max-width: 12rem">
-                @if (String.IsNullOrEmpty(movie.MainGenre))
-                {
-                    <img class="card-img-top" src="~/img/default.jpg" alt="Card image cap">
-                }
-                else
-                {
-                    <img class="card-img-top" src="@Url.Content(path)" alt="Card image cap">
-                }
+                <div class="card mb-4" style="min-width: 12rem; max-width: 12rem">
+                    @if (String.IsNullOrEmpty(movie.MainGenre))
+                    {
+                        <img class="card-img-top" src="~/img/default.jpg" alt="Card image cap">
+                    }
+                    else
+                    {
+                        <img class="card-img-top" src="@Url.Content(path)" alt="Card image cap">
+                    }
 
-                <div class="card-body">
-                    <h5 class="card-title"><a asp-controller="home" asp-action="details" asp-route-movieId="@movie.Id">@movie.Title</a> (@movie.ReleaseYear)</h5>
-                    <p class="card-text">IMDB: @movie.Rating</p>
-                    <p class="card-text">Genre: @movie.MainGenre, @movie.SubGenre1, @movie.SubGenre2</p>
+                    <div class="card-body">
+                        <h5 class="card-title"><a asp-controller="home" asp-action="details" asp-route-movieId="@movie.Id">@movie.Title</a> (@movie.ReleaseYear)</h5>
+                        <p class="card-text">IMDB: @movie.Rating</p>
+                        <p class="card-text">Genre: @movie.MainGenre, @movie.SubGenre1, @movie.SubGenre2</p>
+                    </div>
                 </div>
-            </div>
+            }
         }
     </div>
 </div>

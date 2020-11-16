@@ -23,22 +23,27 @@ namespace MoviesDataAccessLibrary.Repositories
         {
             await _context.Movies.AddAsync(movie);
             await _context.SaveChangesAsync();
-
             return movie;
         }
 
-        public IEnumerable<Movie> GetAllMovies()
+        public List<Movie> GetAllMovies(int page, int cards)
         {
-            return _context.Movies.Where(m => m.Rating > 0).OrderByDescending(m => m.ReleaseYear).ThenBy(m => m.Rating);
+            return _context.Movies.Where(m => m.Rating > 0)
+                .OrderByDescending(m => m.ReleaseYear)
+                .ThenByDescending(m => m.Rating)
+                .Skip((page-1)*cards)
+                .Take(cards)
+                .ToList();
         }
 
-        //public IEnumerable<Movie> GetAllMoviesTop20()
-        //{
-        //    return _context.Movies.Where(m => m.Rating > 6.5).OrderByDescending(m => m.ReleaseYear).ThenBy(m => m.Rating).Take(20);
-        //}
+        public int GetInventoryTotal()
+        {
+            return _context.Movies.Count();
+        }
 
         public List<Movie> GetTop20YearRating()
         {
+            
             return _context.Movies.Where(m => m.Rating > 6.5).OrderByDescending(m => m.ReleaseYear).ThenByDescending(m => m.Rating).Take(20).ToList();
         }
 
@@ -172,16 +177,17 @@ namespace MoviesDataAccessLibrary.Repositories
             return _context.Parties.Where(p => p.Id == partyId).FirstOrDefault();
         }
 
-        public void AddParty(Party party)
+        public async Task<Party> AddParty(Party party)
         {
-            _context.Parties.Add(party);
-            _context.SaveChanges();
+            await _context.Parties.AddAsync(party);
+            await _context.SaveChangesAsync();
+            return party;
         }
 
-        public void AddMemberToParty(PartyMember newPartyMember)
+        public async Task AddMemberToParty(PartyMember newPartyMember)
         {
-            _context.PartyMembers.Add(newPartyMember);
-            _context.SaveChanges();
+            await _context.PartyMembers.AddAsync(newPartyMember);
+            await _context.SaveChangesAsync();
         }
 
         public PartyMember GetPartyMember(int partyId, string userEmail)

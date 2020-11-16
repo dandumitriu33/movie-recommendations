@@ -1,10 +1,169 @@
 ﻿@{
     ViewData["Title"] = "All movies";
+
+    int pageWeAreOn = (int)ViewData["page"];
+    int cards = (int)ViewData["cards"];
+    int total = (int)ViewData["inventoryTotal"];
+    int previous = pageWeAreOn - 1;
+    int previous2 = pageWeAreOn - 2;
+    int next = pageWeAreOn + 1;
+    int next2 = pageWeAreOn + 2;
+    int totalPages;
+    if (total % cards == 0)
+    {
+        totalPages = total / cards;
+    }
+    else
+    {
+        totalPages = total / cards + 1;
+    }
+
 }
 
 <div class="text-center">
     <h2>All movies</h2>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            @{
+                if (pageWeAreOn == 1)
+                {
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1">Previous</a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item">
+                        <a class="page-link"
+                           asp-area=""
+                           asp-controller="Home"
+                           asp-action="AllMovies"
+                           asp-route-page=@previous
+                           asp-route-cards=@cards
+                           tabindex="-1">Previous</a>
+
+                    </li>
+                }
+            }
+            @{
+                if (pageWeAreOn >= 4)
+                {
+                    <li class="page-item">
+                        <a class="page-link"
+                           asp-area=""
+                           asp-controller="Home"
+                           asp-action="AllMovies"
+                           asp-route-page="1"
+                           asp-route-cards=@cards>1</a>
+                    </li>
+                    <li class="ml-2 mr-2">
+                        . . .
+                    </li>
+                }
+            }
+
+
+            @{
+                if (previous2 > 0)
+                {
+                    <li class="page-item">
+                        <a class="page-link"
+                           asp-area=""
+                           asp-controller="Home"
+                           asp-action="AllMovies"
+                           asp-route-page=@previous2
+                           asp-route-cards=@cards>@previous2</a>
+                    </li>
+                }
+                if (previous > 0)
+                {
+                    <li class="page-item">
+                        <a class="page-link"
+                           asp-area=""
+                           asp-controller="Home"
+                           asp-action="AllMovies"
+                           asp-route-page=@previous
+                           asp-route-cards=@cards>@previous</a>
+                    </li>
+                }
+            }
+
+
+            <li class="page-item">
+                <a class="page-link font-weight-bold"
+                   asp-area=""
+                   asp-controller="Home"
+                   asp-action="AllMovies"
+                   asp-route-page=@pageWeAreOn
+                   asp-route-cards=@cards>@pageWeAreOn</a>
+            </li>
+
+            @{
+                if (next <= totalPages)
+                {
+                    <li class="page-item">
+                        <a class="page-link"
+                           asp-area=""
+                           asp-controller="Home"
+                           asp-action="AllMovies"
+                           asp-route-page=@next
+                           asp-route-cards=@cards>@next</a>
+                    </li>
+                }
+                if (next2 <= totalPages)
+                {
+                    <li class="page-item">
+                        <a class="page-link"
+                           asp-area=""
+                           asp-controller="Home"
+                           asp-action="AllMovies"
+                           asp-route-page=@next2
+                           asp-route-cards=@cards>@next2</a>
+                    </li>
+                }
+            }
+
+            @{
+                if (pageWeAreOn <= totalPages-3)
+                {
+                    <li class="ml-2 mr-2">
+                        . . .
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link"
+                           asp-area=""
+                           asp-controller="Home"
+                           asp-action="AllMovies"
+                           asp-route-page=@totalPages
+                           asp-route-cards=@cards>@totalPages</a>
+                    </li>
+                }
+            }
+
+
+            @{
+                if (pageWeAreOn == totalPages)
+                {
+                    <li class="page-item disabled">
+                        <a class="page-link">Next</a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item">
+                        <a class="page-link"
+                           asp-area=""
+                           asp-controller="Home"
+                           asp-action="AllMovies"
+                           asp-route-page=@next
+                           asp-route-cards=@cards>Next</a>
+
+                    </li>
+                }
+            }
+        </ul>
+    </nav>
 </div>
 
+@await Component.InvokeAsync("AllLatestHighestRated", new { page = pageWeAreOn, cards = cards })
 
-@await Component.InvokeAsync("AllLatestHighestRated")
