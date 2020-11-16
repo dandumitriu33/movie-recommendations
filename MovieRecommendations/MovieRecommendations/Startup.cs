@@ -33,10 +33,19 @@ namespace MovieRecommendations
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
+            // DEVELOPMENT
+            //services.AddDbContext<MoviesContext>(options =>
+            //{
+            //    options.UseSqlServer(Configuration.GetConnectionString("Default"));
+            //});
+
+            // TESTING - in memory DB
             services.AddDbContext<MoviesContext>(options =>
             {
-                options.UseSqlServer(Configuration.GetConnectionString("Default"));
+                options.UseInMemoryDatabase("TestingDB");
             });
+
             services.AddIdentity<IdentityUser, IdentityRole>(options =>
                 {
                     // section just for edu purposes, defaults are the same

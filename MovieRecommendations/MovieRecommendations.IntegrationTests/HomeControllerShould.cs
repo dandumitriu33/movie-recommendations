@@ -12,15 +12,24 @@ namespace MovieRecommendations.IntegrationTests
         [Fact]
         public async Task RenderTheAddMoviePage()
         {
-            // use configuration builder and copy over appsettings.json w/ always copy prop
-            // from MovieRecommendations web project
-            // this is because the Configuration setup in startup here can't reach the configuration file there and get the DB connection string
-            var configurationBuilder = new ConfigurationBuilder()
-                                .AddJsonFile("appsettings.json");
+            // CONFIGURATION FOR LOCAL DB - switch in Startup to DEVELOPMENT
+
+            //// use configuration builder and copy over appsettings.json w/ always copy prop
+            //// from MovieRecommendations web project
+            //// this is because the Configuration setup in startup here can't reach the configuration file there and get the DB connection string
+            //var configurationBuilder = new ConfigurationBuilder()
+            //                    .AddJsonFile("appsettings.json");
+            //var builder = new WebHostBuilder()
+            //                    .UseContentRoot(@"C:\Users\Dan\Projects\movie-recommendations\MovieRecommendations\MovieRecommendations")
+            //                    .UseEnvironment("Development")
+            //                    .UseConfiguration(configurationBuilder.Build())
+            //                    .UseStartup<MovieRecommendations.Startup>();
+
+            // CONFIGURATION FOR IN MEMORY DB - switch in Startup to TESTING
+            
             var builder = new WebHostBuilder()
                                 .UseContentRoot(@"C:\Users\Dan\Projects\movie-recommendations\MovieRecommendations\MovieRecommendations")
                                 .UseEnvironment("Development")
-                                .UseConfiguration(configurationBuilder.Build())
                                 .UseStartup<MovieRecommendations.Startup>();
 
             var server = new TestServer(builder);

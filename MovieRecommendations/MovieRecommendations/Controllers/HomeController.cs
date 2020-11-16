@@ -62,7 +62,7 @@ namespace MovieRecommendations.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> AddMovie()
+        public IActionResult AddMovie()
         {
             return View();
         }
