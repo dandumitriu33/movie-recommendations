@@ -54,7 +54,7 @@ namespace MovieRecommendations.Tests.Controller
         [Fact]
         public void ReturnViewForAllMovies()
         {
-            IActionResult result = _sut.AllMovies();
+            IActionResult result = _sut.AllMovies(1, 20);
 
             Assert.IsType<ViewResult>(result);
         }

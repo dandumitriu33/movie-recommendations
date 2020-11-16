@@ -73,9 +73,20 @@ namespace MovieRecommendations.Controllers
             if (ModelState.IsValid)
             {
                 Movie newEntry = _mapper.Map<MovieViewModel, Movie>(movie);
-                await _repository.Add(newEntry);
-                return View("AddMovie", newEntry);
+                try
+                {
+                    await _repository.Add(newEntry);
+                }
+                catch(Exception ex)
+                {
+                    // log thefull  error message
+                    ViewData["errorMessage"] = "There was an error contacting the database. Please try again later.";
+                    return View("AddMovie", movie);
+                }
+                ViewData["errorMessage"] = "The movie was added to the database.";
+                return View("AddMovie", movie);
             }
+            ViewData["errorMessage"] = "The movie was not added to the database. Please check the details and submit when ready.";
             return View("AddMovie", movie);
         }
 
