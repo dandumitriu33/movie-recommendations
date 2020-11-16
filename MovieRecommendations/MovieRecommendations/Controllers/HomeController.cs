@@ -68,6 +68,7 @@ namespace MovieRecommendations.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddMovie(MovieViewModel movie)
         {
             if (ModelState.IsValid)
