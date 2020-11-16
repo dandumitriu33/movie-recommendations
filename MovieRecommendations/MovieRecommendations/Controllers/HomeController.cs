@@ -62,7 +62,7 @@ namespace MovieRecommendations.Controllers
         }
 
         [HttpGet]
-        public IActionResult AddMovie()
+        public async Task<IActionResult> AddMovie()
         {
             return View();
         }
@@ -79,7 +79,7 @@ namespace MovieRecommendations.Controllers
                 }
                 catch(Exception ex)
                 {
-                    // log thefull  error message
+                    // log the full error message
                     ViewData["errorMessage"] = "There was an error contacting the database. Please try again later.";
                     return View("AddMovie", movie);
                 }

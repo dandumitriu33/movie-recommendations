@@ -70,7 +70,7 @@ namespace MovieRecommendations.Tests.Controller
         [Fact]
         public void ReturnViewForAddMovie()
         {
-            IActionResult result = _sut.AddMovie();
+            var result = _sut.AddMovie();
 
             Assert.IsType<ViewResult>(result);
         }
