@@ -181,5 +181,16 @@ namespace MovieRecommendations.IntegrationTests
             Assert.Contains(expectedMatch, responseString);
         }
 
+        [Fact]
+        public async Task RenderTheMovieRecommendationsPage()
+        {
+            var response = await _fixture.Client.GetAsync("");
+
+            response.EnsureSuccessStatusCode();
+
+            var responseString = await response.Content.ReadAsStringAsync();
+            Assert.Contains("Home Page - MovieRecommendations", responseString);
+        }
+
     }
 }
