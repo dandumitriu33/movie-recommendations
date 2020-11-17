@@ -203,5 +203,15 @@ namespace MovieRecommendations.IntegrationTests
             Assert.Contains("All movies", responseString);
         }
 
+        [Fact]
+        public async Task RenderTheAllCommunityLikesPageSmokeTest()
+        {
+            var response = await _fixture.Client.GetAsync("https://localhost:44318/Home/AllCommunityLikes");
+
+            response.EnsureSuccessStatusCode();
+
+            var responseString = await response.Content.ReadAsStringAsync();
+            Assert.Contains("All Community Liked Movies", responseString);
+        }
     }
 }
