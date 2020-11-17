@@ -202,6 +202,43 @@ namespace MovieRecommendations.UITests
             Assert.Equal("The movie rating is required.", firstErrorMessage.Text);
         }
 
+        [Fact]
+        public void ShouldValidateEmailOnAddPartyMember()
+        {
+            // must be logged in with jimsmith@email.com
+            _driver.Navigate().GoToUrl("https://localhost:44318/Account/Login");
+            _driver.FindElement(By.Name("Email")).SendKeys("jimsmith@email.com");
+            DelayForDemo();
+            _driver.FindElement(By.Name("Password")).SendKeys("12345");
+            DelayForDemo();
+            DelayForDemo();
+            _driver.FindElement(By.Name("SubmitLoginDetails")).Click();
+
+            DelayForDemo();
+            
+            _driver.Navigate().GoToUrl("https://localhost:44318/party/details/33");
+
+            IWebElement emailAddress = _driver.FindElement(By.Name("EmailAddress"));
+            emailAddress.SendKeys("johnATemail.com");
+            DelayForDemo();
+            
+
+            _driver.FindElement(By.Id("addMemberButton")).Click();
+
+            DelayForDemo();
+
+            Assert.Equal("Party details - MovieRecommendations", _driver.Title);
+
+            IWebElement errorMessage = _driver.FindElement(By.Id("inlineFormInputEmail-error"));
+
+            DelayForDemo();
+            DelayForDemo();
+            DelayForDemo();
+
+            Assert.Equal("The email address field is not a valid email address.", errorMessage.Text);
+
+        }
+
         /// <summary>
         /// Introduces a 1 second delay for demo purposes. The action happens to fast to observe otherwise.
         /// </summary>
