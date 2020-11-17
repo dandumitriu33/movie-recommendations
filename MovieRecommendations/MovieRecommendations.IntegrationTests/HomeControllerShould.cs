@@ -8,9 +8,7 @@ using Xunit.Abstractions;
 namespace MovieRecommendations.IntegrationTests
 {
     public class HomeControllerShould : IClassFixture<TestServerFixture>
-    {
-        private const string AntiForgeryFieldName = "__AFTField";
-        private const string AntiForgeryCookieName = "AFTCookie";
+    {        
         private readonly TestServerFixture _fixture;
         private readonly ITestOutputHelper _output;
 
