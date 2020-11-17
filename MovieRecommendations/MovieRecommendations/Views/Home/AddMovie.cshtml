@@ -8,6 +8,10 @@
     <h2>Add a movie to the database</h2>
 </div>
 
+<div>
+    <p class="text-danger">@ViewData["errorMessage"]</p>
+</div>
+
 <div class="row">
     <div class="col-md-12">
         <form method="post">
@@ -149,7 +153,7 @@
                       data-valmsg-for="SubGenre2" 
                       data-valmsg-replace="true"></span>
             </div>
-            <button type="submit" class="btn btn-primary">Add</button>
+            <button name="SubmitNewMovie" type="submit" class="btn btn-primary">Add</button>
         </form>
     </div>
 </div>

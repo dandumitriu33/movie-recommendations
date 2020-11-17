@@ -42,10 +42,20 @@ namespace MovieRecommendationsAPI
                     });
             });
             services.AddControllers();
+
+            // DEVELOPMENT
             services.AddDbContext<MoviesContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("Default"));
             });
+
+            // TESTING - in memory DB - if this was a TESTING only environment, this would be under an env.IsDevelopment type of check
+            //services.AddDbContext<MoviesContext>(options =>
+            //{
+            //    options.UseInMemoryDatabase("TestingDB");
+            //});
+
+
             services.AddScoped<IRepository, SQLRepository>();
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
         }

@@ -29,9 +29,9 @@ namespace MovieRecommendationsAPI.Controllers
         }
         // GET: api/<PartiesController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public string Get()
         {
-            return new string[] { "value1", "value2" };
+            return "Value 1";
         }
 
         // GET api/<PartiesController>/john@email.com

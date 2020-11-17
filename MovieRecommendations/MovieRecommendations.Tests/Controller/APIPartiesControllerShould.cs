@@ -31,11 +31,9 @@ namespace MovieRecommendations.Tests.Controller
         [Fact]
         public void ReturnDefaultGetValues()
         {
-            string[] result = _sut.Get().ToArray();
+            string result = _sut.Get();
 
-            Assert.Equal(2, result.Length);
-            Assert.Equal("value1", result[0]);
-            Assert.Equal("value2", result[1]);
+            Assert.Equal("Value 1", result);
         }
 
         [Fact]
