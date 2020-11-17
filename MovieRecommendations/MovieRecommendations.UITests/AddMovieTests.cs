@@ -126,8 +126,81 @@ namespace MovieRecommendations.UITests
             Assert.Equal("The movie runtime (minutes) is required.", firstErrorMessage.Text);
         }
 
-        // The movie release year is required.
-        // The movie rating is required.
+        [Fact]
+        public void ShouldValidateAddMovieDetailsReleaseYearMissing()
+        {
+            _driver.Navigate().GoToUrl("http://localhost:51264/home/addmovie");
+
+            IWebElement title = _driver.FindElement(By.Name("Title"));
+            title.SendKeys("Fun Test Movie");
+
+            IWebElement lengthInMinutes = _driver.FindElement(By.Name("LengthInMinutes"));
+            lengthInMinutes.SendKeys("121");
+
+            //_driver.FindElement(By.Name("ReleaseYear")).SendKeys("2016");
+
+            IWebElement rating = _driver.FindElement(By.Name("Rating"));
+            rating.SendKeys("6.5");
+
+            // including select elements https://stackoverflow.com/questions/5278281/how-to-select-an-option-from-drop-down-using-selenium-webdriver-c
+            IWebElement mainGenre = _driver.FindElement(By.Name("MainGenre"));
+            var mainGenreElement = new SelectElement(mainGenre);
+            mainGenreElement.SelectByText("Comedy");
+
+            IWebElement subGenre1 = _driver.FindElement(By.Name("SubGenre1"));
+            var subGenre1Element = new SelectElement(subGenre1);
+            subGenre1Element.SelectByText("Adventure");
+
+            IWebElement subGenre2 = _driver.FindElement(By.Name("SubGenre2"));
+            var subGenre2Element = new SelectElement(subGenre2);
+            subGenre2Element.SelectByText("Mystery");
+
+            _driver.FindElement(By.Name("SubmitNewMovie")).Click();
+
+            Assert.Equal("Add movie - MovieRecommendations", _driver.Title);
+
+            IWebElement firstErrorMessage = _driver.FindElement(By.CssSelector(".validation-summary-errors ul > li"));
+
+            Assert.Equal("The movie release year is required.", firstErrorMessage.Text);
+        }
+
+        [Fact]
+        public void ShouldValidateAddMovieDetailsRatingMissing()
+        {
+            _driver.Navigate().GoToUrl("http://localhost:51264/home/addmovie");
+
+            IWebElement title = _driver.FindElement(By.Name("Title"));
+            title.SendKeys("Fun Test Movie");
+
+            IWebElement lengthInMinutes = _driver.FindElement(By.Name("LengthInMinutes"));
+            lengthInMinutes.SendKeys("121");
+
+            _driver.FindElement(By.Name("ReleaseYear")).SendKeys("2016");
+
+            //IWebElement rating = _driver.FindElement(By.Name("Rating"));
+            //rating.SendKeys("6.5");
+
+            // including select elements https://stackoverflow.com/questions/5278281/how-to-select-an-option-from-drop-down-using-selenium-webdriver-c
+            IWebElement mainGenre = _driver.FindElement(By.Name("MainGenre"));
+            var mainGenreElement = new SelectElement(mainGenre);
+            mainGenreElement.SelectByText("Comedy");
+
+            IWebElement subGenre1 = _driver.FindElement(By.Name("SubGenre1"));
+            var subGenre1Element = new SelectElement(subGenre1);
+            subGenre1Element.SelectByText("Adventure");
+
+            IWebElement subGenre2 = _driver.FindElement(By.Name("SubGenre2"));
+            var subGenre2Element = new SelectElement(subGenre2);
+            subGenre2Element.SelectByText("Mystery");
+
+            _driver.FindElement(By.Name("SubmitNewMovie")).Click();
+
+            Assert.Equal("Add movie - MovieRecommendations", _driver.Title);
+
+            IWebElement firstErrorMessage = _driver.FindElement(By.CssSelector(".validation-summary-errors ul > li"));
+
+            Assert.Equal("The movie rating is required.", firstErrorMessage.Text);
+        }
 
         /// <summary>
         /// Introduces a 1 second delay for demo purposes. The action happens to fast to observe otherwise.
