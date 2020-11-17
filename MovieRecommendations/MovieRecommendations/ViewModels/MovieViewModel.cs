@@ -14,14 +14,14 @@ namespace MovieRecommendations.ViewModels
         public string Title { get; set; }
         [Required]
         [Display(Name = "Length in minutes")]
-        [Range(1, 2000000000)]
+        [Range(1, 2000000000, ErrorMessage = "The runtime/length must be between 1 and 2Bn.")]
         public int LengthInMinutes { get; set; }
         [Required]
         [Display(Name = "Release year")]
         [Range(1800, 3000, ErrorMessage ="The release year must be between 1800 and 3000.")]
         public int ReleaseYear { get; set; }
         [Required]
-        [Range(1, 10, ErrorMessage ="The rating must be between 0 and 10.")]
+        [Range(1, 10, ErrorMessage ="The rating must be between 1 and 10.")]
         public double Rating { get; set; }
         [Required]
         [Display(Name = "Main genre")]
