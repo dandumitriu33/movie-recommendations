@@ -92,6 +92,19 @@ namespace MovieRecommendations.Tests.Repository
             }
         }
 
+        [Fact]
+        public void GetMovieByMovieId()
+        {
+            using (var context = new MoviesContext(_options))
+            {
+                SQLRepository controller = new SQLRepository(context);
+
+                Movie movieFromDb = controller.GetMovieByMovieId(5);
+
+                Assert.Equal("In Memory DB Movie 5", movieFromDb.Title);
+            }
+        }
+
         private void add22Movies()
         {
             // Create mocked Context by seeding Data as per Schema///
@@ -100,112 +113,112 @@ namespace MovieRecommendations.Tests.Repository
             {
                 _context.Movies.Add(new Movie
                 {
-                    Title = "In Memory DB Movie 1", LengthInMinutes = 121, Rating = 8.2, ReleaseYear = 2020,
+                    Id = 1, Title = "In Memory DB Movie 1", LengthInMinutes = 121, Rating = 8.2, ReleaseYear = 2020,
                     MainGenre = "Comedy", SubGenre1 = "Action", SubGenre2 = "Adventure"
                 });
                 _context.Movies.Add(new Movie
                 {
-                    Title = "In Memory DB Movie 2", LengthInMinutes = 121, Rating = 6.2, ReleaseYear = 2020,
+                    Id = 2, Title = "In Memory DB Movie 2", LengthInMinutes = 121, Rating = 6.2, ReleaseYear = 2020,
                     MainGenre = "Comedy", SubGenre1 = "Action", SubGenre2 = "Adventure"
                 });
                 _context.Movies.Add(new Movie
                 {
-                    Title = "In Memory DB Movie 3", LengthInMinutes = 121, Rating = 5.9, ReleaseYear = 2020,
+                    Id = 3, Title = "In Memory DB Movie 3", LengthInMinutes = 121, Rating = 5.9, ReleaseYear = 2020,
                     MainGenre = "Comedy", SubGenre1 = "Action", SubGenre2 = "Adventure"
                 });
                  _context.Movies.Add(new Movie
                 {
-                    Title = "In Memory DB Movie 4", LengthInMinutes = 121, Rating = 2.1, ReleaseYear = 2019,
+                    Id = 4, Title = "In Memory DB Movie 4", LengthInMinutes = 121, Rating = 2.1, ReleaseYear = 2019,
                     MainGenre = "Comedy", SubGenre1 = "Action", SubGenre2 = "Adventure"
                 });
                 _context.Movies.Add(new Movie
                 {
-                    Title = "In Memory DB Movie 5", LengthInMinutes = 121, Rating = 8.1, ReleaseYear = 2019,
+                    Id = 5, Title = "In Memory DB Movie 5", LengthInMinutes = 121, Rating = 8.1, ReleaseYear = 2019,
                     MainGenre = "Comedy", SubGenre1 = "Action", SubGenre2 = "Adventure"
                 });
                 _context.Movies.Add(new Movie
                 {
-                    Title = "In Memory DB Movie 6", LengthInMinutes = 121, Rating = 7.1, ReleaseYear = 2019,
+                    Id = 6, Title = "In Memory DB Movie 6", LengthInMinutes = 121, Rating = 7.1, ReleaseYear = 2019,
                     MainGenre = "Comedy", SubGenre1 = "Action", SubGenre2 = "Adventure"
                 });
                  _context.Movies.Add(new Movie
                 {
-                    Title = "In Memory DB Movie 7", LengthInMinutes = 121, Rating = 4.5, ReleaseYear = 2018,
+                    Id = 7, Title = "In Memory DB Movie 7", LengthInMinutes = 121, Rating = 4.5, ReleaseYear = 2018,
                     MainGenre = "Comedy", SubGenre1 = "Action", SubGenre2 = "Adventure"
                 });
                 _context.Movies.Add(new Movie
                 {
-                    Title = "In Memory DB Movie 8", LengthInMinutes = 121, Rating = 2.1, ReleaseYear = 2018,
+                    Id = 8, Title = "In Memory DB Movie 8", LengthInMinutes = 121, Rating = 2.1, ReleaseYear = 2018,
                     MainGenre = "Comedy", SubGenre1 = "Action", SubGenre2 = "Adventure"
                 });
                 _context.Movies.Add(new Movie
                 {
-                    Title = "In Memory DB Movie 9", LengthInMinutes = 121, Rating = 8.5, ReleaseYear = 2018,
+                    Id = 9, Title = "In Memory DB Movie 9", LengthInMinutes = 121, Rating = 8.5, ReleaseYear = 2018,
                     MainGenre = "Comedy", SubGenre1 = "Action", SubGenre2 = "Adventure"
                 });
                 _context.Movies.Add(new Movie
                 {
-                    Title = "In Memory DB Movie 10", LengthInMinutes = 121, Rating = 2.1, ReleaseYear = 2017,
+                    Id = 10, Title = "In Memory DB Movie 10", LengthInMinutes = 121, Rating = 2.1, ReleaseYear = 2017,
                     MainGenre = "Comedy", SubGenre1 = "Action", SubGenre2 = "Adventure"
                 });
                 _context.Movies.Add(new Movie
                 {
-                    Title = "In Memory DB Movie 11", LengthInMinutes = 121, Rating = 8.3, ReleaseYear = 2017,
+                    Id = 11, Title = "In Memory DB Movie 11", LengthInMinutes = 121, Rating = 8.3, ReleaseYear = 2017,
                     MainGenre = "Comedy", SubGenre1 = "Action", SubGenre2 = "Adventure"
                 });
                 _context.Movies.Add(new Movie
                 {
-                    Title = "In Memory DB Movie 12", LengthInMinutes = 121, Rating = 4.5, ReleaseYear = 2017,
+                    Id = 12, Title = "In Memory DB Movie 12", LengthInMinutes = 121, Rating = 4.5, ReleaseYear = 2017,
                     MainGenre = "Comedy", SubGenre1 = "Action", SubGenre2 = "Adventure"
                 });
                 _context.Movies.Add(new Movie
                 {
-                    Title = "In Memory DB Movie 13", LengthInMinutes = 121, Rating = 9.1, ReleaseYear = 2016,
+                    Id = 13, Title = "In Memory DB Movie 13", LengthInMinutes = 121, Rating = 9.1, ReleaseYear = 2016,
                     MainGenre = "Comedy", SubGenre1 = "Action", SubGenre2 = "Adventure"
                 });
                 _context.Movies.Add(new Movie
                 {
-                    Title = "In Memory DB Movie 14", LengthInMinutes = 121, Rating = 3.4, ReleaseYear = 2016,
+                    Id = 14, Title = "In Memory DB Movie 14", LengthInMinutes = 121, Rating = 3.4, ReleaseYear = 2016,
                     MainGenre = "Comedy", SubGenre1 = "Action", SubGenre2 = "Adventure"
                 });
                 _context.Movies.Add(new Movie
                 {
-                    Title = "In Memory DB Movie 15", LengthInMinutes = 121, Rating = 5.1, ReleaseYear = 2016,
+                    Id = 15, Title = "In Memory DB Movie 15", LengthInMinutes = 121, Rating = 5.1, ReleaseYear = 2016,
                     MainGenre = "Comedy", SubGenre1 = "Action", SubGenre2 = "Adventure"
                 });
                 _context.Movies.Add(new Movie
                 {
-                    Title = "In Memory DB Movie 16", LengthInMinutes = 121, Rating = 1.9, ReleaseYear = 2015,
+                    Id = 16, Title = "In Memory DB Movie 16", LengthInMinutes = 121, Rating = 1.9, ReleaseYear = 2015,
                     MainGenre = "Comedy", SubGenre1 = "Action", SubGenre2 = "Adventure"
                 });
                 _context.Movies.Add(new Movie
                 {
-                    Title = "In Memory DB Movie 17", LengthInMinutes = 121, Rating = 8.2, ReleaseYear = 2015,
+                    Id = 17, Title = "In Memory DB Movie 17", LengthInMinutes = 121, Rating = 8.2, ReleaseYear = 2015,
                     MainGenre = "Comedy", SubGenre1 = "Action", SubGenre2 = "Adventure"
                 });
                 _context.Movies.Add(new Movie
                 {
-                    Title = "In Memory DB Movie 18", LengthInMinutes = 121, Rating = 5.1, ReleaseYear = 2015,
+                    Id = 18, Title = "In Memory DB Movie 18", LengthInMinutes = 121, Rating = 5.1, ReleaseYear = 2015,
                     MainGenre = "Comedy", SubGenre1 = "Action", SubGenre2 = "Adventure"
                 });
                 _context.Movies.Add(new Movie
                 {
-                    Title = "In Memory DB Movie 19", LengthInMinutes = 121, Rating = 7.1, ReleaseYear = 2014,
+                    Id = 19, Title = "In Memory DB Movie 19", LengthInMinutes = 121, Rating = 7.1, ReleaseYear = 2014,
                     MainGenre = "Comedy", SubGenre1 = "Action", SubGenre2 = "Adventure"
                 });
                 _context.Movies.Add(new Movie
                 {
-                    Title = "In Memory DB Movie 20", LengthInMinutes = 121, Rating = 8.7, ReleaseYear = 2014,
+                    Id = 20, Title = "In Memory DB Movie 20", LengthInMinutes = 121, Rating = 8.7, ReleaseYear = 2014,
                     MainGenre = "Comedy", SubGenre1 = "Action", SubGenre2 = "Adventure"
                 });
                 _context.Movies.Add(new Movie
                 {
-                    Title = "In Memory DB Movie 21", LengthInMinutes = 121, Rating = 1.1, ReleaseYear = 2014,
+                    Id = 21, Title = "In Memory DB Movie 21", LengthInMinutes = 121, Rating = 1.1, ReleaseYear = 2014,
                     MainGenre = "Comedy", SubGenre1 = "Action", SubGenre2 = "Adventure"
                 });
                 _context.Movies.Add(new Movie
                 {
-                    Title = "In Memory DB Movie 22", LengthInMinutes = 121, Rating = 8.1, ReleaseYear = 2013,
+                    Id = 22, Title = "In Memory DB Movie 22", LengthInMinutes = 121, Rating = 8.1, ReleaseYear = 2013,
                     MainGenre = "Comedy", SubGenre1 = "Action", SubGenre2 = "Adventure"
                 });
                 _context.SaveChanges();
