@@ -5,6 +5,7 @@ using MoviesDataAccessLibrary.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace MovieRecommendations.Tests.Repository
@@ -49,6 +50,29 @@ namespace MovieRecommendations.Tests.Repository
                 int inventoryCount = controller.GetInventoryTotal();
 
                 Assert.Equal(22, inventoryCount);
+            }
+        }
+
+        [Fact]
+        public async Task AddAMovieToTheDatabase()
+        {
+            using (var context = new MoviesContext(_options))
+            {
+                SQLRepository controller = new SQLRepository(context);
+                Movie movieToAdd = new Movie
+                {
+                    Title = "Movie to add to Mem DB 23",
+                    LengthInMinutes = 134,
+                    Rating = 7.9,
+                    ReleaseYear = 2003,
+                    MainGenre = "Action",
+                    SubGenre1 = "Comedy",
+                    SubGenre2 = "Adventure"
+                };
+                await controller.Add(movieToAdd);
+                int inventoryCount = controller.GetInventoryTotal();
+
+                Assert.Equal(23, inventoryCount);
             }
         }
 
