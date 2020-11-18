@@ -12,7 +12,10 @@ Bootstrap 4
 Statistics Panel with Chart.js - https://www.chartjs.org/  
 Backend Validation via .NET Attribute Annotations  
 Frontend Validation via JQuery including Register and Login  
-Unit Tests via XUnit  
+Unit Tests via XUnit, Moq, Microsoft.EntityFrameworkCore.InMemory  
+Integration Tests via XUnit, Microsoft.AspNetCore.TestHost  
+UI Tests via XUnit, Selenium  
+
 
 **Simple Filtering** - just a query getting the newest movies with the highest rating  
 **Content Based Filtering** - similar movies to what the user watched last (last history entry - by Main Genre and year)  
