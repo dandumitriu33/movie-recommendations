@@ -20,7 +20,7 @@ namespace MovieRecommendations.IntegrationTests
         }
 
         [Fact]
-        public async Task RenderTheAddMoviePage()
+        public async Task RenderTheAddMoviePageSmokeTest()
         {
             var response = await _fixture.Client.GetAsync("Home/AddMovie");
             
@@ -181,5 +181,37 @@ namespace MovieRecommendations.IntegrationTests
             Assert.Contains(expectedMatch, responseString);
         }
 
+        [Fact]
+        public async Task RenderTheMovieRecommendationsPageSmokeTest()
+        {
+            var response = await _fixture.Client.GetAsync("");
+
+            response.EnsureSuccessStatusCode();
+
+            var responseString = await response.Content.ReadAsStringAsync();
+            Assert.Contains("Home Page - MovieRecommendations", responseString);
+        }
+
+        [Fact]
+        public async Task RenderTheAllMoviesPageSmokeTest()
+        {
+            var response = await _fixture.Client.GetAsync("https://localhost:44318/Home/AllMovies?page=1&cards=20");
+
+            response.EnsureSuccessStatusCode();
+
+            var responseString = await response.Content.ReadAsStringAsync();
+            Assert.Contains("All movies", responseString);
+        }
+
+        [Fact]
+        public async Task RenderTheAllCommunityLikesPageSmokeTest()
+        {
+            var response = await _fixture.Client.GetAsync("https://localhost:44318/Home/AllCommunityLikes");
+
+            response.EnsureSuccessStatusCode();
+
+            var responseString = await response.Content.ReadAsStringAsync();
+            Assert.Contains("All Community Liked Movies", responseString);
+        }
     }
 }
