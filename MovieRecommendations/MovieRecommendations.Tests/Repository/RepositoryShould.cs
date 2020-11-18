@@ -19,8 +19,10 @@ namespace MovieRecommendations.Tests.Repository
             _options = new DbContextOptionsBuilder<MoviesContext>()
                 .UseInMemoryDatabase(databaseName: "MovieRecommendationsDataBase")
                 .Options;
+
             _context = new MoviesContext(_options);
-            add21Movies();
+            add22Movies();
+            
         }
 
         [Fact]
@@ -38,11 +40,23 @@ namespace MovieRecommendations.Tests.Repository
             }
         }
 
-        private void add21Movies()
+        [Fact]
+        public void GetInventoryTotal()
+        {
+            using (var context = new MoviesContext(_options))
+            {
+                SQLRepository controller = new SQLRepository(context);
+                int inventoryCount = controller.GetInventoryTotal();
+
+                Assert.Equal(22, inventoryCount);
+            }
+        }
+
+        private void add22Movies()
         {
             // Create mocked Context by seeding Data as per Schema///
 
-            using (_context = new MoviesContext(_options))
+            using (_context)
             {
                 _context.Movies.Add(new Movie
                 {
