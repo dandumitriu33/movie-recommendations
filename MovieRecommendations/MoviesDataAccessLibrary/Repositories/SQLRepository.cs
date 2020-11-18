@@ -142,7 +142,7 @@ namespace MoviesDataAccessLibrary.Repositories
             return rabbitHoleResults;
         }
 
-        public void AddNextMovie(int currentMovieId, int nextMovieId, int score)
+        public async Task AddNextMovie(int currentMovieId, int nextMovieId, int score)
         {
             NextMovie newEntry = new NextMovie
             {
@@ -150,8 +150,8 @@ namespace MoviesDataAccessLibrary.Repositories
                 NextMovieId = nextMovieId,
                 Score = score
             };
-            _context.Add(newEntry);
-            _context.SaveChanges();
+            await _context.AddAsync(newEntry);
+            await _context.SaveChangesAsync();
         }
 
         public void UpdateNextMovieScore(int currentMovieId, int nextMovieId, int score)

@@ -331,6 +331,26 @@ namespace MovieRecommendations.Tests.Repository
             }
         }
 
+        [Fact]
+        public async Task AddNextMovie()
+        {
+            var options = new DbContextOptionsBuilder<MoviesContext>()
+                .UseInMemoryDatabase(databaseName: "MRAddNextMovie")
+                .Options;
+            addNextMovies(options);
+
+            using (var context = new MoviesContext(options))
+            {
+                SQLRepository controller = new SQLRepository(context);
+
+                await controller.AddNextMovie(1, 20, 1);
+                List<NextMovie> nextMovies = controller.GetNextMoviesForMovieById(1);
+
+                Assert.Equal(3, nextMovies.Count);
+                Assert.True(nextMovies[0].Score >= nextMovies[1].Score);
+            }
+        }
+
         private void addNextMovies(DbContextOptions<MoviesContext> options)
         {
             using (var context = new MoviesContext(options))

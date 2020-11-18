@@ -22,7 +22,7 @@ namespace MoviesDataAccessLibrary.Repositories
         public List<UserLikedMovie> GetAllCommunityLikes();
         public List<NextMovie> GetNextMoviesForMovieById(int currentMovie);
         public List<NextMovie> GetNextMoviesForMovieByIdForSuggestions(int currentMovieId, int limit, int offset);
-        public void AddNextMovie(int previousMovieId, int nextMovieId, int score);
+        public Task AddNextMovie(int previousMovieId, int nextMovieId, int score);
         public void UpdateNextMovieScore(int currentMovieId, int nextMovieId, int score);
         public List<Party> GetUserParties(string userEmail);
         public Party GetPartyById(int partyId);
