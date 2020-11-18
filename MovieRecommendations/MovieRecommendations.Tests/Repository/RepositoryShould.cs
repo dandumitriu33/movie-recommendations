@@ -142,7 +142,7 @@ namespace MovieRecommendations.Tests.Repository
         public async Task AddToHistory()
         {
             var options = new DbContextOptionsBuilder<MoviesContext>()
-                .UseInMemoryDatabase(databaseName: "MRGetFullHistory")
+                .UseInMemoryDatabase(databaseName: "MRAddToHistory")
                 .Options;
             addHistories(options);
             using (var context = new MoviesContext(options))
@@ -155,6 +155,29 @@ namespace MovieRecommendations.Tests.Repository
                 List<History> fullHistory = controller.GetFullHistory("jimsmith@email.com");
 
                 Assert.Equal(4, fullHistory.Count);
+            }
+        }
+
+        [Fact]
+        public void GetDistanceRecommendation()
+        {
+            var options = new DbContextOptionsBuilder<MoviesContext>()
+                .UseInMemoryDatabase(databaseName: "MRGetDistanceRec")
+                .Options;
+            addMovies(options);
+
+            using( var context = new MoviesContext(options))
+            {
+                SQLRepository controller = new SQLRepository(context);
+                string mainGenre = "Comedy";
+                double rating = 6;
+                int limit = 20;
+                int offset = 0;
+
+                List<Movie> distanceContent = controller.GetDistanceRecommendation(mainGenre, rating, limit, offset);
+
+                Assert.Equal(16, distanceContent.Count);
+                Assert.True(distanceContent[0].Rating > 4);
             }
         }
 

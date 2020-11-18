@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MoviesDataAccessLibrary.Entities;
 using MoviesDataAccessLibrary.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace MoviesDataAccessLibrary.Repositories
 {
@@ -72,10 +73,17 @@ namespace MoviesDataAccessLibrary.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public IEnumerable<Movie> GetDistanceRecommendation(string mainGenre, double rating, int limit, int offset)
+        public List<Movie> GetDistanceRecommendation(string mainGenre, double rating, int limit, int offset)
         {
-            var recommendedMovies = _context.Movies.Where(m => m.MainGenre == mainGenre && m.Rating > rating - 2).OrderByDescending(m => m.ReleaseYear).ThenByDescending(m => m.Rating).Skip(offset).Take(limit);
-
+            // considering the last movie watched rating, 
+            // we can drop 2 points and still argue that the results will be watchable for the user
+            int ratingDrop = 2;
+            var recommendedMovies = _context.Movies.Where(m => m.MainGenre == mainGenre && m.Rating > rating - ratingDrop)
+                                                   .OrderByDescending(m => m.ReleaseYear)
+                                                   .ThenByDescending(m => m.Rating)
+                                                   .Skip(offset)
+                                                   .Take(limit)
+                                                   .ToList();
             return recommendedMovies;
         }
 
