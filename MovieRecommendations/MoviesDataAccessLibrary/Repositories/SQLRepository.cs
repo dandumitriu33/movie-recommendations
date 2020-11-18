@@ -154,15 +154,16 @@ namespace MoviesDataAccessLibrary.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public void UpdateNextMovieScore(int currentMovieId, int nextMovieId, int score)
+        public async Task UpdateNextMovieScore(int currentMovieId, int nextMovieId, int score)
         {
             // can be simplified with query by row Id, probably better if indexing is introduced
-            NextMovie updateEntry = _context.NextMovies.Where(m => m.CurrentMovieId == currentMovieId && m.NextMovieId == nextMovieId).FirstOrDefault();
+            NextMovie updateEntry = await _context.NextMovies.Where(m => m.CurrentMovieId == currentMovieId && m.NextMovieId == nextMovieId)
+                                                             .FirstOrDefaultAsync();
 
             if (updateEntry != null)
             {
                 updateEntry.Score = score;
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
         }
 
