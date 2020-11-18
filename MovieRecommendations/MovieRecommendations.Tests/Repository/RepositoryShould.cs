@@ -502,6 +502,71 @@ namespace MovieRecommendations.Tests.Repository
             }
         }
 
+        [Fact]
+        public void GetAllChoicesForParty()
+        {
+            var options = new DbContextOptionsBuilder<MoviesContext>()
+                .UseInMemoryDatabase(databaseName: "MRGetAllChoices")
+                .Options;
+            addPartyChoices(options);
+
+            using (var context = new MoviesContext(options))
+            {
+                SQLRepository controller = new SQLRepository(context);
+
+                List<PartyChoice> actual = controller.GetAllPartyChoicesForParty(1);
+
+                Assert.Equal(3, actual.Count);
+            }
+        }
+
+        [Fact]
+        public void ResetChoicesForParty()
+        {
+            var options = new DbContextOptionsBuilder<MoviesContext>()
+                .UseInMemoryDatabase(databaseName: "MRResetChoices")
+                .Options;
+            addPartyChoices(options);
+
+            using (var context = new MoviesContext(options))
+            {
+                SQLRepository controller = new SQLRepository(context);
+                
+                //controller.ResetChoicesForParty(1);
+                //List<Party> actual = controller.GetUserParties("jimsmith@email.com");
+
+                //Assert.Empty(actual);
+            }
+        }
+
+        private void addPartyChoices(DbContextOptions<MoviesContext> options)
+        {
+            using (var context = new MoviesContext(options))
+            {
+                context.PartyChoices.Add(new PartyChoice
+                {
+                    Id = 1,
+                    PartyId = 1,
+                    MovieId = 1,
+                    Score = 1
+                });
+                context.PartyChoices.Add(new PartyChoice
+                {
+                    Id = 2,
+                    PartyId = 1,
+                    MovieId = 2,
+                    Score = 2
+                });
+                context.PartyChoices.Add(new PartyChoice
+                {
+                    Id = 3,
+                    PartyId = 1,
+                    MovieId = 3,
+                    Score = 2
+                });
+                context.SaveChanges();
+            }
+        }
 
         private void addPartyMembers(DbContextOptions<MoviesContext> options)
         {

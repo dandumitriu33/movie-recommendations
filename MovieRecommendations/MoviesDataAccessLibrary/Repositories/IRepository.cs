@@ -30,6 +30,7 @@ namespace MoviesDataAccessLibrary.Repositories
         public Task AddMemberToParty(PartyMember newPartyMember);
         public PartyMember GetPartyMember(int partyId, string userEmail);
         public void RemoveMemberFromParty(PartyMember partyMember);
+        public List<PartyChoice> GetAllPartyChoicesForParty(int partyId);
         public void ResetChoicesForParty(int partyId);
         public List<Movie> GetBatch(int newestId, int oldestId, int limit);
         public void AddChoice(PartyChoice choice);

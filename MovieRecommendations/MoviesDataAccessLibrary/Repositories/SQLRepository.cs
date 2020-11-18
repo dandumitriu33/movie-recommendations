@@ -210,6 +210,11 @@ namespace MoviesDataAccessLibrary.Repositories
             _context.SaveChanges();
         }
 
+        public List<PartyChoice> GetAllPartyChoicesForParty(int partyId)
+        {
+            return _context.PartyChoices.Where(c => c.PartyId == partyId).ToList();
+        }
+
         public void ResetChoicesForParty(int partyId)
         {
             _context.PartyChoices.RemoveRange(_context.PartyChoices.Where(c => c.PartyId == partyId));
