@@ -477,6 +477,31 @@ namespace MovieRecommendations.Tests.Repository
             }
         }
 
+        [Fact]
+        public void RemoveMemberFromParty()
+        {
+            var options = new DbContextOptionsBuilder<MoviesContext>()
+                .UseInMemoryDatabase(databaseName: "MRRemoveMemberFromParty")
+                .Options;
+            addParties(options);
+            addPartyMembers(options);
+
+            using (var context = new MoviesContext(options))
+            {
+                SQLRepository controller = new SQLRepository(context);
+                PartyMember memberToRemove = new PartyMember
+                {
+                    Id = 1,
+                    PartyId = 1,
+                    Email = "jimsmith@email.com"
+                };
+                controller.RemoveMemberFromParty(memberToRemove);
+                List<Party> actual = controller.GetUserParties("jimsmith@email.com");
+
+                Assert.Empty(actual);
+            }
+        }
+
 
         private void addPartyMembers(DbContextOptions<MoviesContext> options)
         {
