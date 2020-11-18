@@ -93,14 +93,14 @@ namespace MoviesDataAccessLibrary.Repositories
             return movieFromDb;
         }
 
-        public void IncrementCommunityLikedMovieScore(int movieId)
+        public async Task IncrementCommunityLikedMovieScore(int movieId)
         {
-            var result = _context.CommunityLikes.Where(m => m.MovieId == movieId).FirstOrDefault();
+            var result = await _context.CommunityLikes.Where(m => m.MovieId == movieId).FirstOrDefaultAsync();
 
             if (result != null)
             {
                 result.Score = result.Score + 1;
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
         }
 

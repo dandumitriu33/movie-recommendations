@@ -197,7 +197,25 @@ namespace MovieRecommendations.Tests.Repository
 
                 Assert.Equal(4, movieScore.Score);
             }
+        }
 
+        [Fact]
+        public async Task IncrementScoreOnLikedMovie()
+        {
+            var options = new DbContextOptionsBuilder<MoviesContext>()
+                .UseInMemoryDatabase(databaseName: "MRIncrementScore")
+                .Options;
+            addCommunityLikes(options);
+
+            using (var context = new MoviesContext(options))
+            {
+                SQLRepository controller = new SQLRepository(context);
+
+                await controller.IncrementCommunityLikedMovieScore(3);
+                UserLikedMovie movieScore = controller.GetCommunityLikedMovieById(3);
+
+                Assert.Equal(5, movieScore.Score);
+            }
         }
 
         private void addCommunityLikes(DbContextOptions<MoviesContext> options)
