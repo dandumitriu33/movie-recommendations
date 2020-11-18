@@ -237,6 +237,25 @@ namespace MovieRecommendations.Tests.Repository
             }
         }
 
+        [Fact]
+        public void GetCommunityLikesTop()
+        {
+            var options = new DbContextOptionsBuilder<MoviesContext>()
+                .UseInMemoryDatabase(databaseName: "MRAddToLikes")
+                .Options;
+            addCommunityLikes(options);
+
+            using (var context = new MoviesContext(options))
+            {
+                SQLRepository controller = new SQLRepository(context);
+
+                List<UserLikedMovie> movieScores = controller.GetCommunityTop(2, 0);
+
+                Assert.Equal(2, movieScores.Count);
+                Assert.True(movieScores[0].Score >= movieScores[1].Score);
+            }
+        }
+
         private void addCommunityLikes(DbContextOptions<MoviesContext> options)
         {
             using (var context = new MoviesContext(options))
