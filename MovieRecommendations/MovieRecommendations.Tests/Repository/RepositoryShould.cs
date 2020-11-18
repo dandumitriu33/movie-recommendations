@@ -410,6 +410,30 @@ namespace MovieRecommendations.Tests.Repository
             }
         }
 
+        [Fact]
+        public async Task AddParty()
+        {
+            var options = new DbContextOptionsBuilder<MoviesContext>()
+                .UseInMemoryDatabase(databaseName: "MRAddParty")
+                .Options;
+            addParties(options);
+
+            using (var context = new MoviesContext(options))
+            {
+                SQLRepository controller = new SQLRepository(context);
+                Party partyToAdd = new Party
+                {
+                    Id = 4,
+                    Name = "Fourth",
+                    CreatorEmail = "jimsmith@email.com"
+                };
+                await controller.AddParty(partyToAdd);
+                Party actual = controller.GetPartyById(4);
+
+                Assert.Equal("Fourth", actual.Name);
+            }
+        }
+
 
         private void addPartyMembers(DbContextOptions<MoviesContext> options)
         {
