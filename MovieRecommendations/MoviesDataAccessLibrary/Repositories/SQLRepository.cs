@@ -167,6 +167,11 @@ namespace MoviesDataAccessLibrary.Repositories
             }
         }
 
+        public Party GetPartyById(int partyId)
+        {
+            return _context.Parties.Where(p => p.Id == partyId).FirstOrDefault();
+        }
+
         public List<Party> GetUserParties(string userEmail)
         {
             List<PartyMember> userMemberships = _context.PartyMembers.Where(p => p.Email == userEmail).ToList();
@@ -179,11 +184,6 @@ namespace MoviesDataAccessLibrary.Repositories
             }
             
             return userParties;
-        }
-
-        public Party GetPartyById(int partyId)
-        {
-            return _context.Parties.Where(p => p.Id == partyId).FirstOrDefault();
         }
 
         public async Task<Party> AddParty(Party party)

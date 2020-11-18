@@ -371,6 +371,52 @@ namespace MovieRecommendations.Tests.Repository
             }
         }
 
+        [Fact]
+        public void GetPartyById()
+        {
+            var options = new DbContextOptionsBuilder<MoviesContext>()
+                .UseInMemoryDatabase(databaseName: "MRUpdateNextMovie")
+                .Options;
+            addParties(options);
+
+            using (var context = new MoviesContext(options))
+            {
+                SQLRepository controller = new SQLRepository(context);
+
+                Party result = controller.GetPartyById(1);
+
+                Assert.Equal(1, result.Id);
+                Assert.Equal("First", result.Name);
+            }
+
+        }
+
+        private void addParties(DbContextOptions<MoviesContext> options)
+        {
+            using( var context = new MoviesContext(options))
+            {
+                context.Parties.Add(new Party
+                {
+                    Id = 1,
+                    Name = "First",
+                    CreatorEmail = "jimsmith@email.com"
+                });
+                context.Parties.Add(new Party
+                {
+                    Id = 2,
+                    Name = "Second",
+                    CreatorEmail = "jimsmith@email.com"
+                });
+                context.Parties.Add(new Party
+                {
+                    Id = 3,
+                    Name = "Third",
+                    CreatorEmail = "jimsmith@email.com"
+                });
+                context.SaveChanges();
+            }
+        }
+
         private void addNextMovies(DbContextOptions<MoviesContext> options)
         {
             using (var context = new MoviesContext(options))

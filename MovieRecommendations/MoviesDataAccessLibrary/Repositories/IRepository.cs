@@ -24,8 +24,8 @@ namespace MoviesDataAccessLibrary.Repositories
         public List<NextMovie> GetNextMoviesForMovieByIdForSuggestions(int currentMovieId, int limit, int offset);
         public Task AddNextMovie(int previousMovieId, int nextMovieId, int score);
         public Task UpdateNextMovieScore(int currentMovieId, int nextMovieId, int score);
-        public List<Party> GetUserParties(string userEmail);
         public Party GetPartyById(int partyId);
+        public List<Party> GetUserParties(string userEmail);
         public Task<Party> AddParty(Party party);
         public Task AddMemberToParty(PartyMember newPartyMember);
         public PartyMember GetPartyMember(int partyId, string userEmail);
