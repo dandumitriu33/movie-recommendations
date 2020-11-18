@@ -159,6 +159,24 @@ namespace MovieRecommendations.Tests.Repository
         }
 
         [Fact]
+        public void GetLatestFromHistory()
+        {
+            var options = new DbContextOptionsBuilder<MoviesContext>()
+                .UseInMemoryDatabase(databaseName: "MRGetLatestHistory")
+                .Options;
+            addHistories(options);
+            using (var context = new MoviesContext(options))
+            {
+                SQLRepository controller = new SQLRepository(context);
+                string email = "jimsmith@email.com";
+                
+                History latestHistoryItem = controller.GetLatestFromHistory(email);
+
+                Assert.Equal(12, latestHistoryItem.MovieId);
+            }
+        }
+
+        [Fact]
         public void GetDistanceRecommendation()
         {
             var options = new DbContextOptionsBuilder<MoviesContext>()
