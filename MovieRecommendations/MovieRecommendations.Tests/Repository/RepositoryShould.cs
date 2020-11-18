@@ -76,6 +76,22 @@ namespace MovieRecommendations.Tests.Repository
             }
         }
 
+        [Fact]
+        public void GetTop20YearRatingMovies()
+        {
+            // using a context instance to run the repository method
+            using (var context = new MoviesContext(_options))
+            {
+                SQLRepository controller = new SQLRepository(context);
+
+                var top20Movies = controller.GetTop20YearRating();
+
+                // movies over 6.5
+                Assert.Equal(10, top20Movies.Count);
+                Assert.Equal("In Memory DB Movie 6", top20Movies[2].Title);
+            }
+        }
+
         private void add22Movies()
         {
             // Create mocked Context by seeding Data as per Schema///

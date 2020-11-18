@@ -43,8 +43,8 @@ namespace MoviesDataAccessLibrary.Repositories
 
         public List<Movie> GetTop20YearRating()
         {
-            
-            return _context.Movies.Where(m => m.Rating > 6.5).OrderByDescending(m => m.ReleaseYear).ThenByDescending(m => m.Rating).Take(20).ToList();
+            double minimumQualityRating = 6.5;
+            return _context.Movies.Where(m => m.Rating > minimumQualityRating).OrderByDescending(m => m.ReleaseYear).ThenByDescending(m => m.Rating).Take(20).ToList();
         }
 
         public Movie GetMovieByMovieId(int movieId)
