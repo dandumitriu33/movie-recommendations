@@ -13,15 +13,15 @@ namespace MoviesDataAccessLibrary.Repositories
         public Movie GetMovieByMovieId(int movieId);
         public List<History> GetFullHistory(string email);
         public Task AddToHistory(string email, int movieId);
+        public History GetLatestFromHistory(string userEmail);
         public List<Movie> GetDistanceRecommendation(string mainGenre, double rating, int limit, int offset);
         public UserLikedMovie GetCommunityLikedMovieById(int movieId);
         public Task IncrementCommunityLikedMovieScore(int movieId);
         public Task AddToCommunityLikes(int movieId);
         public List<UserLikedMovie> GetCommunityTop(int limit, int offset);
         public List<UserLikedMovie> GetAllCommunityLikes();
-        public History GetLatestFromHistory(string userEmail);
         public List<NextMovie> GetNextMoviesForMovieById(int currentMovie);
-        public IEnumerable<NextMovie> GetNextMoviesForMovieByIdForSuggestions(int currentMovieId, int limit, int offset);
+        public List<NextMovie> GetNextMoviesForMovieByIdForSuggestions(int currentMovieId, int limit, int offset);
         public void AddNextMovie(int previousMovieId, int nextMovieId, int score);
         public void UpdateNextMovieScore(int currentMovieId, int nextMovieId, int score);
         public List<Party> GetUserParties(string userEmail);

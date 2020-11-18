@@ -73,6 +73,11 @@ namespace MoviesDataAccessLibrary.Repositories
             await _context.SaveChangesAsync();
         }
 
+        public History GetLatestFromHistory(string userEmail)
+        {
+            return _context.Histories.Where(h => h.Email == userEmail).OrderByDescending(h => h.DateAdded).FirstOrDefault();
+        }
+
         public List<Movie> GetDistanceRecommendation(string mainGenre, double rating, int limit, int offset)
         {
             // considering the last movie watched rating, 
@@ -126,19 +131,14 @@ namespace MoviesDataAccessLibrary.Repositories
             return allCommunityLikes;
         }
 
-        public History GetLatestFromHistory(string userEmail)
-        {
-            return _context.Histories.Where(h => h.Email == userEmail).OrderByDescending(h => h.DateAdded).FirstOrDefault();
-        }
-
         public List<NextMovie> GetNextMoviesForMovieById(int currentMovie)
         {
             return _context.NextMovies.Where(m => m.CurrentMovieId == currentMovie).OrderByDescending(m => m.Score).ToList();
         }
 
-        public IEnumerable<NextMovie> GetNextMoviesForMovieByIdForSuggestions(int currentMovieId, int limit, int offset)
+        public List<NextMovie> GetNextMoviesForMovieByIdForSuggestions(int currentMovieId, int limit, int offset)
         {
-            var rabbitHoleResults = _context.NextMovies.Where(m => m.CurrentMovieId == currentMovieId).OrderByDescending(m => m.Score).Skip(offset).Take(limit);
+            var rabbitHoleResults = _context.NextMovies.Where(m => m.CurrentMovieId == currentMovieId).OrderByDescending(m => m.Score).Skip(offset).Take(limit).ToList();
             return rabbitHoleResults;
         }
 

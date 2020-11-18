@@ -293,6 +293,80 @@ namespace MovieRecommendations.Tests.Repository
             }
         }
 
+        [Fact]
+        public void GetNextMoviesForMovieById()
+        {
+            var options = new DbContextOptionsBuilder<MoviesContext>()
+                .UseInMemoryDatabase(databaseName: "MRNextMoviesForMovie")
+                .Options;
+            addNextMovies(options);
+
+            using (var context = new MoviesContext(options))
+            {
+                SQLRepository controller = new SQLRepository(context);
+
+                List<NextMovie> nextMovies = controller.GetNextMoviesForMovieById(1);
+
+                Assert.Equal(2, nextMovies.Count);
+                Assert.True(nextMovies[0].Score >= nextMovies[1].Score);
+            }
+        }
+
+        [Fact]
+        public void GetNextMoviesForMovieByIdForSuggestions()
+        {
+            var options = new DbContextOptionsBuilder<MoviesContext>()
+                .UseInMemoryDatabase(databaseName: "MRNextMoviesForMovieForSuggestions")
+                .Options;
+            addNextMovies(options);
+
+            using (var context = new MoviesContext(options))
+            {
+                SQLRepository controller = new SQLRepository(context);
+
+                List<NextMovie> nextMovies = controller.GetNextMoviesForMovieByIdForSuggestions(1, 2, 0);
+
+                Assert.Equal(2, nextMovies.Count);
+                Assert.True(nextMovies[0].Score >= nextMovies[1].Score);
+            }
+        }
+
+        private void addNextMovies(DbContextOptions<MoviesContext> options)
+        {
+            using (var context = new MoviesContext(options))
+            {
+                context.NextMovies.Add(new NextMovie
+                {
+                    Id = 1,
+                    CurrentMovieId = 1,
+                    NextMovieId = 2,
+                    Score = 5
+                });
+                context.NextMovies.Add(new NextMovie
+                {
+                    Id = 2,
+                    CurrentMovieId = 2,
+                    NextMovieId = 3,
+                    Score = 5
+                });
+                context.NextMovies.Add(new NextMovie
+                {
+                    Id = 3,
+                    CurrentMovieId = 3,
+                    NextMovieId = 4,
+                    Score = 5
+                });
+                context.NextMovies.Add(new NextMovie
+                {
+                    Id = 4,
+                    CurrentMovieId = 1,
+                    NextMovieId = 3,
+                    Score = 4
+                });
+                context.SaveChanges();
+            }
+        }
+
         private void addCommunityLikes(DbContextOptions<MoviesContext> options)
         {
             using (var context = new MoviesContext(options))
