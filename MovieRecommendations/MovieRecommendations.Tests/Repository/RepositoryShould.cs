@@ -241,7 +241,7 @@ namespace MovieRecommendations.Tests.Repository
         public void GetCommunityLikesTop()
         {
             var options = new DbContextOptionsBuilder<MoviesContext>()
-                .UseInMemoryDatabase(databaseName: "MRAddToLikes")
+                .UseInMemoryDatabase(databaseName: "MRGetCommLikesTop")
                 .Options;
             addCommunityLikes(options);
 
@@ -252,6 +252,25 @@ namespace MovieRecommendations.Tests.Repository
                 List<UserLikedMovie> movieScores = controller.GetCommunityTop(2, 0);
 
                 Assert.Equal(2, movieScores.Count);
+                Assert.True(movieScores[0].Score >= movieScores[1].Score);
+            }
+        }
+
+        [Fact]
+        public void GetAllCommunityLikes()
+        {
+            var options = new DbContextOptionsBuilder<MoviesContext>()
+                .UseInMemoryDatabase(databaseName: "MRGetCommLikesAll")
+                .Options;
+            addCommunityLikes(options);
+
+            using (var context = new MoviesContext(options))
+            {
+                SQLRepository controller = new SQLRepository(context);
+
+                List<UserLikedMovie> movieScores = controller.GetAllCommunityLikes();
+
+                Assert.Equal(3, movieScores.Count);
                 Assert.True(movieScores[0].Score >= movieScores[1].Score);
             }
         }

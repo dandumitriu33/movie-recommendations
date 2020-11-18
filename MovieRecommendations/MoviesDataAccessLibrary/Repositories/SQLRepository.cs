@@ -120,9 +120,9 @@ namespace MoviesDataAccessLibrary.Repositories
             return _context.CommunityLikes.OrderByDescending(m => m.Score).Skip(offset).Take(limit).ToList(); ;
         }
 
-        public IEnumerable<UserLikedMovie> GetAllCommunityLikes()
+        public List<UserLikedMovie> GetAllCommunityLikes()
         {
-            var allCommunityLikes = _context.CommunityLikes.OrderByDescending(m => m.Score);
+            var allCommunityLikes = _context.CommunityLikes.OrderByDescending(m => m.Score).ToList();
             return allCommunityLikes;
         }
 
