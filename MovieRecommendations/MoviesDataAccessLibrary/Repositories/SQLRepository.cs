@@ -104,15 +104,15 @@ namespace MoviesDataAccessLibrary.Repositories
             }
         }
 
-        public void AddToCommunityLikes(int movieId)
+        public async Task AddToCommunityLikes(int movieId)
         {
             UserLikedMovie newUserLikedMovie = new UserLikedMovie
             {
                 MovieId = movieId,
                 Score = 1
             };
-            _context.CommunityLikes.Add(newUserLikedMovie);
-            _context.SaveChanges();
+            await _context.CommunityLikes.AddAsync(newUserLikedMovie);
+            await _context.SaveChangesAsync();
         }
 
         public List<UserLikedMovie> GetCommunityTop(int limit, int offset)

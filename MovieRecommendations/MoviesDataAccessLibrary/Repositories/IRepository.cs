@@ -16,7 +16,7 @@ namespace MoviesDataAccessLibrary.Repositories
         List<Movie> GetDistanceRecommendation(string mainGenre, double rating, int limit, int offset);
         UserLikedMovie GetCommunityLikedMovieById(int movieId);
         Task IncrementCommunityLikedMovieScore(int movieId);
-        void AddToCommunityLikes(int movieId);
+        public Task AddToCommunityLikes(int movieId);
         List<UserLikedMovie> GetCommunityTop(int limit, int offset);
         IEnumerable<UserLikedMovie> GetAllCommunityLikes();
         History GetLatestFromHistory(string userEmail);
