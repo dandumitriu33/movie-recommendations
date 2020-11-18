@@ -12,7 +12,7 @@ namespace MoviesDataAccessLibrary.Repositories
         List<Movie> GetTop20YearRating();
         public Movie GetMovieByMovieId(int movieId);
         public List<History> GetFullHistory(string email);
-        public void AddToHistory(string email, int movieId);
+        public Task AddToHistory(string email, int movieId);
         IEnumerable<Movie> GetDistanceRecommendation(string mainGenre, double rating, int limit, int offset);
         UserLikedMovie GetCommunityLikedMovieById(int movieId);
         void IncrementCommunityLikedMovieScore(int movieId);

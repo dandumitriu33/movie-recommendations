@@ -131,11 +131,30 @@ namespace MovieRecommendations.Tests.Repository
             using (var context = new MoviesContext(options))
             {
                 SQLRepository controller = new SQLRepository(context);
-
                 
                 List<History> history = controller.GetFullHistory("jimsmith@email.com");
 
                 Assert.Equal(3, history.Count);
+            }
+        }
+
+        [Fact]
+        public async Task AddToHistory()
+        {
+            var options = new DbContextOptionsBuilder<MoviesContext>()
+                .UseInMemoryDatabase(databaseName: "MRGetFullHistory")
+                .Options;
+            addHistories(options);
+            using (var context = new MoviesContext(options))
+            {
+                SQLRepository controller = new SQLRepository(context);
+                string email = "jimsmith@email.com";
+                int movieId = 20;
+
+                await controller.AddToHistory(email, movieId);
+                List<History> fullHistory = controller.GetFullHistory("jimsmith@email.com");
+
+                Assert.Equal(4, fullHistory.Count);
             }
         }
 

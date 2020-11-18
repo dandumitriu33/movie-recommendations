@@ -60,7 +60,7 @@ namespace MoviesDataAccessLibrary.Repositories
             return fullHistory;
         }
 
-        public void AddToHistory(string email, int movieId)
+        public async Task AddToHistory(string email, int movieId)
         {
             History newHistoryItem = new History
             {
@@ -68,8 +68,8 @@ namespace MoviesDataAccessLibrary.Repositories
                 MovieId = movieId,
                 DateAdded = DateTime.UtcNow
             };
-            _context.Histories.Add(newHistoryItem);
-            _context.SaveChanges();
+            await _context.Histories.AddAsync(newHistoryItem);
+            await _context.SaveChangesAsync();
         }
 
         public IEnumerable<Movie> GetDistanceRecommendation(string mainGenre, double rating, int limit, int offset)
