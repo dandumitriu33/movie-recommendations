@@ -375,7 +375,7 @@ namespace MovieRecommendations.Tests.Repository
         public void GetPartyById()
         {
             var options = new DbContextOptionsBuilder<MoviesContext>()
-                .UseInMemoryDatabase(databaseName: "MRUpdateNextMovie")
+                .UseInMemoryDatabase(databaseName: "MRGetPartyById")
                 .Options;
             addParties(options);
 
@@ -388,7 +388,53 @@ namespace MovieRecommendations.Tests.Repository
                 Assert.Equal(1, result.Id);
                 Assert.Equal("First", result.Name);
             }
+        }
 
+        [Fact]
+        public void GetUserParties()
+        {
+            var options = new DbContextOptionsBuilder<MoviesContext>()
+                .UseInMemoryDatabase(databaseName: "MRGetUserParties")
+                .Options;
+            addParties(options);
+            addPartyMembers(options);
+
+            using (var context = new MoviesContext(options))
+            {
+                SQLRepository controller = new SQLRepository(context);
+
+                List<Party> result = controller.GetUserParties("janesmith@email.com");
+
+                Assert.Equal(2, result.Count);
+                Assert.Equal("First", result[0].Name);
+            }
+        }
+
+
+        private void addPartyMembers(DbContextOptions<MoviesContext> options)
+        {
+            using (var context = new MoviesContext(options))
+            {
+                context.PartyMembers.Add(new PartyMember
+                {
+                    Id = 1,
+                    PartyId = 1,
+                    Email = "jimsmith@email.com"
+                });
+                context.PartyMembers.Add(new PartyMember
+                {
+                    Id = 2,
+                    PartyId = 1,
+                    Email = "janesmith@email.com"
+                });
+                context.PartyMembers.Add(new PartyMember
+                {
+                    Id = 3,
+                    PartyId = 2,
+                    Email = "janesmith@email.com"
+                });
+                context.SaveChanges();
+            }
         }
 
         private void addParties(DbContextOptions<MoviesContext> options)
