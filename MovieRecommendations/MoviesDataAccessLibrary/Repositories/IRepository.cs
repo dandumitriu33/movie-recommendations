@@ -33,7 +33,7 @@ namespace MoviesDataAccessLibrary.Repositories
         public List<PartyChoice> GetAllPartyChoicesForParty(int partyId);
         public void ResetChoicesForParty(int partyId);
         public List<Movie> GetBatch(int newestId, int oldestId, int limit);
-        public void AddChoice(PartyChoice choice);
+        public Task AddChoice(PartyChoice choice);
         public int GetPartyCount(int partyId);
         public List<PartyChoice> GetMovieIdsForParty(int partyId, int count);
         public List<PartyMember> GetPartyMembersForParty(int partyId);

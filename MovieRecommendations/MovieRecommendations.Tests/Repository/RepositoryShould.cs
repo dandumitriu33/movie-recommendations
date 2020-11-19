@@ -7,15 +7,17 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace MovieRecommendations.Tests.Repository
 {
     public class RepositoryShould
     {
-        public RepositoryShould()
+        private readonly ITestOutputHelper _output;
+
+        public RepositoryShould(ITestOutputHelper output)
         {
-            //addMovies(options);
-            //addHistories(options);
+            _output = output;
         }
 
         
@@ -531,13 +533,205 @@ namespace MovieRecommendations.Tests.Repository
             using (var context = new MoviesContext(options))
             {
                 SQLRepository controller = new SQLRepository(context);
-                
-                //controller.ResetChoicesForParty(1);
-                //List<Party> actual = controller.GetUserParties("jimsmith@email.com");
 
-                //Assert.Empty(actual);
+                List<PartyChoice> initial = controller.GetAllPartyChoicesForParty(1);
+                _output.WriteLine($"The length of the choice list before reset: {initial.Count}");
+                controller.ResetChoicesForParty(1);
+                List<PartyChoice> actual = controller.GetAllPartyChoicesForParty(1);
+                _output.WriteLine($"The length of the choice list after reset: {actual.Count}");
+                Assert.Empty(actual);
             }
         }
+
+        [Fact]
+        public void GetBatch()
+        {
+            var options = new DbContextOptionsBuilder<MoviesContext>()
+                .UseInMemoryDatabase(databaseName: "MRGetBatch")
+                .Options;
+            addMovies(options);
+
+            using ( var context = new MoviesContext(options))
+            {
+                SQLRepository controller = new SQLRepository(context);
+
+                int newestId = 21;
+                int oldestId = 11;
+                int limit = 5;
+                List<Movie> actual = controller.GetBatch(newestId, oldestId, limit);
+                // expecting movies 22, 10, 9, 8 and 7
+                Assert.Equal(5, actual.Count);
+                Assert.Equal(22, actual[0].Id);
+                Assert.Equal(10, actual[1].Id);
+                Assert.Equal(9, actual[2].Id);
+                Assert.Equal(8, actual[3].Id);
+                Assert.Equal(7, actual[4].Id);
+            }
+        }
+
+        [Fact]
+        public async Task AddChoice()
+        {
+            var options = new DbContextOptionsBuilder<MoviesContext>()
+                .UseInMemoryDatabase(databaseName: "MRAddChoice")
+                .Options;
+            addPartyChoices(options);
+
+            using (var context = new MoviesContext(options))
+            {
+                SQLRepository controller = new SQLRepository(context);
+
+                PartyChoice choiceToAdd = new PartyChoice
+                {
+                    Id = 4,
+                    PartyId = 1,
+                    MovieId = 5,
+                    Score = 1
+                };
+                await controller.AddChoice(choiceToAdd);
+                List<PartyChoice> actual = controller.GetAllPartyChoicesForParty(1);
+
+                Assert.Equal(4, actual.Count);
+            }
+        } 
+
+        [Fact]
+        public void GetPartyCount()
+        {
+            var options = new DbContextOptionsBuilder<MoviesContext>()
+                .UseInMemoryDatabase(databaseName: "MRGetPartyCount")
+                .Options;
+            addPartyMembers(options);
+
+            using (var context = new MoviesContext(options))
+            {
+                SQLRepository controller = new SQLRepository(context);
+
+                int actual = controller.GetPartyCount(1);
+
+                Assert.Equal(2, actual);
+            }
+        }
+
+        [Fact]
+        public void GetMovieIdsForParty()
+        {
+            var options = new DbContextOptionsBuilder<MoviesContext>()
+                .UseInMemoryDatabase(databaseName: "MRGetMovieIDsForParty")
+                .Options;
+            addPartyChoices(options);
+
+            using (var context = new MoviesContext(options))
+            {
+                SQLRepository controller = new SQLRepository(context);
+
+                List<PartyChoice> actual = controller.GetMovieIdsForParty(1, 2);
+
+                Assert.Equal(2, actual.Count);
+            }
+        }
+
+        [Fact]
+        public void GetPartyMembersForParty()
+        {
+            var options = new DbContextOptionsBuilder<MoviesContext>()
+                .UseInMemoryDatabase(databaseName: "MRGetPartyMembersForParty")
+                .Options;
+            addPartyMembers(options);
+
+            using (var context = new MoviesContext(options))
+            {
+                SQLRepository controller = new SQLRepository(context);
+
+                List<PartyMember> actual = controller.GetPartyMembersForParty(1);
+
+                Assert.Equal(2, actual.Count);
+            }
+        }
+
+        [Fact]
+        public void GetGenreCount()
+        {
+            var options = new DbContextOptionsBuilder<MoviesContext>()
+                .UseInMemoryDatabase(databaseName: "MRGetGenreCount")
+                .Options;
+            addMovies(options);
+
+            using (var context = new MoviesContext(options))
+            {
+                SQLRepository controller = new SQLRepository(context);
+
+                List<GenreCount> actual = controller.GetGenreCount();
+
+                Assert.Single(actual); // just one Genre in the in memory DB - Comedy
+                Assert.Equal(22, actual[0].Count); // 22 comedies
+            }
+        }
+
+        [Fact]
+        public void GetCommunityGenreScore()
+        {
+            var options = new DbContextOptionsBuilder<MoviesContext>()
+                .UseInMemoryDatabase(databaseName: "MRGetCommunityGenreScore")
+                .Options;
+            addMovies(options);
+            addCommunityLikes(options);
+
+            using (var context = new MoviesContext(options))
+            {
+                SQLRepository controller = new SQLRepository(context);
+
+                List<CommunityGenreScore> actual = controller.GetCommunityGenresScore();
+                // Movie 1 Score 5, Movie 3 Score 4, Movie 5 core 1 - all Comedy
+                // this info gets processed in the controller further
+                Assert.Equal(3, actual.Count);
+                Assert.Equal(5, actual[0].Score);
+            }
+        }
+
+        [Fact]
+        public async Task GetLatestHorrorMovies()
+        {
+            var options = new DbContextOptionsBuilder<MoviesContext>()
+                .UseInMemoryDatabase(databaseName: "MRGetLatestHorrorMovies")
+                .Options;
+            addMovies(options);
+
+            using (var context = new MoviesContext(options))
+            {
+                SQLRepository controller = new SQLRepository(context);
+                Movie horrorMovie1 = new Movie
+                {
+                    Id = 23,
+                    Title = "In Memory DB Movie 23",
+                    LengthInMinutes = 121,
+                    Rating = 8.1,
+                    ReleaseYear = 2013,
+                    MainGenre = "Horror",
+                    SubGenre1 = "Action",
+                    SubGenre2 = "Adventure"
+                };
+                Movie horrorMovie2 = new Movie
+                {
+                    Id = 24,
+                    Title = "In Memory DB Movie 24",
+                    LengthInMinutes = 121,
+                    Rating = 8.1,
+                    ReleaseYear = 2013,
+                    MainGenre = "Horror",
+                    SubGenre1 = "Action",
+                    SubGenre2 = "Adventure"
+                };
+                await controller.Add(horrorMovie1);
+                await controller.Add(horrorMovie2);
+
+                List<Movie> actual = controller.GetLatestHorrorMovies(2);
+                
+                Assert.Equal(2, actual.Count);
+                Assert.Equal("In Memory DB Movie 23", actual[0].Title);
+            }
+        }
+
 
         private void addPartyChoices(DbContextOptions<MoviesContext> options)
         {
