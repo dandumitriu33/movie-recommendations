@@ -48,11 +48,12 @@ function acceptMovieAction() {
 }
 
 async function addMovieToPartyChoices(movie) {
-    let URL = `https://localhost:44311/api/parties/partyChoices/${partyId}/choice/${movie.id}`;
+    let URL = `https://localhost:44311/api/parties/partyChoices/addChoice`;
+    var obj = JSON.stringify({ PartyId: partyId, MovieId: movie.id, Score: 1})
     await $.ajax({
         type: "POST",
         url: URL,
-        data: {},
+        data: obj,
         contentType: "application/json; charset=utf-8",
         crossDomain: true,
         dataType: "json",
