@@ -668,6 +668,27 @@ namespace MovieRecommendations.Tests.Repository
             }
         }
 
+        [Fact]
+        public void GetCommunityGenreScore()
+        {
+            var options = new DbContextOptionsBuilder<MoviesContext>()
+                .UseInMemoryDatabase(databaseName: "MRGetCommunityGenreScore")
+                .Options;
+            addMovies(options);
+            addCommunityLikes(options);
+
+            using (var context = new MoviesContext(options))
+            {
+                SQLRepository controller = new SQLRepository(context);
+
+                List<CommunityGenreScore> actual = controller.GetCommunityGenresScore();
+                // Movie 1 Score 5, Movie 3 Score 4, Movie 5 core 1 - all Comedy
+                // this info gets processed in the controller further
+                Assert.Equal(3, actual.Count);
+                Assert.Equal(5, actual[0].Score);
+            }
+        }
+
 
         private void addPartyChoices(DbContextOptions<MoviesContext> options)
         {
