@@ -16,6 +16,7 @@ namespace MovieRecommendationsAPI.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [EnableCors("AllowAnyOrigin")]
     public class PartiesController : ControllerBase
     {
         private readonly IRepository _repository;
@@ -96,7 +97,6 @@ namespace MovieRecommendationsAPI.Controllers
         // GET: api/<PartiesController>/
         [HttpGet]
         [Route("getBatchBefore/{newestId}/andAfter/{oldestId}")]
-        [EnableCors("AllowAnyOrigin")]
         public IActionResult GetSwiperBatch(int newestId, int oldestId)
         {
             // how many movies
@@ -110,7 +110,6 @@ namespace MovieRecommendationsAPI.Controllers
         // POST: api/<PartiesController>/partyChoices/{partyId}/choice/{movieId}
         [HttpPost]
         [Route("partyChoices/{partyId}/choice/{movieId}")]
-        [EnableCors("AllowAnyOrigin")]
         public IActionResult AddChoice(int partyId, int movieId)
         {
             PartyChoice newChoice = new PartyChoice
@@ -126,7 +125,6 @@ namespace MovieRecommendationsAPI.Controllers
         // GET: api/<PartiesController>/partyCount/{partyId}
         [HttpGet]
         [Route("partyCount/{partyId}")]
-        [EnableCors("AllowAnyOrigin")]
         public IActionResult GetPartyCount(int partyId)
         {
             int partyCount = _repository.GetPartyCount(partyId);
@@ -141,7 +139,6 @@ namespace MovieRecommendationsAPI.Controllers
         // GET: api/<PartiesController>/getMatches/{partyId}/count/{count}
         [HttpGet]
         [Route("getMatches/{partyId}/count/{count}")]
-        [EnableCors("AllowAnyOrigin")]
         public IActionResult GetMatches(int partyId, int count)
         {
             List<PartyChoice> validChoices = _repository.GetMovieIdsForParty(partyId, count);
@@ -158,13 +155,12 @@ namespace MovieRecommendationsAPI.Controllers
 
         // POST: api/<PartiesController>/partyMembers/{partyId}/addMember
         [HttpPost]
-        [Route("partyMembers/{partyId}/addMember")]
-        [EnableCors("AllowAnyOrigin")]
+        [Route("addMember")]
         public async Task<IActionResult> AddMemberToParty(PartyMemberDTO partyMemberDTO)
         {
             if (ModelState.IsValid == false)
             {
-                return BadRequest("Bad request.");
+                return BadRequest("Bad request.", ModelState);
             }
             PartyMember newMember = new PartyMember
             {
@@ -175,10 +171,14 @@ namespace MovieRecommendationsAPI.Controllers
             return Ok($"Party member \"{partyMemberDTO.Email}\" was added to party \"{partyMemberDTO.PartyId}\" successfully.");
         }
 
+        private IActionResult BadRequest(string v, object modelState)
+        {
+            throw new NotImplementedException();
+        }
+
         // GET api/<PartiesController>/getMembers/{partyId}
         [HttpGet]
         [Route("getMembers/{partyId}")]
-        [EnableCors("AllowAnyOrigin")]
         public IActionResult GetPartyMembers(int partyId)
         {
             List<PartyMember> partyMembers = _repository.GetPartyMembersForParty(partyId);

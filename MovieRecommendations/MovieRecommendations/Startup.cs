@@ -22,6 +22,7 @@ namespace MovieRecommendations
 {
     public class Startup
     {
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -45,6 +46,19 @@ namespace MovieRecommendations
             //{
             //    options.UseInMemoryDatabase("TestingDB");
             //});
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: MyAllowSpecificOrigins,
+                                  builder =>
+                                  {
+                                      builder.WithOrigins("https://localhost:44311/",
+                                                          "https://localhost:44318/")
+                                                          .AllowAnyHeader()
+                                                          .AllowAnyMethod()
+                                                          .AllowAnyOrigin();
+                                  });
+            });
 
             services.AddIdentity<IdentityUser, IdentityRole>(options =>
                 {
@@ -82,6 +96,7 @@ namespace MovieRecommendations
 
             app.UseRouting();
             app.UseAuthentication();
+            app.UseCors(MyAllowSpecificOrigins);
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
