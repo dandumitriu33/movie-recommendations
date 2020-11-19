@@ -109,17 +109,22 @@ namespace MovieRecommendationsAPI.Controllers
 
         // POST: api/<PartiesController>/partyChoices/{partyId}/choice/{movieId}
         [HttpPost]
-        [Route("partyChoices/{partyId}/choice/{movieId}")]
-        public IActionResult AddChoice(int partyId, int movieId)
+        [Route("partyChoices/addChoice")]
+        public async Task<IActionResult> AddChoice(PartyChoice partyChoice)
         {
-            PartyChoice newChoice = new PartyChoice
+            // TODO: replace with DTO
+            if (ModelState.IsValid == false)
             {
-                PartyId = partyId,
-                MovieId = movieId,
-                Score = 1
-            };
-            _repository.AddChoice(newChoice);
-            return NoContent();
+                return BadRequest("Bad request.", ModelState);
+            }
+            //PartyChoice newChoice = new PartyChoice
+            //{
+            //    PartyId = partyId,
+            //    MovieId = movieId,
+            //    Score = 1
+            //};
+            await _repository.AddChoice(partyChoice);
+            return Ok();
         }
 
         // GET: api/<PartiesController>/partyCount/{partyId}
