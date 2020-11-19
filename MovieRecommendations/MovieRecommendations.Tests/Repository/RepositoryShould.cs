@@ -631,6 +631,24 @@ namespace MovieRecommendations.Tests.Repository
             }
         }
 
+        [Fact]
+        public void GetPartyMembersForParty()
+        {
+            var options = new DbContextOptionsBuilder<MoviesContext>()
+                .UseInMemoryDatabase(databaseName: "MRGetPartyMembersForParty")
+                .Options;
+            addPartyMembers(options);
+
+            using (var context = new MoviesContext(options))
+            {
+                SQLRepository controller = new SQLRepository(context);
+
+                List<PartyMember> actual = controller.GetPartyMembersForParty(1);
+
+                Assert.Equal(2, actual.Count);
+            }
+        }
+
 
         private void addPartyChoices(DbContextOptions<MoviesContext> options)
         {
