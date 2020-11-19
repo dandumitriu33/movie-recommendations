@@ -10,13 +10,14 @@ $("#addMemberButton").click(function () {
 
 async function addMemberToParty(partyId, memberEmail) {
     if (validateEmail(memberEmail) == true) {
-        let URL = `https://localhost:44311/api/parties/partyMembers/${partyId}/addMember`;
-        let data = JSON.stringify({ "partyId": partyId, "email": memberEmail });
+        console.log(`partyId: ${partyId} aaaaaaaaaaaaaaaaaaand memberEmail: ${memberEmail}`);
+        let URL = `https://localhost:44311/api/parties/addMember`;
+        var obj = JSON.stringify({ partyId: partyId, email: memberEmail });
         await $.ajax({
             type: "POST",
             url: URL,
-            data: data,
-            contentType: "application/json; charset=utf-8",
+            data: obj,
+            contentType: "application/json",
             crossDomain: true,
             dataType: "json",
             success: function () {
@@ -24,7 +25,7 @@ async function addMemberToParty(partyId, memberEmail) {
             },
             error: function (jqXHR, status) {
                 console.log(jqXHR);
-                console.log('fail' + status.code);
+                console.log('fail ' + status.code);
             }
         })
     }
