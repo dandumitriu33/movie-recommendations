@@ -689,6 +689,49 @@ namespace MovieRecommendations.Tests.Repository
             }
         }
 
+        [Fact]
+        public async Task GetLatestHorrorMovies()
+        {
+            var options = new DbContextOptionsBuilder<MoviesContext>()
+                .UseInMemoryDatabase(databaseName: "MRGetLatestHorrorMovies")
+                .Options;
+            addMovies(options);
+
+            using (var context = new MoviesContext(options))
+            {
+                SQLRepository controller = new SQLRepository(context);
+                Movie horrorMovie1 = new Movie
+                {
+                    Id = 23,
+                    Title = "In Memory DB Movie 23",
+                    LengthInMinutes = 121,
+                    Rating = 8.1,
+                    ReleaseYear = 2013,
+                    MainGenre = "Horror",
+                    SubGenre1 = "Action",
+                    SubGenre2 = "Adventure"
+                };
+                Movie horrorMovie2 = new Movie
+                {
+                    Id = 24,
+                    Title = "In Memory DB Movie 24",
+                    LengthInMinutes = 121,
+                    Rating = 8.1,
+                    ReleaseYear = 2013,
+                    MainGenre = "Horror",
+                    SubGenre1 = "Action",
+                    SubGenre2 = "Adventure"
+                };
+                await controller.Add(horrorMovie1);
+                await controller.Add(horrorMovie2);
+
+                List<Movie> actual = controller.GetLatestHorrorMovies(2);
+                
+                Assert.Equal(2, actual.Count);
+                Assert.Equal("In Memory DB Movie 23", actual[0].Title);
+            }
+        }
+
 
         private void addPartyChoices(DbContextOptions<MoviesContext> options)
         {
