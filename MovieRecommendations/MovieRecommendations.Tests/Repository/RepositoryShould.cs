@@ -613,6 +613,23 @@ namespace MovieRecommendations.Tests.Repository
             }
         }
 
+        [Fact]
+        public void GetMovieIdsForParty()
+        {
+            var options = new DbContextOptionsBuilder<MoviesContext>()
+                .UseInMemoryDatabase(databaseName: "MRGetMovieIDsForParty")
+                .Options;
+            addPartyChoices(options);
+
+            using (var context = new MoviesContext(options))
+            {
+                SQLRepository controller = new SQLRepository(context);
+
+                List<PartyChoice> actual = controller.GetMovieIdsForParty(1, 2);
+
+                Assert.Equal(2, actual.Count);
+            }
+        }
 
 
         private void addPartyChoices(DbContextOptions<MoviesContext> options)
