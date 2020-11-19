@@ -7,15 +7,17 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace MovieRecommendations.Tests.Repository
 {
     public class RepositoryShould
     {
-        public RepositoryShould()
+        private readonly ITestOutputHelper _output;
+
+        public RepositoryShould(ITestOutputHelper output)
         {
-            //addMovies(options);
-            //addHistories(options);
+            _output = output;
         }
 
         
@@ -531,13 +533,17 @@ namespace MovieRecommendations.Tests.Repository
             using (var context = new MoviesContext(options))
             {
                 SQLRepository controller = new SQLRepository(context);
-                
-                //controller.ResetChoicesForParty(1);
-                //List<Party> actual = controller.GetUserParties("jimsmith@email.com");
 
-                //Assert.Empty(actual);
+                List<PartyChoice> initial = controller.GetAllPartyChoicesForParty(1);
+                _output.WriteLine($"The length of the choice list before reset: {initial.Count}");
+                controller.ResetChoicesForParty(1);
+                List<PartyChoice> actual = controller.GetAllPartyChoicesForParty(1);
+                _output.WriteLine($"The length of the choice list after reset: {actual.Count}");
+                Assert.Empty(actual);
             }
         }
+
+
 
         private void addPartyChoices(DbContextOptions<MoviesContext> options)
         {
