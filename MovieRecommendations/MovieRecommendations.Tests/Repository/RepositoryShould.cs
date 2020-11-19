@@ -543,6 +543,32 @@ namespace MovieRecommendations.Tests.Repository
             }
         }
 
+        [Fact]
+        public void GetBatch()
+        {
+            var options = new DbContextOptionsBuilder<MoviesContext>()
+                .UseInMemoryDatabase(databaseName: "MRGetBatch")
+                .Options;
+            addMovies(options);
+
+            using ( var context = new MoviesContext(options))
+            {
+                SQLRepository controller = new SQLRepository(context);
+
+                int newestId = 21;
+                int oldestId = 11;
+                int limit = 5;
+                List<Movie> actual = controller.GetBatch(newestId, oldestId, limit);
+                // expecting movies 22, 10, 9, 8 and 7
+                Assert.Equal(5, actual.Count);
+                Assert.Equal(22, actual[0].Id);
+                Assert.Equal(10, actual[1].Id);
+                Assert.Equal(9, actual[2].Id);
+                Assert.Equal(8, actual[3].Id);
+                Assert.Equal(7, actual[4].Id);
+            }
+        }
+
 
 
         private void addPartyChoices(DbContextOptions<MoviesContext> options)
