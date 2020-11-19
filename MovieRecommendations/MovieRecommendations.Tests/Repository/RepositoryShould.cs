@@ -649,6 +649,25 @@ namespace MovieRecommendations.Tests.Repository
             }
         }
 
+        [Fact]
+        public void GetGenreCount()
+        {
+            var options = new DbContextOptionsBuilder<MoviesContext>()
+                .UseInMemoryDatabase(databaseName: "MRGetGenreCount")
+                .Options;
+            addMovies(options);
+
+            using (var context = new MoviesContext(options))
+            {
+                SQLRepository controller = new SQLRepository(context);
+
+                List<GenreCount> actual = controller.GetGenreCount();
+
+                Assert.Single(actual); // just one Genre in the in memory DB - Comedy
+                Assert.Equal(22, actual[0].Count); // 22 comedies
+            }
+        }
+
 
         private void addPartyChoices(DbContextOptions<MoviesContext> options)
         {
