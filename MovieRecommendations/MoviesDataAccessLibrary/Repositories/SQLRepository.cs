@@ -229,18 +229,18 @@ namespace MoviesDataAccessLibrary.Repositories
             return batch;
         }
 
-        public void AddChoice(PartyChoice choice)
+        public async Task AddChoice(PartyChoice choice)
         {
             PartyChoice choiceFromDb = _context.PartyChoices.Where(c => c.PartyId == choice.PartyId && c.MovieId == choice.MovieId).FirstOrDefault();
             if (choiceFromDb != null)
             {
                 choiceFromDb.Score += choice.Score;
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
             else
             {
-                _context.PartyChoices.Add(choice);
-                _context.SaveChanges();
+                await _context.PartyChoices.AddAsync(choice);
+                await _context.SaveChangesAsync();
             }
         }
 

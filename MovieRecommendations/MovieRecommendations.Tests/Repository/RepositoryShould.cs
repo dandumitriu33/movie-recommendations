@@ -569,6 +569,32 @@ namespace MovieRecommendations.Tests.Repository
             }
         }
 
+        [Fact]
+        public async Task AddChoice()
+        {
+            var options = new DbContextOptionsBuilder<MoviesContext>()
+                .UseInMemoryDatabase(databaseName: "MRAddChoice")
+                .Options;
+            addPartyChoices(options);
+
+            using (var context = new MoviesContext(options))
+            {
+                SQLRepository controller = new SQLRepository(context);
+
+                PartyChoice choiceToAdd = new PartyChoice
+                {
+                    Id = 4,
+                    PartyId = 1,
+                    MovieId = 5,
+                    Score = 1
+                };
+                await controller.AddChoice(choiceToAdd);
+                List<PartyChoice> actual = controller.GetAllPartyChoicesForParty(1);
+
+                Assert.Equal(4, actual.Count);
+            }
+        } 
+
 
 
         private void addPartyChoices(DbContextOptions<MoviesContext> options)
