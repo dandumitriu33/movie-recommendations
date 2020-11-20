@@ -165,7 +165,7 @@ namespace MovieRecommendationsAPI.Controllers
         {
             if (ModelState.IsValid == false)
             {
-                return BadRequest("Bad request.", ModelState);
+                return BadRequest("Bad request.");
             }
             PartyMember newMember = new PartyMember
             {
