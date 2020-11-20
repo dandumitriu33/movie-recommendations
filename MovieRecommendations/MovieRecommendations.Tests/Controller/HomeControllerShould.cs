@@ -33,16 +33,6 @@ namespace MovieRecommendations.Tests.Controller
             _sut = new HomeController(_mockLogger.Object, _mockRepository.Object, _mockMapper.Object);
         }
 
-        // FAILS because of HTTPContext for cookie management
-        //[Fact]
-        //public void ReturnViewForIndex()
-        //{
-        
-        //    IActionResult result = _sut.Index();
-
-        //    Assert.IsType<ViewResult>(result);
-        //}
-
         [Fact]
         public void ReturnViewForPrivacy()
         {
